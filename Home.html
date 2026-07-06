@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloodConnect - Home</title>
+    <style>
+        /* Reset */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f8f9fa;
+    color:#333;
+}
+
+/* Header */
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 8%;
+    background:white;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    position:sticky;
+    top:0;
+}
+
+header h2{
+    color:#d62828;
+}
+
+nav a{
+    text-decoration:none;
+    color:#333;
+    margin:0 12px;
+    font-weight:500;
+}
+
+nav a:hover{
+    color:#d62828;
+}
+
+header button{
+    padding:10px 18px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    margin-left:10px;
+    background:#d62828;
+    color:white;
+}
+
+/* Hero Section */
+section{
+    padding:60px 8%;
+}
+
+section:first-of-type{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:50px;
+}
+
+section:first-of-type h1{
+    font-size:55px;
+    color:#d62828;
+    margin-bottom:20px;
+}
+
+section:first-of-type p{
+    font-size:18px;
+    line-height:1.6;
+    margin-bottom:20px;
+}
+
+section:first-of-type button{
+    padding:12px 25px;
+    border:none;
+    background:#d62828;
+    color:white;
+    border-radius:5px;
+    margin-right:10px;
+    cursor:pointer;
+}
+
+section:first-of-type img{
+    width:400px;
+    max-width:100%;
+}
+
+/* About */
+section h2{
+    margin-bottom:20px;
+    color:#d62828;
+}
+
+/* Quick Access */
+section:nth-of-type(3) div{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+section:nth-of-type(3) a{
+    text-decoration:none;
+    color:#333;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+    transition:.3s;
+}
+
+section:nth-of-type(3) a:hover{
+    transform:translateY(-5px);
+}
+
+section:nth-of-type(3) h3{
+    color:#d62828;
+    margin-bottom:10px;
+}
+
+/* Statistics */
+section:nth-of-type(4){
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    text-align:center;
+}
+
+section:nth-of-type(4) h2{
+    grid-column:1/-1;
+}
+
+section:nth-of-type(4) div{
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+}
+
+section:nth-of-type(4) h3{
+    font-size:35px;
+    color:#d62828;
+    margin-bottom:10px;
+}
+
+/* How It Works */
+ol{
+    margin-left:20px;
+}
+
+ol li{
+    margin:15px 0;
+    font-size:17px;
+}
+
+/* Footer */
+footer{
+    background:#d62828;
+    color:white;
+    text-align:center;
+    padding:30px;
+}
+
+footer h3{
+    margin-bottom:10px;
+}
+
+footer p{
+    margin:5px 0;
+}
+
+/* Responsive */
+@media(max-width:900px){
+
+    header{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    section:first-of-type{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    section:first-of-type h1{
+        font-size:40px;
+    }
+}
+    </style>
+</head>
+<body>
+
+   
+    <header>
+        <div>
+            <h2>BloodConnect</h2>
+            <p>Save a Life</p>
+        </div>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="donors.html">Donors</a>
+            <a href="blood-requests.html">Blood Requests</a>
+            <a href="emergency-requests.html">Emergency</a>
+            <a href="smart-matching.html">Smart Matching</a>
+            <a href="hospitals.html">Hospitals</a>
+            <a href="analytics.html">Analytics</a>
+        </nav>
+
+        <div>
+            <button>Login</button>
+            <button>Register</button>
+        </div>
+    </header>
+
+    
+    <section>
+        <div>
+            <h1>Donate Blood, Save Lives</h1>
+
+            <p>
+                BloodConnect helps donors, patients,
+                hospitals and blood banks connect quickly
+                during emergencies.
+            </p>
+
+            <button>Become a Donor</button>
+            <button>Request Blood</button>
+        </div>
+
+        <div>
+            <img src="images/hero-image.png" alt="Blood Donation">
+        </div>
+    </section>
+
+    
+    <section>
+        <h2>About BloodConnect</h2>
+
+        <p>
+            BloodConnect is a blood donation management system
+            designed to connect blood donors with patients in need.
+            The platform provides emergency blood requests,
+            smart donor matching, donor reliability scores,
+            hospital integration and analytics.
+        </p>
+    </section>
+
+    
+    <section>
+
+        <h2>Quick Access</h2>
+
+        <div>
+
+            <a href="donors.html">
+                <h3>Donors</h3>
+                <p>Browse available donors</p>
+            </a>
+
+            <a href="blood-requests.html">
+                <h3>Blood Requests</h3>
+                <p>Create and manage requests</p>
+            </a>
+
+            <a href="emergency-requests.html">
+                <h3>Emergency Requests</h3>
+                <p>View urgent blood needs</p>
+            </a>
+
+            <a href="smart-matching.html">
+                <h3>Smart Matching</h3>
+                <p>Find suitable donors</p>
+            </a>
+
+            <a href="donor-score.html">
+                <h3>Donor Reliability</h3>
+                <p>Check donor score</p>
+            </a>
+
+            <a href="hospitals.html">
+                <h3>Hospitals</h3>
+                <p>Blood bank information</p>
+            </a>
+
+            <a href="analytics.html">
+                <h3>Analytics</h3>
+                <p>Donation statistics</p>
+            </a>
+
+        </div>
+
+    </section>
+
+    
+    <section>
+
+        <h2>Platform Overview</h2>
+
+        <div>
+            <h3>1200+</h3>
+            <p>Registered Donors</p>
+        </div>
+
+        <div>
+            <h3>300+</h3>
+            <p>Successful Donations</p>
+        </div>
+
+        <div>
+            <h3>250+</h3>
+            <p>Blood Requests</p>
+        </div>
+
+        <div>
+            <h3>50+</h3>
+            <p>Partner Hospitals</p>
+        </div>
+
+    </section>
+
+    
+    <section>
+
+        <h2>How It Works</h2>
+
+        <ol>
+            <li>Register as a donor or patient.</li>
+            <li>Create or search blood requests.</li>
+            <li>Smart Matching finds suitable donors.</li>
+            <li>Contact donor and complete donation.</li>
+        </ol>
+
+    </section>
+
+   
+    <footer>
+
+        <h3>BloodConnect</h3>
+
+        <p>
+            Every donation can save up to three lives.
+        </p>
+
+        <p>
+            © 2026 BloodConnect. All Rights Reserved.
+        </p>
+
+    </footer>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+    alert("Welcome to BloodConnect!");
+
+    const loginBtn = document.querySelector("header div:last-child button:first-child");
+    const registerBtn = document.querySelector("header div:last-child button:last-child");
+    const donorBtn = document.querySelector("section:first-of-type button:first-child");
+    const requestBtn = document.querySelector("section:first-of-type button:last-child");
+
+    loginBtn.addEventListener("click", function () {
+        alert("Login page will open.");
+        window.location.href = "login.html";
+    });
+
+    registerBtn.addEventListener("click", function () {
+        alert("Register page will open.");
+        window.location.href = "register.html";
+    });
+
+    donorBtn.addEventListener("click", function () {
+        alert("Thank you for choosing to become a donor!");
+        window.location.href = "register.html";
+    });
+
+    requestBtn.addEventListener("click", function () {
+        alert("Blood Request page is opening.");
+        window.location.href = "blood-requests.html";
+    });
+
+    const navLinks = document.querySelectorAll("nav a");
+
+    navLinks.forEach(function (link) {
+        link.addEventListener("click", function () {
+            console.log("Opening: " + link.textContent);
+        });
+    });
+
+    const counters = document.querySelectorAll("section:nth-of-type(4) h3");
+
+    counters.forEach(function (counter) {
+
+        const target = parseInt(counter.textContent);
+        let count = 0;
+
+        const updateCounter = function () {
+
+            const increment = Math.ceil(target / 100);
+
+            count += increment;
+
+            if (count < target) {
+                counter.textContent = count + "+";
+                requestAnimationFrame(updateCounter);
+            } else {
+                counter.textContent = target + "+";
+            }
+
+        };
+
+        updateCounter();
+
+    });
+
+    const cards = document.querySelectorAll("section:nth-of-type(3) a");
+
+    cards.forEach(function (card) {
+
+        card.addEventListener("mouseenter", function () {
+            card.style.backgroundColor = "#ffe5e5";
+        });
+
+        card.addEventListener("mouseleave", function () {
+            card.style.backgroundColor = "white";
+        });
+
+    });
+
+});
+</script>
+
+</body>
+</html>
