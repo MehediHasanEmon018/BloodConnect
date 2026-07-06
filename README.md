@@ -1,0 +1,2 @@
+# BloodConnect
+This single-page smart blood donation dashboard helps users quickly find suitable donors based on blood group, location, and availability. It combines a real-time donor list, intelligent matching, and a live map in one interface, enabling fast donor identification and contact during emergencies without navigating multiple pages.
