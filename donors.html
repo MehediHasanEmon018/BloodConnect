@@ -513,7 +513,107 @@ footer p{
 
     </footer>
 
-    <script src="donors.js"></script>
+    <script src="donors.js">
+        document.addEventListener("DOMContentLoaded", function () {
+
+    const backBtn = document.getElementById("backBtn");
+    const searchBtn = document.getElementById("searchBtn");
+    const bloodGroup = document.getElementById("bloodGroup");
+    const location = document.getElementById("location");
+    const donorCards = document.querySelectorAll(".card");
+    const contactButtons = document.querySelectorAll(".card button");
+
+    backBtn.addEventListener("click", function () {
+        window.location.href = "Home.html";
+    });
+
+    searchBtn.addEventListener("click", function () {
+
+        const selectedGroup = bloodGroup.value.toUpperCase().trim();
+        const selectedLocation = location.value.toUpperCase().trim();
+
+        let found = false;
+
+        donorCards.forEach(function (card) {
+
+            const bloodText = card.querySelectorAll("p")[0].textContent.toUpperCase();
+            const locationText = card.querySelectorAll("p")[1].textContent.toUpperCase();
+
+            const groupMatch =
+                selectedGroup === "SELECT BLOOD GROUP" ||
+                bloodText.includes(selectedGroup);
+
+            const locationMatch =
+                selectedLocation === "" ||
+                locationText.includes(selectedLocation);
+
+            if (groupMatch && locationMatch) {
+                card.style.display = "block";
+                found = true;
+            } else {
+                card.style.display = "none";
+            }
+
+        });
+
+        if (!found) {
+            alert("No matching donors found.");
+        }
+
+    });
+
+    contactButtons.forEach(function (button) {
+
+        button.addEventListener("click", function () {
+
+            const card = button.parentElement;
+            const donorName = card.querySelector("h3").textContent;
+
+            alert("Contact request sent to " + donorName + ".");
+
+        });
+
+    });
+
+    donorCards.forEach(function (card) {
+
+        card.addEventListener("mouseenter", function () {
+            card.style.transform = "translateY(-8px) scale(1.02)";
+        });
+
+        card.addEventListener("mouseleave", function () {
+            card.style.transform = "translateY(0)";
+        });
+
+    });
+
+    const navLinks = document.querySelectorAll("nav a");
+
+    navLinks.forEach(function (link) {
+
+        link.addEventListener("click", function () {
+            console.log("Opening " + link.textContent);
+        });
+
+    });
+
+    donorCards.forEach(function (card, index) {
+
+        card.style.opacity = "0";
+        card.style.transform = "translateY(30px)";
+
+        setTimeout(function () {
+
+            card.style.transition = "0.5s";
+            card.style.opacity = "1";
+            card.style.transform = "translateY(0)";
+
+        }, index * 120);
+
+    });
+
+});
+    </script>
 
 </body>
 </html>
