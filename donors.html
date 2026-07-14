@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloodConnect - Donors</title>
+    <link rel="stylesheet" href="donors.css">
+
+    <style>
+        *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f5f6fa;
+    color:#333;
+}
+
+/* Header */
+
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 8%;
+    background:#fff;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.logo h2{
+    color:#d62828;
+    margin-bottom:5px;
+}
+
+.logo p{
+    color:#666;
+    font-size:14px;
+}
+
+nav{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+nav a{
+    text-decoration:none;
+    color:#333;
+    font-weight:600;
+    transition:.3s;
+}
+
+nav a:hover,
+nav a.active{
+    color:#d62828;
+}
+
+#backBtn{
+    padding:10px 22px;
+    border:none;
+    border-radius:6px;
+    background:#d62828;
+    color:#fff;
+    cursor:pointer;
+    transition:.3s;
+}
+
+#backBtn:hover{
+    background:#b91d1d;
+}
+
+/* Main */
+
+main{
+    width:84%;
+    margin:40px auto;
+}
+
+/* Page Title */
+
+.page-title{
+    text-align:center;
+    margin-bottom:40px;
+}
+
+.page-title h1{
+    font-size:42px;
+    color:#d62828;
+    margin-bottom:10px;
+}
+
+.page-title p{
+    color:#666;
+    font-size:18px;
+}
+
+/* Search */
+
+.search-section{
+    background:#fff;
+    padding:35px;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    margin-bottom:45px;
+}
+
+.search-section h2{
+    color:#d62828;
+    margin-bottom:20px;
+}
+
+.search-box{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.search-box select,
+.search-box input{
+    flex:1;
+    min-width:220px;
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:6px;
+    font-size:15px;
+    outline:none;
+}
+
+.search-box select:focus,
+.search-box input:focus{
+    border-color:#d62828;
+}
+
+.search-box button{
+    padding:14px 30px;
+    border:none;
+    border-radius:6px;
+    background:#d62828;
+    color:#fff;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.search-box button:hover{
+    background:#b91d1d;
+}
+
+/* Donor List */
+
+.donor-list h2{
+    color:#d62828;
+    margin-bottom:25px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:#fff;
+    border-radius:12px;
+    padding:30px;
+    text-align:center;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+}
+
+.card img{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    object-fit:cover;
+    margin-bottom:20px;
+    border:4px solid #f4d3d3;
+}
+
+.card h3{
+    color:#d62828;
+    margin-bottom:15px;
+}
+
+.card p{
+    margin:8px 0;
+    color:#555;
+    font-size:15px;
+    line-height:1.5;
+}
+
+.card button{
+    margin-top:20px;
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:6px;
+    background:#d62828;
+    color:#fff;
+    cursor:pointer;
+    font-size:15px;
+    transition:.3s;
+}
+
+.card button:hover{
+    background:#b91d1d;
+}
+
+/* Footer */
+
+footer{
+    margin-top:60px;
+    background:#d62828;
+    color:#fff;
+    text-align:center;
+    padding:35px;
+}
+
+footer h3{
+    margin-bottom:10px;
+}
+
+footer p{
+    margin-top:8px;
+}
+
+/* Responsive */
+
+@media(max-width:1000px){
+
+    header{
+        flex-direction:column;
+        gap:20px;
+    }
+
+    nav{
+        justify-content:center;
+    }
+
+    main{
+        width:92%;
+    }
+
+    .search-box{
+        flex-direction:column;
+    }
+}
+
+@media(max-width:768px){
+
+    .page-title h1{
+        font-size:34px;
+    }
+
+    .page-title p{
+        font-size:16px;
+    }
+
+    .search-section{
+        padding:25px;
+    }
+
+    .card{
+        padding:25px;
+    }
+}
+
+@media(max-width:500px){
+
+    .page-title h1{
+        font-size:28px;
+    }
+
+    .card img{
+        width:75px;
+        height:75px;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <header>
+
+        <div class="logo">
+            <h2>BloodConnect</h2>
+            <p>Verified Blood Donors</p>
+        </div>
+
+        <nav>
+            <a href="Home.html">Home</a>
+            <a href="donors.html" class="active">Donors</a>
+            <a href="blood-requests.html">Blood Requests</a>
+            <a href="emergency-requests.html">Emergency</a>
+            <a href="smart-matching.html">Smart Matching</a>
+            <a href="hospitals.html">Hospitals</a>
+            <a href="analytics.html">Analytics</a>
+            <a href="profile.html">Profile</a>
+        </nav>
+
+        <button id="backBtn">Dashboard</button>
+
+    </header>
+
+    <main>
+
+        <section class="page-title">
+            <h1>Find Blood Donors</h1>
+            <p>Search verified donors by blood group and location.</p>
+        </section>
+
+        <section class="search-section">
+
+            <h2>Search Donors</h2>
+
+            <div class="search-box">
+
+                <select id="bloodGroup">
+                    <option>Select Blood Group</option>
+                    <option>A+</option>
+                    <option>A-</option>
+                    <option>B+</option>
+                    <option>B-</option>
+                    <option>AB+</option>
+                    <option>AB-</option>
+                    <option>O+</option>
+                    <option>O-</option>
+                </select>
+
+                <input
+                    type="text"
+                    id="location"
+                    placeholder="Enter City or Area">
+
+                <button id="searchBtn">Search</button>
+
+            </div>
+
+        </section>
+
+        <section class="donor-list">
+
+            <h2>Available Donors</h2>
+
+            <div class="grid">
+
+                <div class="card">
+
+                    <img src="images/user.png" alt="Donor">
+
+                    <h3>Ahmed Rahman</h3>
+
+                    <p><strong>Blood Group:</strong> O+</p>
+
+                    <p><strong>Location:</strong> Dhaka</p>
+
+                    <p><strong>Last Donation:</strong> 5 Months Ago</p>
+
+                    <p><strong>Status:</strong> Available</p>
+
+                    <button>Contact</button>
+
+                </div>
+
+                <div class="card">
+
+                    <img src="images/user.png" alt="Donor">
+
+                    <h3>Fatema Khan</h3>
+
+                    <p><strong>Blood Group:</strong> A+</p>
+
+                    <p><strong>Location:</strong> Chattogram</p>
+
+                    <p><strong>Last Donation:</strong> 4 Months Ago</p>
+
+                    <p><strong>Status:</strong> Available</p>
+
+                    <button>Contact</button>
+
+                </div>
+
+                <div class="card">
+
+                    <img src="images/user.png" alt="Donor">
+
+                    <h3>Rakib Hasan</h3>
+
+                    <p><strong>Blood Group:</strong> B+</p>
+
+                    <p><strong>Location:</strong> Sylhet</p>
+
+                    <p><strong>Last Donation:</strong> 6 Months Ago</p>
+
+                    <p><strong>Status:</strong> Available</p>
+
+                    <button>Contact</button>
+
+                </div>
+
+                <div class="card">
+
+                    <img src="images/user.png" alt="Donor">
+
+                    <h3>Nusrat Jahan</h3>
+
+                    <p><strong>Blood Group:</strong> AB+</p>
+
+                    <p><strong>Location:</strong> Khulna</p>
+
+                    <p><strong>Last Donation:</strong> 7 Months Ago</p>
+
+                    <p><strong>Status:</strong> Available</p>
+
+                    <button>Contact</button>
+
+                </div>
+
+                <div class="card">
+
+                    <img src="images/user.png" alt="Donor">
+
+                    <h3>Tanvir Islam</h3>
+
+                    <p><strong>Blood Group:</strong> O-</p>
+
+                    <p><strong>Location:</strong> Rajshahi</p>
+
+                    <p><strong>Last Donation:</strong> 5 Months Ago</p>
+
+                    <p><strong>Status:</strong> Available</p>
+
+                    <button>Contact</button>
+
+                </div>
+
+                <div class="card">
+
+                    <img src="images/user.png" alt="Donor">
+
+                    <h3>Shanta Akter</h3>
+
+                    <p><strong>Blood Group:</strong> B-</p>
+
+                    <p><strong>Location:</strong> Barishal</p>
+
+                    <p><strong>Last Donation:</strong> 8 Months Ago</p>
+
+                    <p><strong>Status:</strong> Available</p>
+
+                    <button>Contact</button>
+
+                </div>
+
+                <div class="card">
+
+                    <img src="images/user.png" alt="Donor">
+
+                    <h3>Mehedi Hasan</h3>
+
+                    <p><strong>Blood Group:</strong> A-</p>
+
+                    <p><strong>Location:</strong> Cumilla</p>
+
+                    <p><strong>Last Donation:</strong> 5 Months Ago</p>
+
+                    <p><strong>Status:</strong> Available</p>
+
+                    <button>Contact</button>
+
+                </div>
+
+                <div class="card">
+
+                    <img src="images/user.png" alt="Donor">
+
+                    <h3>Sabina Yasmin</h3>
+
+                    <p><strong>Blood Group:</strong> AB-</p>
+
+                    <p><strong>Location:</strong> Rangpur</p>
+
+                    <p><strong>Last Donation:</strong> 6 Months Ago</p>
+
+                    <p><strong>Status:</strong> Available</p>
+
+                    <button>Contact</button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+
+        <h3>BloodConnect</h3>
+
+        <p>Connecting Donors with Patients, Saving Lives.</p>
+
+        <p>© 2026 BloodConnect. All Rights Reserved.</p>
+
+    </footer>
+
+    <script src="donors.js"></script>
+
+</body>
+</html>

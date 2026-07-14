@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password - BloodConnect</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+            background-image: url("bg.png");
+
+        }
+
+        header {
+            width: 100%;
+            height: 80px;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 8%;
+            box-shadow: 0 2px 10px rgba(0,0,0,.1);
+        }
+
+        .logo h1 {
+            color: #d92525;
+            font-size: 30px;
+        }
+
+        .logo p {
+            font-size: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: black;
+            margin-left: 40px;
+            font-size: 15px;
+            transition: .3s;
+        }
+
+        nav a:hover {
+            color: #d92525;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 165px);
+            padding: 25px;
+        }
+
+        .card {
+            width: 500px;
+            background: white;
+            padding: 40px;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.12);
+        }
+
+        .card h2 {
+            text-align: center;
+            color: #d92525;
+            font-size: 35px;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            text-align: center;
+            color: #555;
+            margin-bottom: 30px;
+            font-size: 15px;
+            line-height: 25px;
+        }
+
+        label {
+            display: block;
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 25px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #d92525;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px 10px;
+            background: #d92525;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        button:hover {
+            background: #b51d1d;
+        }
+
+        .message {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .back {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .back a {
+            text-decoration: none;
+            color: #d92525;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .back a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            width: 100%;
+            background: #d92525;
+            color: white;
+            text-align: center;
+            padding: 18px;
+            font-size: 15px;
+        }
+
+        @media(max-width:600px){
+
+            header{
+                flex-direction: column;
+                height: auto;
+                padding:20px;
+            }
+
+            nav{
+                margin-top:15px;
+            }
+
+            .card{
+                width:100%;
+                padding:25px;
+            }
+
+            .card h2{
+                font-size:38px;
+            }
+
+            .card p{
+                font-size:17px;
+            }
+
+            .logo h1{
+                font-size:34px;
+            }
+
+            .logo p{
+                font-size:20px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <header>
+
+        <div class="logo">
+            <h1>BloodConnect</h1>
+            <p>Save a Life</p>
+        </div>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="Register.html">Register</a>
+        </nav>
+
+    </header>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h2>Forgot Password</h2>
+
+            <p>
+                Enter your registered email address.
+                We will send you a password reset link.
+            </p>
+
+            <form id="forgotForm">
+
+                <label>Email</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email">
+
+                <button type="submit">
+                    Send Reset Link
+                </button>
+
+            </form>
+
+            <div class="message" id="message"></div>
+
+            <div class="back">
+                <a href="Login.html">← Back to Login</a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <footer>
+        © 2026 BloodConnect. All Rights Reserved.
+    </footer>
+
+    <script>
+
+        const form = document.getElementById("forgotForm");
+        const email = document.getElementById("email");
+        const message = document.getElementById("message");
+
+        form.addEventListener("submit", function(e){
+
+            e.preventDefault();
+
+            if(email.value.trim()===""){
+                message.style.color="red";
+                message.innerHTML="Please enter your email.";
+                return;
+            }
+
+            const emailPattern=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if(!emailPattern.test(email.value)){
+                message.style.color="red";
+                message.innerHTML="Please enter a valid email address.";
+                return;
+            }
+
+            message.style.color="green";
+            message.innerHTML="Password reset link has been sent to your email.";
+
+            form.reset();
+
+        });
+
+    </script>
+
+</body>
+
+</html>

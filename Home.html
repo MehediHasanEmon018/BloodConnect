@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BloodConnect - Home</title>
+    <link rel="stylesheet" href="home.html">
+
     <style>
-        /* Reset */
-*{
+        *{
     margin:0;
     padding:0;
     box-sizing:border-box;
@@ -14,159 +15,354 @@
 }
 
 body{
-    background:#f8f9fa;
+    background:#f5f6fa;
     color:#333;
 }
 
 /* Header */
+
 header{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:20px 8%;
-    background:white;
-    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    padding:18px 8%;
+    background:#ffffff;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
     position:sticky;
     top:0;
+    z-index:1000;
 }
 
-header h2{
+.logo h2{
     color:#d62828;
+    margin-bottom:5px;
+}
+
+.logo p{
+    color:#777;
+    font-size:14px;
+}
+
+nav{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
 }
 
 nav a{
     text-decoration:none;
     color:#333;
-    margin:0 12px;
-    font-weight:500;
-}
-
-nav a:hover{
-    color:#d62828;
-}
-
-header button{
-    padding:10px 18px;
-    border:none;
-    border-radius:5px;
-    cursor:pointer;
-    margin-left:10px;
-    background:#d62828;
-    color:white;
-}
-
-/* Hero Section */
-section{
-    padding:60px 8%;
-}
-
-section:first-of-type{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:50px;
-}
-
-section:first-of-type h1{
-    font-size:55px;
-    color:#d62828;
-    margin-bottom:20px;
-}
-
-section:first-of-type p{
-    font-size:18px;
-    line-height:1.6;
-    margin-bottom:20px;
-}
-
-section:first-of-type button{
-    padding:12px 25px;
-    border:none;
-    background:#d62828;
-    color:white;
-    border-radius:5px;
-    margin-right:10px;
-    cursor:pointer;
-}
-
-section:first-of-type img{
-    width:400px;
-    max-width:100%;
-}
-
-/* About */
-section h2{
-    margin-bottom:20px;
-    color:#d62828;
-}
-
-/* Quick Access */
-section:nth-of-type(3) div{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
-}
-
-section:nth-of-type(3) a{
-    text-decoration:none;
-    color:#333;
-    background:white;
-    padding:25px;
-    border-radius:10px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+    font-weight:600;
     transition:.3s;
 }
 
-section:nth-of-type(3) a:hover{
-    transform:translateY(-5px);
-}
-
-section:nth-of-type(3) h3{
+nav a:hover,
+nav a.active{
     color:#d62828;
-    margin-bottom:10px;
 }
 
-/* Statistics */
-section:nth-of-type(4){
+#logoutBtn{
+    padding:10px 22px;
+    border:none;
+    border-radius:6px;
+    background:#d62828;
+    color:white;
+    cursor:pointer;
+    transition:.3s;
+}
+
+#logoutBtn:hover{
+    background:#b91d1d;
+}
+
+/* Main */
+
+main{
+    width:84%;
+    margin:40px auto;
+}
+
+/* Welcome */
+
+.welcome{
+    background:#ffffff;
+    border-radius:12px;
+    padding:60px;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+    margin-bottom:40px;
+}
+
+.welcome h1{
+    color:#d62828;
+    font-size:48px;
+    margin-bottom:20px;
+}
+
+.welcome p{
+    font-size:18px;
+    line-height:1.8;
+    max-width:700px;
+    margin-bottom:30px;
+}
+
+.actions{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.actions button{
+    padding:14px 28px;
+    border:none;
+    border-radius:6px;
+    background:#d62828;
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+    transition:.3s;
+}
+
+.actions button:hover{
+    background:#b91d1d;
+    transform:translateY(-2px);
+}
+
+/* Stats */
+
+.stats{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
-    text-align:center;
+    gap:25px;
+    margin-bottom:50px;
 }
 
-section:nth-of-type(4) h2{
-    grid-column:1/-1;
-}
-
-section:nth-of-type(4) div{
+.card{
     background:white;
-    padding:30px;
-    border-radius:10px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+    padding:35px;
+    text-align:center;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    transition:.3s;
 }
 
-section:nth-of-type(4) h3{
-    font-size:35px;
+.card:hover{
+    transform:translateY(-6px);
+}
+
+.card h2{
     color:#d62828;
+    font-size:38px;
     margin-bottom:10px;
 }
 
-/* How It Works */
-ol{
-    margin-left:20px;
+.card p{
+    color:#666;
 }
 
-ol li{
+/* Search */
+
+.search{
+    background:white;
+    padding:40px;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    margin-bottom:50px;
+}
+
+.search h2{
+    color:#d62828;
+    margin-bottom:25px;
+}
+
+.search-box{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.search-box select,
+.search-box input{
+    flex:1;
+    min-width:220px;
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:6px;
+    outline:none;
+    font-size:15px;
+}
+
+.search-box button{
+    padding:14px 30px;
+    border:none;
+    border-radius:6px;
+    background:#d62828;
+    color:white;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.search-box button:hover{
+    background:#b91d1d;
+}
+
+/* Quick Access */
+
+.quick-access{
+    margin-bottom:50px;
+}
+
+.quick-access h2{
+    color:#d62828;
+    margin-bottom:25px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:25px;
+}
+
+.item{
+    background:white;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.item:hover{
+    transform:translateY(-6px);
+}
+
+.item h3{
+    color:#d62828;
+    margin-bottom:15px;
+}
+
+.item p{
+    margin-bottom:20px;
+    color:#666;
+    line-height:1.6;
+}
+
+.item button{
+    padding:10px 22px;
+    border:none;
+    border-radius:6px;
+    background:#d62828;
+    color:white;
+    cursor:pointer;
+}
+
+.item button:hover{
+    background:#b91d1d;
+}
+
+/* Table */
+
+.requests{
+    margin-bottom:50px;
+}
+
+.requests h2{
+    color:#d62828;
+    margin-bottom:20px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    border-radius:12px;
+    overflow:hidden;
+}
+
+thead{
+    background:#d62828;
+    color:white;
+}
+
+th,
+td{
+    padding:18px;
+    text-align:left;
+}
+
+tbody tr:nth-child(even){
+    background:#f8f8f8;
+}
+
+tbody tr:hover{
+    background:#ffecec;
+}
+
+/* Inventory */
+
+.inventory{
+    margin-bottom:50px;
+}
+
+.inventory h2{
+    color:#d62828;
+    margin-bottom:25px;
+}
+
+.inventory-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:20px;
+}
+
+.blood-card{
+    background:white;
+    padding:30px;
+    text-align:center;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.blood-card:hover{
+    transform:translateY(-6px);
+}
+
+.blood-card h3{
+    color:#d62828;
+    font-size:32px;
+    margin-bottom:12px;
+}
+
+/* Activity */
+
+.activity{
+    margin-bottom:60px;
+}
+
+.activity h2{
+    color:#d62828;
+    margin-bottom:20px;
+}
+
+.activity ul{
+    background:white;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+.activity li{
     margin:15px 0;
-    font-size:17px;
+    line-height:1.6;
 }
 
 /* Footer */
+
 footer{
     background:#d62828;
     color:white;
     text-align:center;
-    padding:30px;
+    padding:35px;
 }
 
 footer h3{
@@ -174,268 +370,503 @@ footer h3{
 }
 
 footer p{
-    margin:5px 0;
+    margin-top:8px;
 }
 
 /* Responsive */
-@media(max-width:900px){
+
+@media(max-width:1000px){
 
     header{
         flex-direction:column;
-        gap:15px;
+        gap:20px;
     }
 
-    section:first-of-type{
-        flex-direction:column;
+    nav{
+        justify-content:center;
+    }
+
+    main{
+        width:92%;
+    }
+
+    .welcome{
+        padding:40px;
         text-align:center;
     }
 
-    section:first-of-type h1{
-        font-size:40px;
+    .welcome h1{
+        font-size:38px;
+    }
+
+    .actions{
+        justify-content:center;
+    }
+
+    .search-box{
+        flex-direction:column;
+    }
+}
+
+@media(max-width:600px){
+
+    .welcome h1{
+        font-size:30px;
+    }
+
+    .welcome p{
+        font-size:16px;
+    }
+
+    table{
+        display:block;
+        overflow-x:auto;
+        white-space:nowrap;
     }
 }
     </style>
 </head>
 <body>
 
-   
     <header>
-        <div>
+
+        <div class="logo">
             <h2>BloodConnect</h2>
-            <p>Save a Life</p>
+            <p>Welcome Back</p>
         </div>
 
         <nav>
-            <a href="index.html">Home</a>
+            <a href="home.html" class="active">Home</a>
             <a href="donors.html">Donors</a>
             <a href="blood-requests.html">Blood Requests</a>
             <a href="emergency-requests.html">Emergency</a>
             <a href="smart-matching.html">Smart Matching</a>
             <a href="hospitals.html">Hospitals</a>
             <a href="analytics.html">Analytics</a>
+            <a href="profile.html">Profile</a>
         </nav>
 
-        <div>
-            <button>Login</button>
-            <button>Register</button>
-        </div>
+        <button id="logoutBtn">Logout</button>
+
     </header>
 
-    
-    <section>
-        <div>
-            <h1>Donate Blood, Save Lives</h1>
+    <main>
 
-            <p>
-                BloodConnect helps donors, patients,
-                hospitals and blood banks connect quickly
-                during emergencies.
-            </p>
+        <section class="welcome">
 
-            <button>Become a Donor</button>
-            <button>Request Blood</button>
-        </div>
+            <div class="welcome-text">
 
-        <div>
-            <img src="images/hero-image.png" alt="Blood Donation">
-        </div>
-    </section>
+                <h1>Welcome to BloodConnect</h1>
 
-    
-    <section>
-        <h2>About BloodConnect</h2>
+                <p>
+                    Help save lives by donating blood, responding to emergency
+                    requests, and connecting patients with verified donors.
+                </p>
 
-        <p>
-            BloodConnect is a blood donation management system
-            designed to connect blood donors with patients in need.
-            The platform provides emergency blood requests,
-            smart donor matching, donor reliability scores,
-            hospital integration and analytics.
-        </p>
-    </section>
+                <div class="actions">
+                    <button id="findDonorBtn">Find Donor</button>
+                    <button id="requestBloodBtn">Request Blood</button>
+                </div>
 
-    
-    <section>
+            </div>
 
-        <h2>Quick Access</h2>
+        </section>
 
-        <div>
+        <section class="stats">
 
-            <a href="donors.html">
-                <h3>Donors</h3>
-                <p>Browse available donors</p>
-            </a>
+            <div class="card">
+                <h2>1,250+</h2>
+                <p>Registered Donors</p>
+            </div>
 
-            <a href="blood-requests.html">
-                <h3>Blood Requests</h3>
-                <p>Create and manage requests</p>
-            </a>
+            <div class="card">
+                <h2>320+</h2>
+                <p>Blood Requests</p>
+            </div>
 
-            <a href="emergency-requests.html">
-                <h3>Emergency Requests</h3>
-                <p>View urgent blood needs</p>
-            </a>
+            <div class="card">
+                <h2>480+</h2>
+                <p>Successful Donations</p>
+            </div>
 
-            <a href="smart-matching.html">
-                <h3>Smart Matching</h3>
-                <p>Find suitable donors</p>
-            </a>
+            <div class="card">
+                <h2>65+</h2>
+                <p>Partner Hospitals</p>
+            </div>
 
-            <a href="donor-score.html">
-                <h3>Donor Reliability</h3>
-                <p>Check donor score</p>
-            </a>
+        </section>
 
-            <a href="hospitals.html">
-                <h3>Hospitals</h3>
-                <p>Blood bank information</p>
-            </a>
+        <section class="search">
 
-            <a href="analytics.html">
-                <h3>Analytics</h3>
-                <p>Donation statistics</p>
-            </a>
+            <h2>Search Blood Donors</h2>
 
-        </div>
+            <div class="search-box">
 
-    </section>
+                <select id="bloodGroup">
+                    <option>Select Blood Group</option>
+                    <option>A+</option>
+                    <option>A-</option>
+                    <option>B+</option>
+                    <option>B-</option>
+                    <option>AB+</option>
+                    <option>AB-</option>
+                    <option>O+</option>
+                    <option>O-</option>
+                </select>
 
-    
-    <section>
+                <input type="text" placeholder="Enter Location">
 
-        <h2>Platform Overview</h2>
+                <button id="searchBtn">Search</button>
 
-        <div>
-            <h3>1200+</h3>
-            <p>Registered Donors</p>
-        </div>
+            </div>
 
-        <div>
-            <h3>300+</h3>
-            <p>Successful Donations</p>
-        </div>
+        </section>
 
-        <div>
-            <h3>250+</h3>
-            <p>Blood Requests</p>
-        </div>
+        <section class="quick-access">
 
-        <div>
-            <h3>50+</h3>
-            <p>Partner Hospitals</p>
-        </div>
+            <h2>Quick Access</h2>
 
-    </section>
+            <div class="grid">
 
-    
-    <section>
+                <div class="item">
+                    <h3>Find Donors</h3>
+                    <p>Browse available donors by blood group.</p>
+                    <button>Open</button>
+                </div>
 
-        <h2>How It Works</h2>
+                <div class="item">
+                    <h3>Blood Requests</h3>
+                    <p>View and manage all blood requests.</p>
+                    <button>Open</button>
+                </div>
 
-        <ol>
-            <li>Register as a donor or patient.</li>
-            <li>Create or search blood requests.</li>
-            <li>Smart Matching finds suitable donors.</li>
-            <li>Contact donor and complete donation.</li>
-        </ol>
+                <div class="item">
+                    <h3>Emergency</h3>
+                    <p>Respond to urgent blood requests.</p>
+                    <button>Open</button>
+                </div>
 
-    </section>
+                <div class="item">
+                    <h3>Smart Matching</h3>
+                    <p>Find the best donor automatically.</p>
+                    <button>Open</button>
+                </div>
 
-   
+                <div class="item">
+                    <h3>Hospitals</h3>
+                    <p>View nearby hospitals and blood banks.</p>
+                    <button>Open</button>
+                </div>
+
+                <div class="item">
+                    <h3>Analytics</h3>
+                    <p>View donation statistics and reports.</p>
+                    <button>Open</button>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="requests">
+
+            <h2>Recent Blood Requests</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Patient</th>
+                        <th>Blood Group</th>
+                        <th>Hospital</th>
+                        <th>Status</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Rahim Ahmed</td>
+                        <td>O+</td>
+                        <td>City Hospital</td>
+                        <td>Pending</td>
+                    </tr>
+
+                    <tr>
+                        <td>Fatema Khan</td>
+                        <td>A-</td>
+                        <td>Central Medical</td>
+                        <td>Matched</td>
+                    </tr>
+
+                    <tr>
+                        <td>Hasan Ali</td>
+                        <td>B+</td>
+                        <td>Red Crescent Hospital</td>
+                        <td>Completed</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+        <section class="inventory">
+
+            <h2>Blood Inventory</h2>
+
+            <div class="inventory-grid">
+
+                <div class="blood-card">
+                    <h3>A+</h3>
+                    <p>Available: 45 Units</p>
+                </div>
+
+                <div class="blood-card">
+                    <h3>B+</h3>
+                    <p>Available: 30 Units</p>
+                </div>
+
+                <div class="blood-card">
+                    <h3>AB+</h3>
+                    <p>Available: 15 Units</p>
+                </div>
+
+                <div class="blood-card">
+                    <h3>O+</h3>
+                    <p>Available: 62 Units</p>
+                </div>
+
+                <div class="blood-card">
+                    <h3>O-</h3>
+                    <p>Available: 12 Units</p>
+                </div>
+
+                <div class="blood-card">
+                    <h3>A-</h3>
+                    <p>Available: 18 Units</p>
+                </div>
+
+                <div class="blood-card">
+                    <h3>B-</h3>
+                    <p>Available: 10 Units</p>
+                </div>
+
+                <div class="blood-card">
+                    <h3>AB-</h3>
+                    <p>Available: 6 Units</p>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="activity">
+
+            <h2>Recent Activity</h2>
+
+            <ul>
+
+                <li>A new donor registered from Dhaka.</li>
+                <li>Emergency request for O- blood created.</li>
+                <li>Three successful donations completed today.</li>
+                <li>New hospital joined BloodConnect.</li>
+
+            </ul>
+
+        </section>
+
+    </main>
+
     <footer>
 
         <h3>BloodConnect</h3>
 
-        <p>
-            Every donation can save up to three lives.
-        </p>
+        <p>Together We Save Lives.</p>
 
-        <p>
-            © 2026 BloodConnect. All Rights Reserved.
-        </p>
+        <p>© 2026 BloodConnect. All Rights Reserved.</p>
 
     </footer>
 
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    <script src="home.html">
+        document.addEventListener("DOMContentLoaded", function () {
 
-    alert("Welcome to BloodConnect!");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const findDonorBtn = document.getElementById("findDonorBtn");
+    const requestBloodBtn = document.getElementById("requestBloodBtn");
+    const searchBtn = document.getElementById("searchBtn");
 
-    const loginBtn = document.querySelector("header div:last-child button:first-child");
-    const registerBtn = document.querySelector("header div:last-child button:last-child");
-    const donorBtn = document.querySelector("section:first-of-type button:first-child");
-    const requestBtn = document.querySelector("section:first-of-type button:last-child");
+    logoutBtn.addEventListener("click", function () {
+        const confirmLogout = confirm("Are you sure you want to logout?");
 
-    loginBtn.addEventListener("click", function () {
-        alert("Login page will open.");
-        window.location.href = "login.html";
+        if (confirmLogout) {
+            alert("Logged out successfully.");
+            window.location.href = "index.html";
+        }
     });
 
-    registerBtn.addEventListener("click", function () {
-        alert("Register page will open.");
-        window.location.href = "register.html";
+    findDonorBtn.addEventListener("click", function () {
+        window.location.href = "donors.html";
     });
 
-    donorBtn.addEventListener("click", function () {
-        alert("Thank you for choosing to become a donor!");
-        window.location.href = "register.html";
-    });
-
-    requestBtn.addEventListener("click", function () {
-        alert("Blood Request page is opening.");
+    requestBloodBtn.addEventListener("click", function () {
         window.location.href = "blood-requests.html";
     });
 
-    const navLinks = document.querySelectorAll("nav a");
+    searchBtn.addEventListener("click", function () {
 
-    navLinks.forEach(function (link) {
-        link.addEventListener("click", function () {
-            console.log("Opening: " + link.textContent);
-        });
+        const bloodGroup = document.getElementById("bloodGroup").value;
+        const location = document.querySelector(".search-box input").value.trim();
+
+        if (bloodGroup === "Select Blood Group") {
+            alert("Please select a blood group.");
+            return;
+        }
+
+        if (location === "") {
+            alert("Please enter a location.");
+            return;
+        }
+
+        alert(
+            "Searching for " +
+            bloodGroup +
+            " donors in " +
+            location +
+            "."
+        );
     });
 
-    const counters = document.querySelectorAll("section:nth-of-type(4) h3");
+    const quickButtons = document.querySelectorAll(".item button");
 
-    counters.forEach(function (counter) {
+    quickButtons.forEach(function (button, index) {
 
-        const target = parseInt(counter.textContent);
-        let count = 0;
+        button.addEventListener("click", function () {
 
-        const updateCounter = function () {
+            switch (index) {
+
+                case 0:
+                    window.location.href = "donors.html";
+                    break;
+
+                case 1:
+                    window.location.href = "blood-requests.html";
+                    break;
+
+                case 2:
+                    window.location.href = "emergency-requests.html";
+                    break;
+
+                case 3:
+                    window.location.href = "smart-matching.html";
+                    break;
+
+                case 4:
+                    window.location.href = "hospitals.html";
+                    break;
+
+                case 5:
+                    window.location.href = "analytics.html";
+                    break;
+
+            }
+
+        });
+
+    });
+
+    const statCards = document.querySelectorAll(".card h2");
+
+    statCards.forEach(function (counter) {
+
+        const target = parseInt(counter.textContent.replace(/,/g, ""));
+        const suffix = "+";
+        let current = 0;
+
+        function updateCounter() {
 
             const increment = Math.ceil(target / 100);
 
-            count += increment;
+            current += increment;
 
-            if (count < target) {
-                counter.textContent = count + "+";
+            if (current < target) {
+
+                counter.textContent =
+                    current.toLocaleString() + suffix;
+
                 requestAnimationFrame(updateCounter);
+
             } else {
-                counter.textContent = target + "+";
+
+                counter.textContent =
+                    target.toLocaleString() + suffix;
+
             }
 
-        };
+        }
 
         updateCounter();
 
     });
 
-    const cards = document.querySelectorAll("section:nth-of-type(3) a");
+    const inventoryCards = document.querySelectorAll(".blood-card");
 
-    cards.forEach(function (card) {
+    inventoryCards.forEach(function (card) {
 
         card.addEventListener("mouseenter", function () {
-            card.style.backgroundColor = "#ffe5e5";
+            card.style.transform = "translateY(-8px) scale(1.03)";
         });
 
         card.addEventListener("mouseleave", function () {
-            card.style.backgroundColor = "white";
+            card.style.transform = "translateY(0)";
         });
 
     });
 
+    const activityItems = document.querySelectorAll(".activity li");
+
+    activityItems.forEach(function (item, index) {
+
+        item.style.opacity = "0";
+        item.style.transform = "translateX(-20px)";
+
+        setTimeout(function () {
+
+            item.style.transition = "0.5s";
+            item.style.opacity = "1";
+            item.style.transform = "translateX(0)";
+
+        }, index * 250);
+
+    });
+
+    const navLinks = document.querySelectorAll("nav a");
+
+    navLinks.forEach(function (link) {
+
+        link.addEventListener("click", function () {
+            console.log("Opening " + link.textContent);
+        });
+
+    });
+
+    setInterval(function () {
+
+        const requestCount = document.querySelector(".stats .card:nth-child(2) h2");
+
+        let value = parseInt(requestCount.textContent.replace(/,/g, ""));
+
+        value++;
+
+        requestCount.textContent = value.toLocaleString() + "+";
+
+    }, 10000);
+
 });
-</script>
+    </script>
 
 </body>
 </html>
