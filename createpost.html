@@ -3,860 +3,861 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>BloodConnect | Create Post</title>
+    <title>BloodConnect | Create Post</title>
 
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-<style>
-    *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Cambria,"Times New Roman",serif;
-}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Cambria, "Times New Roman", serif;
+        }
 
 
-body{
-    background:#f5f6fb;
-    color:#222;
-}
+        body {
+            background: #f5f6fb;
+            color: #222;
+        }
 
 
-.container{
-    display:flex;
-    min-height:100vh;
-}
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
 
 
 
-/* ================= Sidebar ================= */
+        /* ================= Sidebar ================= */
 
 
-.sidebar{
+        .sidebar {
 
-    width:250px;
-    height:100vh;
-    position:fixed;
-    top:0;
-    left:0;
-    background:rgb(14,3,77);
-    color:white;
-    padding:25px 15px;
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgb(14, 3, 77);
+            color: white;
+            padding: 25px 15px;
 
-}
+        }
 
 
-.logo{
+        .logo {
 
-    text-align:center;
-    margin-bottom:35px;
+            text-align: center;
+            margin-bottom: 35px;
 
-}
+        }
 
 
-.logo h2{
+        .logo h2 {
 
-    font-size:24px;
+            font-size: 24px;
 
-}
+        }
 
 
-.logo i{
+        .logo i {
 
-    color:#ff304f;
-    margin-right:8px;
+            color: #ff304f;
+            margin-right: 8px;
 
-}
+        }
 
 
-.logo p{
+        .logo p {
 
-    color:#ddd;
-    margin-top:8px;
-    font-size:14px;
+            color: #ddd;
+            margin-top: 8px;
+            font-size: 14px;
 
-}
+        }
 
 
 
-.sidebar ul{
+        .sidebar ul {
 
-    list-style:none;
+            list-style: none;
 
-}
+        }
 
 
-.sidebar ul li{
+        .sidebar ul li {
 
-    margin:12px 0;
+            margin: 12px 0;
 
-}
+        }
 
 
-.sidebar ul li a{
+        .sidebar ul li a {
 
-    color:white;
-    text-decoration:none;
-    padding:13px 15px;
-    border-radius:10px;
-    display:flex;
-    align-items:center;
-    gap:15px;
-    font-size:17px;
-    transition:.3s;
+            color: white;
+            text-decoration: none;
+            padding: 13px 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 17px;
+            transition: .3s;
 
-}
+        }
 
 
 
-.sidebar ul li a:hover,
-.sidebar ul li.active a{
+        .sidebar ul li a:hover,
+        .sidebar ul li.active a {
 
-    background:rgb(60,45,131);
+            background: rgb(60, 45, 131);
 
-}
+        }
 
 
 
-.sidebar ul li i{
+        .sidebar ul li i {
 
-    width:20px;
+            width: 20px;
 
-}
+        }
 
 
 
-#logoutBtn{
+        #logoutBtn {
 
-    position:absolute;
-    bottom:25px;
-    left:20px;
-    width:210px;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    background:#ff304f;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
+            position: absolute;
+            bottom: 25px;
+            left: 20px;
+            width: 210px;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: #ff304f;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
 
-}
+        }
 
 
-#logoutBtn:hover{
+        #logoutBtn:hover {
 
-    background:#d90429;
+            background: #d90429;
 
-}
+        }
 
 
 
 
 
-/* ================= Main Content ================= */
+        /* ================= Main Content ================= */
 
 
-.main-content{
+        .main-content {
 
-    margin-left:250px;
-    width:calc(100% - 250px);
-    padding:20px 35px;
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            padding: 20px 35px;
 
-}
+        }
 
 
 
 
 
-/* ================= Header ================= */
+        /* ================= Header ================= */
 
 
-header{
+        header {
 
-    height:70px;
-    background:white;
-    border-radius:15px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:0 25px;
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
+            height: 70px;
+            background: white;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .08);
 
-}
+        }
 
 
 
-.header-left{
+        .header-left {
 
-    display:flex;
-    align-items:center;
-    gap:20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
 
-}
+        }
 
 
 
-.header-left h1{
+        .header-left h1 {
 
-    font-size:28px;
+            font-size: 28px;
 
-}
+        }
 
 
 
-#menuBtn{
+        #menuBtn {
 
-    border:none;
-    background:none;
-    font-size:22px;
-    cursor:pointer;
+            border: none;
+            background: none;
+            font-size: 22px;
+            cursor: pointer;
 
-}
+        }
 
 
 
 
-.header-right{
+        .header-right {
 
-    display:flex;
-    align-items:center;
-    gap:22px;
+            display: flex;
+            align-items: center;
+            gap: 22px;
 
-}
+        }
 
 
 
-.header-right i{
+        .header-right i {
 
-    font-size:20px;
-    color:#555;
+            font-size: 20px;
+            color: #555;
 
-}
+        }
 
 
 
-.header-right img{
+        .header-right img {
 
-    width:45px;
-    height:45px;
-    border-radius:50%;
-    object-fit:cover;
-    border:2px solid #ff304f;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ff304f;
 
-}
+        }
 
 
 
 
 
-/* ================= Page Title ================= */
+        /* ================= Page Title ================= */
 
 
-.page-title{
+        .page-title {
 
-    margin:35px 0 25px;
+            margin: 35px 0 25px;
 
-}
+        }
 
 
 
-.page-title h2{
+        .page-title h2 {
 
-    font-size:30px;
-    color:rgb(14,3,77);
+            font-size: 30px;
+            color: rgb(14, 3, 77);
 
-}
+        }
 
 
 
-.page-title p{
+        .page-title p {
 
-    margin-top:8px;
-    color:#666;
-    font-size:16px;
+            margin-top: 8px;
+            color: #666;
+            font-size: 16px;
 
-}
-/* ================= Post Container ================= */
+        }
 
+        /* ================= Post Container ================= */
 
-.post-container{
 
-    background:white;
-    padding:30px;
-    border-radius:18px;
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
+        .post-container {
 
-}
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .08);
 
+        }
 
 
 
-/* ================= Profile Box ================= */
 
+        /* ================= Profile Box ================= */
 
-.profile-box{
 
-    display:flex;
-    align-items:center;
-    gap:18px;
-    padding-bottom:25px;
-    border-bottom:1px solid #eee;
-    margin-bottom:25px;
+        .profile-box {
 
-}
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 25px;
 
+        }
 
 
-.profile-box img{
 
-    width:65px;
-    height:65px;
-    border-radius:50%;
-    object-fit:cover;
-    border:3px solid #ff304f;
+        .profile-box img {
 
-}
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ff304f;
 
+        }
 
 
-.profile-box h3{
 
-    font-size:22px;
-    color:rgb(14,3,77);
+        .profile-box h3 {
 
-}
+            font-size: 22px;
+            color: rgb(14, 3, 77);
 
+        }
 
 
-.profile-box p{
 
-    color:#777;
-    margin-top:5px;
+        .profile-box p {
 
-}
+            color: #777;
+            margin-top: 5px;
 
+        }
 
 
 
 
-/* ================= Form ================= */
 
+        /* ================= Form ================= */
 
-.form-group{
 
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-    margin-bottom:22px;
+        .form-group {
 
-}
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 22px;
 
+        }
 
 
-.form-group label{
 
-    font-weight:bold;
-    font-size:16px;
+        .form-group label {
 
-}
+            font-weight: bold;
+            font-size: 16px;
 
+        }
 
 
-.form-group input,
-.form-group select,
-.form-group textarea{
 
-    padding:13px 15px;
-    border:1px solid #ddd;
-    border-radius:10px;
-    outline:none;
-    font-size:15px;
-    transition:.3s;
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
 
-}
+            padding: 13px 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            outline: none;
+            font-size: 15px;
+            transition: .3s;
 
+        }
 
 
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus{
 
-    border-color:#ff304f;
-    box-shadow:0 0 5px rgba(255,48,79,.3);
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
 
-}
+            border-color: #ff304f;
+            box-shadow: 0 0 5px rgba(255, 48, 79, .3);
 
+        }
 
 
-.form-group textarea{
 
-    resize:none;
+        .form-group textarea {
 
-}
+            resize: none;
 
+        }
 
 
 
 
-/* ================= Two Column Grid ================= */
 
+        /* ================= Two Column Grid ================= */
 
-.form-grid{
 
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:25px;
+        .form-grid {
 
-}
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
 
+        }
 
 
 
 
-/* ================= Image Upload ================= */
 
+        /* ================= Image Upload ================= */
 
-.image-upload{
 
-    border:2px dashed #ff304f;
-    padding:25px;
-    border-radius:12px;
-    text-align:center;
+        .image-upload {
 
-}
+            border: 2px dashed #ff304f;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
 
+        }
 
 
-.image-upload label{
 
-    cursor:pointer;
-    color:#ff304f;
-    font-size:18px;
-    font-weight:bold;
+        .image-upload label {
 
-}
+            cursor: pointer;
+            color: #ff304f;
+            font-size: 18px;
+            font-weight: bold;
 
+        }
 
 
-.image-upload i{
 
-    margin-right:8px;
+        .image-upload i {
 
-}
+            margin-right: 8px;
 
+        }
 
 
-#postImage{
 
-    display:none;
+        #postImage {
 
-}
+            display: none;
 
+        }
 
 
-.preview-image{
 
-    width:250px;
-    height:180px;
-    margin-top:20px;
-    border-radius:12px;
-    object-fit:cover;
-    display:none;
+        .preview-image {
 
-}
+            width: 250px;
+            height: 180px;
+            margin-top: 20px;
+            border-radius: 12px;
+            object-fit: cover;
+            display: none;
 
+        }
 
 
 
 
-/* ================= Checkbox ================= */
 
+        /* ================= Checkbox ================= */
 
-.checkbox-box{
 
-    background:#fff0f2;
-    padding:15px;
-    border-radius:10px;
-    margin:20px 0;
+        .checkbox-box {
 
-}
+            background: #fff0f2;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
 
+        }
 
 
-.checkbox-box input{
 
-    margin-right:10px;
+        .checkbox-box input {
 
-}
+            margin-right: 10px;
 
+        }
 
 
 
 
-/* ================= Buttons ================= */
 
+        /* ================= Buttons ================= */
 
-.button-group{
 
-    display:flex;
-    gap:15px;
-    margin-top:30px;
+        .button-group {
 
-}
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
 
+        }
 
 
-.button-group button{
 
-    padding:13px 25px;
-    border:none;
-    border-radius:10px;
-    font-size:16px;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    gap:8px;
-    transition:.3s;
+        .button-group button {
 
-}
+            padding: 13px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: .3s;
 
+        }
 
 
-#publishBtn{
 
-    background:#ff304f;
-    color:white;
+        #publishBtn {
 
-}
+            background: #ff304f;
+            color: white;
 
+        }
 
 
-#publishBtn:hover{
 
-    background:#d90429;
+        #publishBtn:hover {
 
-}
+            background: #d90429;
 
+        }
 
 
-#clearBtn{
 
-    background:#eee;
-    color:#333;
+        #clearBtn {
 
-}
+            background: #eee;
+            color: #333;
 
+        }
 
 
-#clearBtn:hover{
 
-    background:#ddd;
+        #clearBtn:hover {
 
-}
-/* ================= Preview Section ================= */
+            background: #ddd;
 
+        }
 
-.preview-section{
+        /* ================= Preview Section ================= */
 
-    margin-top:35px;
-    background:white;
-    padding:30px;
-    border-radius:18px;
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
 
-}
+        .preview-section {
 
+            margin-top: 35px;
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .08);
 
+        }
 
-.preview-section h2{
 
-    color:rgb(14,3,77);
-    margin-bottom:25px;
-    font-size:25px;
 
-}
+        .preview-section h2 {
 
+            color: rgb(14, 3, 77);
+            margin-bottom: 25px;
+            font-size: 25px;
 
+        }
 
 
 
-/* ================= Preview Card ================= */
 
 
-.post-preview-card{
+        /* ================= Preview Card ================= */
 
-    border:1px solid #eee;
-    border-radius:15px;
-    padding:25px;
-    background:#fafafa;
 
-}
+        .post-preview-card {
 
+            border: 1px solid #eee;
+            border-radius: 15px;
+            padding: 25px;
+            background: #fafafa;
 
+        }
 
-.preview-header{
 
-    display:flex;
-    align-items:center;
-    gap:15px;
-    margin-bottom:20px;
 
-}
+        .preview-header {
 
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
 
+        }
 
-.preview-header img{
 
-    width:55px;
-    height:55px;
-    border-radius:50%;
-    object-fit:cover;
 
-}
+        .preview-header img {
 
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            object-fit: cover;
 
+        }
 
-.preview-header h3{
 
-    color:rgb(14,3,77);
 
-}
+        .preview-header h3 {
 
+            color: rgb(14, 3, 77);
 
+        }
 
-.preview-header p{
 
-    color:#777;
-    font-size:14px;
 
-}
+        .preview-header p {
 
+            color: #777;
+            font-size: 14px;
 
+        }
 
 
 
-.preview-content h3{
 
-    font-size:22px;
-    margin-bottom:12px;
 
-}
+        .preview-content h3 {
 
+            font-size: 22px;
+            margin-bottom: 12px;
 
+        }
 
-.preview-content p{
 
-    color:#555;
-    line-height:1.6;
-    margin-bottom:20px;
 
-}
+        .preview-content p {
 
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
 
+        }
 
 
 
-/* ================= Preview Information ================= */
 
 
-.preview-info{
+        /* ================= Preview Information ================= */
 
-    display:flex;
-    gap:12px;
-    flex-wrap:wrap;
-    margin-bottom:20px;
 
-}
+        .preview-info {
 
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
 
+        }
 
-.preview-info span{
 
-    background:#ffe5ea;
-    color:#d90429;
-    padding:8px 15px;
-    border-radius:20px;
-    font-weight:bold;
-    font-size:14px;
 
-}
+        .preview-info span {
 
+            background: #ffe5ea;
+            color: #d90429;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
 
+        }
 
 
-.preview-post-image{
 
-    width:100%;
-    max-height:350px;
-    object-fit:cover;
-    border-radius:15px;
-    display:none;
 
-}
+        .preview-post-image {
 
+            width: 100%;
+            max-height: 350px;
+            object-fit: cover;
+            border-radius: 15px;
+            display: none;
 
+        }
 
 
 
-/* ================= Footer ================= */
 
 
-footer{
+        /* ================= Footer ================= */
 
-    margin-top:40px;
-    background:rgb(14,3,77);
-    color:white;
-    text-align:center;
-    padding:25px;
-    border-radius:18px 18px 0 0;
 
-}
+        footer {
 
+            margin-top: 40px;
+            background: rgb(14, 3, 77);
+            color: white;
+            text-align: center;
+            padding: 25px;
+            border-radius: 18px 18px 0 0;
 
+        }
 
-footer h3{
 
-    font-size:25px;
-    margin-bottom:10px;
 
-}
+        footer h3 {
 
+            font-size: 25px;
+            margin-bottom: 10px;
 
+        }
 
-footer p{
 
-    color:#ddd;
-    margin:8px;
 
-}
+        footer p {
 
+            color: #ddd;
+            margin: 8px;
 
+        }
 
 
 
-/* ================= Responsive ================= */
 
 
-@media(max-width:1100px){
+        /* ================= Responsive ================= */
 
 
-    .form-grid{
+        @media(max-width:1100px) {
 
-        grid-template-columns:1fr;
 
-    }
+            .form-grid {
 
+                grid-template-columns: 1fr;
 
-}
+            }
 
 
+        }
 
 
 
-@media(max-width:850px){
 
 
-    .sidebar{
+        @media(max-width:850px) {
 
-        transform:translateX(-100%);
-        transition:.3s;
-        z-index:1000;
 
-    }
+            .sidebar {
 
+                transform: translateX(-100%);
+                transition: .3s;
+                z-index: 1000;
 
+            }
 
-    .sidebar.active{
 
-        transform:translateX(0);
 
-    }
+            .sidebar.active {
 
+                transform: translateX(0);
 
+            }
 
-    .main-content{
 
-        margin-left:0;
-        width:100%;
-        padding:15px;
 
-    }
+            .main-content {
 
+                margin-left: 0;
+                width: 100%;
+                padding: 15px;
 
+            }
 
-    .post-container{
 
-        padding:20px;
 
-    }
+            .post-container {
 
+                padding: 20px;
 
+            }
 
-    .header-right i{
 
-        display:none;
 
-    }
+            .header-right i {
 
+                display: none;
 
-}
+            }
 
 
+        }
 
 
 
-@media(max-width:600px){
 
 
+        @media(max-width:600px) {
 
-    .header-left h1{
 
-        font-size:22px;
 
-    }
+            .header-left h1 {
 
+                font-size: 22px;
 
+            }
 
-    .profile-box{
 
-        flex-direction:column;
-        text-align:center;
 
-    }
+            .profile-box {
 
+                flex-direction: column;
+                text-align: center;
 
+            }
 
-    .button-group{
 
-        flex-direction:column;
 
-    }
+            .button-group {
 
+                flex-direction: column;
 
+            }
 
-    .button-group button{
 
-        justify-content:center;
 
-    }
+            .button-group button {
 
+                justify-content: center;
 
+            }
 
-    .preview-info{
 
-        flex-direction:column;
 
-    }
+            .preview-info {
 
+                flex-direction: column;
 
+            }
 
-}
-</style>
+
+
+        }
+    </style>
 
 </head>
 
@@ -963,9 +964,7 @@ footer p{
                     <i class="fa-regular fa-bell"></i>
                     <i class="fa-regular fa-envelope"></i>
 
-                    <img src="images/user.png"
-                        id="headerPhoto"
-                        alt="Profile">
+                    <img src="images/user.png" id="headerPhoto" alt="Profile">
 
                 </div>
 
@@ -993,9 +992,7 @@ footer p{
 
                     <div class="profile-box">
 
-                        <img src="images/user.png"
-                            id="userPhoto"
-                            alt="User">
+                        <img src="images/user.png" id="userPhoto" alt="User">
 
                         <div>
 
@@ -1082,9 +1079,7 @@ footer p{
 
                             </label>
 
-                            <input type="date"
-                                id="requiredDate"
-                                required>
+                            <input type="date" id="requiredDate" required>
 
                         </div>
 
@@ -1102,9 +1097,7 @@ footer p{
 
                             </label>
 
-                            <input type="text"
-                                id="hospital"
-                                placeholder="Hospital Name">
+                            <input type="text" id="hospital" placeholder="Hospital Name">
 
                         </div>
 
@@ -1116,9 +1109,7 @@ footer p{
 
                             </label>
 
-                            <input type="text"
-                                id="location"
-                                placeholder="City / District">
+                            <input type="text" id="location" placeholder="City / District">
 
                         </div>
 
@@ -1136,11 +1127,7 @@ footer p{
 
                             </label>
 
-                          <input
-                                type="tel"
-                                id="contact"
-                                 placeholder="01XXXXXXXXX"
-                                 required>
+                            <input type="tel" id="contact" placeholder="01XXXXXXXXX" required>
 
                         </div>
 
@@ -1163,7 +1150,7 @@ footer p{
                         </div>
 
                     </div>
-                                        <!-- ================= Description ================= -->
+                    <!-- ================= Description ================= -->
 
                     <div class="form-group">
 
@@ -1173,9 +1160,7 @@ footer p{
 
                         </label>
 
-                        <textarea
-                            id="description"
-                            rows="6"
+                        <textarea id="description" rows="6"
                             placeholder="Write details about your blood donation, request or story..."
                             required></textarea>
 
@@ -1201,18 +1186,11 @@ footer p{
 
                             </label>
 
-                            <input
-                                type="file"
-                                id="postImage"
-                                accept="image/*">
+                            <input type="file" id="postImage" accept="image/*">
 
                         </div>
 
-                        <img
-                            src=""
-                            id="imagePreview"
-                            class="preview-image"
-                            alt="Preview">
+                        <img src="" id="imagePreview" class="preview-image" alt="Preview">
 
                     </div>
 
@@ -1222,9 +1200,7 @@ footer p{
 
                         <label>
 
-                            <input
-                                type="checkbox"
-                                id="emergency">
+                            <input type="checkbox" id="emergency">
 
                             Mark as Emergency Request
 
@@ -1236,9 +1212,7 @@ footer p{
 
                     <div class="button-group">
 
-                        <button
-                            type="submit"
-                            id="publishBtn">
+                        <button type="submit" id="publishBtn">
 
                             <i class="fa-solid fa-paper-plane"></i>
 
@@ -1246,9 +1220,7 @@ footer p{
 
                         </button>
 
-                        <button
-                            type="reset"
-                            id="clearBtn">
+                        <button type="reset" id="clearBtn">
 
                             <i class="fa-solid fa-rotate-left"></i>
 
@@ -1276,10 +1248,7 @@ footer p{
 
                     <div class="preview-header">
 
-                        <img
-                            src="images/user.png"
-                            id="previewUserPhoto"
-                            alt="User">
+                        <img src="images/user.png" id="previewUserPhoto" alt="User">
 
                         <div>
 
@@ -1341,18 +1310,14 @@ footer p{
 
                         </div>
 
-                        <img
-                            src=""
-                            id="previewPostImage"
-                            class="preview-post-image"
-                            alt="Post Image">
+                        <img src="" id="previewPostImage" class="preview-post-image" alt="Post Image">
 
                     </div>
 
                 </div>
 
             </section>
-                        <!-- ================= Footer ================= -->
+            <!-- ================= Footer ================= -->
 
             <footer>
 
@@ -1376,381 +1341,377 @@ footer p{
 
         document.addEventListener("DOMContentLoaded", function () {
 
-    const postForm = document.getElementById("postForm");
-
-    const userName = document.getElementById("userName");
-    const userPhoto = document.getElementById("userPhoto");
-    const headerPhoto = document.getElementById("headerPhoto");
-
-    const postType = document.getElementById("postType");
-    const bloodGroup = document.getElementById("bloodGroup");
-    const requiredDate = document.getElementById("requiredDate");
-    const hospital = document.getElementById("hospital");
-    const location = document.getElementById("location");
-    const contact = document.getElementById("contact");
-    const urgency = document.getElementById("urgency");
-    const description = document.getElementById("description");
-    const emergency = document.getElementById("emergency");
-
-    const postImage = document.getElementById("postImage");
-    const imagePreview = document.getElementById("imagePreview");
-
-    const clearBtn = document.getElementById("clearBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    const previewUserPhoto = document.getElementById("previewUserPhoto");
-    const previewUserName = document.getElementById("previewUserName");
-    const previewDate = document.getElementById("previewDate");
-    const previewTitle = document.getElementById("previewTitle");
-    const previewDescription = document.getElementById("previewDescription");
-    const previewType = document.getElementById("previewType");
-    const previewBlood = document.getElementById("previewBlood");
-    const previewLocation = document.getElementById("previewLocation");
-    const previewUrgency = document.getElementById("previewUrgency");
-    const previewPostImage = document.getElementById("previewPostImage");
-
-    let currentUser =
-        JSON.parse(localStorage.getItem("currentUser")) || {};
-
-    let bloodPosts =
-        JSON.parse(localStorage.getItem("bloodPosts")) || [];
-
-    if (requiredDate) {
-
-        requiredDate.value =
-            new Date().toISOString().split("T")[0];
-
-    }
-
-    function loadUser() {
-
-        userName.textContent =
-            currentUser.name || "User Name";
-
-        previewUserName.textContent =
-            currentUser.name || "User Name";
-
-        const photo =
-            currentUser.photo || "images/user.png";
-
-        userPhoto.src = photo;
-        headerPhoto.src = photo;
-        previewUserPhoto.src = photo;
-
-    }
-
-    loadUser();
-
-    previewDate.textContent =
-        new Date().toLocaleString();
-
-    function updatePreview() {
-
-        previewType.textContent =
-            postType.value || "Blood Post";
-
-        previewBlood.textContent =
-            bloodGroup.value || "Blood Group";
-
-        previewLocation.textContent =
-            location.value || "Location";
-
-        previewUrgency.textContent =
-            urgency.value || "Normal";
-
-        previewDescription.textContent =
-            description.value || "Your description will appear here...";
-
-        if (postType.value === "Blood Available") {
-
-            previewTitle.textContent =
-                "Blood Available";
-
-        }
-
-        else if (postType.value === "Blood Request") {
-
-            previewTitle.textContent =
-                "Blood Request";
-
-        }
-
-        else if (postType.value === "Donation Story") {
-
-            previewTitle.textContent =
-                "Donation Story";
-
-        }
-
-        else {
-
-            previewTitle.textContent =
-                "Blood Post";
-
-        }
-
-    }
-
-    postType.addEventListener("change", updatePreview);
-
-    bloodGroup.addEventListener("change", updatePreview);
-
-    location.addEventListener("input", updatePreview);
-
-    urgency.addEventListener("change", updatePreview);
-
-    description.addEventListener("input", updatePreview);
-
-        postImage.addEventListener("change", function () {
-
-        const file = this.files[0];
-
-        if (!file) {
-
-            imagePreview.style.display = "none";
-            previewPostImage.style.display = "none";
-            return;
-
-        }
-
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-
-            imagePreview.src = e.target.result;
-            imagePreview.style.display = "block";
-
-            previewPostImage.src = e.target.result;
-            previewPostImage.style.display = "block";
-
-        };
-
-        reader.readAsDataURL(file);
-
-    });
-
-    clearBtn.addEventListener("click", function () {
-
-        setTimeout(function () {
-
-            imagePreview.style.display = "none";
-            previewPostImage.style.display = "none";
-
-            previewTitle.textContent = "Blood Post";
-            previewDescription.textContent = "Your description will appear here...";
-            previewType.textContent = "Blood Post";
-            previewBlood.textContent = "Blood Group";
-            previewLocation.textContent = "Location";
-            previewUrgency.textContent = "Normal";
-
-        }, 100);
-
-    });
-
-    postForm.addEventListener("submit", function (e) {
-
-        e.preventDefault();
-
-        if (postType.value === "") {
-
-            alert("Please select a post type.");
-            return;
-
-        }
-
-        if (bloodGroup.value === "") {
-
-            alert("Please select a blood group.");
-            return;
-
-        }
-
-        if (location.value.trim() === "") {
-
-            alert("Please enter a location.");
-            return;
-
-        }
-
-        if (contact.value.trim() === "") {
-
-            alert("Please enter a contact number.");
-            return;
-
-        }
-
-        if (description.value.trim() === "") {
-
-            alert("Please enter a description.");
-            return;
-
-        }
-
-       function savePost(imageData) {
-
-            const newPost = {
-
-                id: Date.now(),
-
-                userName: currentUser.name || "User",
-
-                userEmail: currentUser.email || "",
-
-                userPhoto: currentUser.photo || "images/user.png",
-
-                postType: postType.value,
-
-                bloodGroup: bloodGroup.value,
-
-                hospital: hospital.value,
-
-                location: location.value,
-
-                contact: contact.value,
-
-                urgency: urgency.value,
-
-                requiredDate: requiredDate.value,
-
-                description: description.value,
-
-                image: imageData,
-
-                emergency: emergency.checked,
-
-                createdAt: new Date().toLocaleString(),
-
-                likes: 0,
-
-                comments: []
-
-            };
-
-            bloodPosts.unshift(newPost);
-
-            localStorage.setItem(
-                "bloodPosts",
-                JSON.stringify(bloodPosts)
-            );
-
-            // If this post is a Blood Request, also add it to the
-            // Blood Requests page so it shows up there too.
-            if (postType.value === "Blood Request") {
-
-                const allRequests =
-                    JSON.parse(localStorage.getItem("bloodRequests")) || [];
-
-                const newRequest = {
-                    id: newPost.id,
-                    requesterEmail: currentUser.email || "",
-                    requesterName: currentUser.name || "Anonymous",
-                    patientName: currentUser.name || "Not specified",
-                    bloodGroup: bloodGroup.value,
-                    units: 1,
-                    hospital: hospital.value || "Not specified",
-                    location: location.value || "Not specified",
-                    phone: contact.value,
-                    urgency: urgency.value,
-                    date: requiredDate.value,
-                    notes: description.value,
-                    status: "Pending"
-                };
-
-                allRequests.push(newRequest);
-
-                localStorage.setItem(
-                    "bloodRequests",
-                    JSON.stringify(allRequests)
-                );
+            const postForm = document.getElementById("postForm");
+
+            const userName = document.getElementById("userName");
+            const userPhoto = document.getElementById("userPhoto");
+            const headerPhoto = document.getElementById("headerPhoto");
+
+            const postType = document.getElementById("postType");
+            const bloodGroup = document.getElementById("bloodGroup");
+            const requiredDate = document.getElementById("requiredDate");
+            const hospital = document.getElementById("hospital");
+            const location = document.getElementById("location");
+            const contact = document.getElementById("contact");
+            const urgency = document.getElementById("urgency");
+            const description = document.getElementById("description");
+            const emergency = document.getElementById("emergency");
+
+            const postImage = document.getElementById("postImage");
+            const imagePreview = document.getElementById("imagePreview");
+
+            const clearBtn = document.getElementById("clearBtn");
+            const logoutBtn = document.getElementById("logoutBtn");
+
+            const previewUserPhoto = document.getElementById("previewUserPhoto");
+            const previewUserName = document.getElementById("previewUserName");
+            const previewDate = document.getElementById("previewDate");
+            const previewTitle = document.getElementById("previewTitle");
+            const previewDescription = document.getElementById("previewDescription");
+            const previewType = document.getElementById("previewType");
+            const previewBlood = document.getElementById("previewBlood");
+            const previewLocation = document.getElementById("previewLocation");
+            const previewUrgency = document.getElementById("previewUrgency");
+            const previewPostImage = document.getElementById("previewPostImage");
+
+            let currentUser =
+                JSON.parse(localStorage.getItem("currentUser")) || {};
+
+            let bloodPosts =
+                JSON.parse(localStorage.getItem("bloodPosts")) || [];
+
+            if (requiredDate) {
+
+                requiredDate.value =
+                    new Date().toISOString().split("T")[0];
 
             }
 
-            alert("Post published successfully!");
+            function loadUser() {
 
-            window.location.href = "profile.html";
+                userName.textContent =
+                    currentUser.name || "User Name";
 
-        }
+                previewUserName.textContent =
+                    currentUser.name || "User Name";
 
-        const file = postImage.files[0];
+                const photo =
+                    currentUser.photo || "images/user.png";
 
-        if (file) {
+                userPhoto.src = photo;
+                headerPhoto.src = photo;
+                previewUserPhoto.src = photo;
 
-            const reader = new FileReader();
+            }
 
-            reader.onload = function (e) {
+            loadUser();
 
-                savePost(e.target.result);
+            previewDate.textContent =
+                new Date().toLocaleString();
 
-            };
+            function updatePreview() {
 
-            reader.readAsDataURL(file);
+                previewType.textContent =
+                    postType.value || "Blood Post";
 
-        }
+                previewBlood.textContent =
+                    bloodGroup.value || "Blood Group";
 
-        else {
+                previewLocation.textContent =
+                    location.value || "Location";
 
-            savePost("");
+                previewUrgency.textContent =
+                    urgency.value || "Normal";
 
-        }
+                previewDescription.textContent =
+                    description.value || "Your description will appear here...";
 
-    });
-        logoutBtn.addEventListener("click", function () {
+                if (postType.value === "Blood Available") {
 
-        if (confirm("Are you sure you want to logout?")) {
+                    previewTitle.textContent =
+                        "Blood Available";
 
-            localStorage.removeItem("currentUser");
-            window.location.href = "index.html";
+                }
 
-        }
+                else if (postType.value === "Blood Request") {
 
-    });
+                    previewTitle.textContent =
+                        "Blood Request";
 
-    function refreshCurrentUser() {
+                }
 
-        currentUser =
-            JSON.parse(localStorage.getItem("currentUser")) || {};
+                else if (postType.value === "Donation Story") {
 
-        loadUser();
+                    previewTitle.textContent =
+                        "Donation Story";
 
-    }
+                }
 
-    window.addEventListener("storage", function () {
+                else {
 
-        bloodPosts =
-            JSON.parse(localStorage.getItem("bloodPosts")) || [];
+                    previewTitle.textContent =
+                        "Blood Post";
 
-        refreshCurrentUser();
+                }
 
-    });
+            }
 
-    document.addEventListener("visibilitychange", function () {
+            postType.addEventListener("change", updatePreview);
 
-        if (document.visibilityState === "visible") {
+            bloodGroup.addEventListener("change", updatePreview);
 
-            bloodPosts =
-                JSON.parse(localStorage.getItem("bloodPosts")) || [];
+            location.addEventListener("input", updatePreview);
 
-            refreshCurrentUser();
+            urgency.addEventListener("change", updatePreview);
 
-        }
+            description.addEventListener("input", updatePreview);
 
-    });
+            postImage.addEventListener("change", function () {
 
-    setInterval(function () {
+                const file = this.files[0];
 
-        bloodPosts =
-            JSON.parse(localStorage.getItem("bloodPosts")) || [];
+                if (!file) {
 
-    }, 3000);
+                    imagePreview.style.display = "none";
+                    previewPostImage.style.display = "none";
+                    return;
 
-    updatePreview();
+                }
 
-});
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = "block";
+
+                    previewPostImage.src = e.target.result;
+                    previewPostImage.style.display = "block";
+
+                };
+
+                reader.readAsDataURL(file);
+
+            });
+
+            clearBtn.addEventListener("click", function () {
+
+                setTimeout(function () {
+
+                    imagePreview.style.display = "none";
+                    previewPostImage.style.display = "none";
+
+                    previewTitle.textContent = "Blood Post";
+                    previewDescription.textContent = "Your description will appear here...";
+                    previewType.textContent = "Blood Post";
+                    previewBlood.textContent = "Blood Group";
+                    previewLocation.textContent = "Location";
+                    previewUrgency.textContent = "Normal";
+
+                }, 100);
+
+            });
+
+            postForm.addEventListener("submit", function (e) {
+
+                e.preventDefault();
+
+                if (postType.value === "") {
+
+                    alert("Please select a post type.");
+                    return;
+
+                }
+
+                if (bloodGroup.value === "") {
+
+                    alert("Please select a blood group.");
+                    return;
+
+                }
+
+                if (location.value.trim() === "") {
+
+                    alert("Please enter a location.");
+                    return;
+
+                }
+
+                if (contact.value.trim() === "") {
+
+                    alert("Please enter a contact number.");
+                    return;
+
+                }
+
+                if (description.value.trim() === "") {
+
+                    alert("Please enter a description.");
+                    return;
+
+                }
+
+                function savePost(imageData) {
+
+                    const newPost = {
+
+                        id: Date.now(),
+
+                        userName: currentUser.name || "User",
+
+                        userEmail: currentUser.email || "",
+
+                        userPhoto: currentUser.photo || "images/user.png",
+
+                        postType: postType.value,
+
+                        bloodGroup: bloodGroup.value,
+
+                        hospital: hospital.value,
+
+                        location: location.value,
+
+                        contact: contact.value,
+
+                        urgency: urgency.value,
+
+                        requiredDate: requiredDate.value,
+
+                        description: description.value,
+
+                        image: imageData,
+
+                        emergency: emergency.checked,
+
+                        createdAt: new Date().toLocaleString(),
+
+                        likes: 0,
+
+                        comments: []
+
+                    };
+
+                    bloodPosts.unshift(newPost);
+
+                    localStorage.setItem(
+                        "bloodPosts",
+                        JSON.stringify(bloodPosts)
+                    );
+
+                    // If this post is a Blood Request, also add it to the
+                    // Blood Requests page so it shows up there too.
+                    if (postType.value === "Blood Request" || emergency.checked) {
+                        const allRequests =
+                            JSON.parse(localStorage.getItem("bloodRequests")) || [];
+
+                        const newRequest = {
+                            id: newPost.id,
+                            requesterEmail: currentUser.email || "",
+                            requesterName: currentUser.name || "Anonymous",
+                            patientName: currentUser.name || "Not specified",
+                            bloodGroup: bloodGroup.value,
+                            units: 1,
+                            hospital: hospital.value || "Not specified",
+                            location: location.value || "Not specified",
+                            phone: contact.value,
+                            urgency: urgency.value,
+                            date: requiredDate.value,
+                            notes: description.value,
+                            status: "Pending"
+                        };
+
+                        allRequests.push(newRequest);
+
+                        localStorage.setItem(
+                            "bloodRequests",
+                            JSON.stringify(allRequests)
+                        );
+
+                    }
+
+                    alert("Post published successfully!");
+
+                    window.location.href = "profile.html";
+
+                }
+
+                const file = postImage.files[0];
+
+                if (file) {
+
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+
+                        savePost(e.target.result);
+
+                    };
+
+                    reader.readAsDataURL(file);
+
+                }
+
+                else {
+
+                    savePost("");
+
+                }
+
+            });
+            logoutBtn.addEventListener("click", function () {
+
+                if (confirm("Are you sure you want to logout?")) {
+
+                    localStorage.removeItem("currentUser");
+                    window.location.href = "index.html";
+
+                }
+
+            });
+
+            function refreshCurrentUser() {
+
+                currentUser =
+                    JSON.parse(localStorage.getItem("currentUser")) || {};
+
+                loadUser();
+
+            }
+
+            window.addEventListener("storage", function () {
+
+                bloodPosts =
+                    JSON.parse(localStorage.getItem("bloodPosts")) || [];
+
+                refreshCurrentUser();
+
+            });
+
+            document.addEventListener("visibilitychange", function () {
+
+                if (document.visibilityState === "visible") {
+
+                    bloodPosts =
+                        JSON.parse(localStorage.getItem("bloodPosts")) || [];
+
+                    refreshCurrentUser();
+
+                }
+
+            });
+
+            setInterval(function () {
+
+                bloodPosts =
+                    JSON.parse(localStorage.getItem("bloodPosts")) || [];
+
+            }, 3000);
+
+            updatePreview();
+
+        });
     </script>
 
 </body>
 
 </html>
-
-
-

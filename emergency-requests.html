@@ -5,793 +5,802 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BloodConnect - Emergency Requests</title>
-    <link rel="stylesheet" href="emergency-requests.css">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-        <style>
-            *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
-}
-
-body{
-    background:#f5f6fa;
-    color:#333;
-}
-
-.container{
-    display:flex;
-    min-height:100vh;
-}
-
-/* ==========================
-   Sidebar
-========================== */
-
-aside{
-    width:270px;
-    background:#fff;
-    border-right:1px solid #e5e5e5;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-    position:fixed;
-    left:0;
-    top:0;
-    height:100vh;
-    padding:25px 20px;
-}
-
-.logo{
-    margin-bottom:35px;
-}
-
-.logo h2{
-    color:#d62828;
-    font-size:28px;
-    margin-bottom:5px;
-}
-
-.logo p{
-    color:#777;
-    font-size:14px;
-}
-
-aside ul{
-    list-style:none;
-}
-
-aside ul li{
-    margin:8px 0;
-}
-
-aside ul li a{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:14px 18px;
-    text-decoration:none;
-    color:#444;
-    border-radius:8px;
-    transition:.3s;
-    font-size:15px;
-}
-
-aside ul li a:hover{
-    background:#ffe7e7;
-    color:#d62828;
-}
-
-aside ul li.active a{
-    background:#d62828;
-    color:#fff;
-}
-
-#logoutBtn{
-    width:100%;
-    padding:14px;
-    border:none;
-    border-radius:8px;
-    background:#d62828;
-    color:#fff;
-    cursor:pointer;
-    font-size:15px;
-    transition:.3s;
-}
-
-#logoutBtn:hover{
-    background:#b91d1d;
-}
-
-/* ==========================
-   Main
-========================== */
-
-main{
-    margin-left:270px;
-    width:calc(100% - 270px);
-    padding:30px;
-}
-
-/* ==========================
-   Header
-========================== */
-
-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:30px;
-}
-
-.header-left{
-    display:flex;
-    align-items:center;
-    gap:20px;
-}
-
-#menuBtn{
-    display:none;
-    border:none;
-    background:none;
-    font-size:24px;
-    cursor:pointer;
-}
-
-.header-left h1{
-    font-size:30px;
-}
-
-.live{
-    background:#ff3b30;
-    color:#fff;
-    padding:6px 14px;
-    border-radius:20px;
-    font-size:13px;
-    font-weight:bold;
-}
-
-.header-right{
-    display:flex;
-    align-items:center;
-    gap:25px;
-}
-
-.header-right i{
-    font-size:22px;
-    cursor:pointer;
-}
-
-.profile{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.profile img{
-    width:50px;
-    height:50px;
-    border-radius:50%;
-    object-fit:cover;
-}
-
-.profile h4{
-    margin-bottom:4px;
-}
-
-.profile p{
-    color:#777;
-    font-size:14px;
-}
-
-/* ==========================
-   Dashboard Layout
-========================== */
-
-.dashboard{
-    display:grid;
-    grid-template-columns:2fr 1fr;
-    gap:25px;
-}
-
-/* ==========================
-   Alert Banner
-========================== */
-
-.alert-banner{
-    background:#ffefef;
-    border-left:6px solid #d62828;
-    padding:25px;
-    border-radius:12px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:30px;
-}
-
-.alert-banner>div{
-    display:flex;
-    align-items:center;
-    gap:18px;
-}
-
-.alert-banner i{
-    font-size:45px;
-    color:#d62828;
-}
-
-.alert-banner h2{
-    color:#d62828;
-    margin-bottom:6px;
-}
-
-.alert-banner p{
-    color:#666;
-}
-
-#viewAllBtn{
-    padding:12px 22px;
-    border:none;
-    border-radius:8px;
-    background:#d62828;
-    color:#fff;
-    cursor:pointer;
-    transition:.3s;
-}
-
-#viewAllBtn:hover{
-    background:#b91d1d;
-}
-
-/* ==========================
-   Section Title
-========================== */
-
-.section-title{
-    margin-bottom:20px;
-    color:#222;
-}
-
-/* ==========================
-   Emergency Request Cards
-========================== */
-
-.request-card{
-    background:#fff;
-    border-radius:14px;
-    padding:25px;
-    display:grid;
-    grid-template-columns:120px 2fr 1.2fr 1fr 1.2fr;
-    gap:20px;
-    align-items:center;
-    margin-bottom:20px;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
-    transition:.3s;
-}
-
-.request-card:hover{
-    transform:translateY(-4px);
-}
-
-.priority{
-    text-align:center;
-    padding:10px;
-    border-radius:25px;
-    color:#fff;
-    font-weight:bold;
-}
-
-.urgent .priority{
-    background:#e53935;
-}
-
-.high .priority{
-    background:#fb8c00;
-}
-
-.medium .priority{
-    background:#43a047;
-}
-
-.request-info h3{
-    color:#d62828;
-    margin-bottom:10px;
-}
-
-.request-info p{
-    margin-bottom:12px;
-}
-
-.tags{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-}
-
-.tags span{
-    background:#f3f3f3;
-    padding:6px 12px;
-    border-radius:20px;
-    font-size:13px;
-}
-
-.hospital p,
-.time p{
-    font-weight:bold;
-    margin-bottom:8px;
-}
-
-.hospital span,
-.time span{
-    color:#777;
-    font-size:14px;
-}
-
-.action{
-    text-align:center;
-}
-
-.respondBtn{
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:8px;
-    background:#d62828;
-    color:#fff;
-    cursor:pointer;
-    margin-bottom:12px;
-    transition:.3s;
-}
-
-.respondBtn:hover{
-    background:#b91d1d;
-}
-
-.action p{
-    font-weight:bold;
-    margin-bottom:5px;
-}
-
-.action span{
-    color:#777;
-    font-size:13px;
-}
-
-/* ==========================
-   View All Button
-========================== */
-
-.view-all{
-    text-align:center;
-    margin:30px 0;
-}
-
-.view-all button{
-    padding:14px 30px;
-    border:none;
-    border-radius:8px;
-    background:#d62828;
-    color:#fff;
-    font-size:15px;
-    cursor:pointer;
-    transition:.3s;
-}
-
-.view-all button:hover{
-    background:#b91d1d;
-}
-
-/* ==========================
-   Recent Responses
-========================== */
-
-.responses{
-    background:#fff;
-    padding:25px;
-    border-radius:14px;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
-}
-
-.responses h2{
-    margin-bottom:20px;
-    color:#d62828;
-}
-
-.response{
-    display:grid;
-    grid-template-columns:60px 1fr auto auto auto;
-    gap:15px;
-    align-items:center;
-    padding:18px 0;
-    border-bottom:1px solid #eee;
-}
-
-.response:last-child{
-    border-bottom:none;
-}
-
-.response img{
-    width:55px;
-    height:55px;
-    border-radius:50%;
-    object-fit:cover;
-}
-
-.response-info h4{
-    margin-bottom:6px;
-}
-
-.response-info p{
-    color:#666;
-}
-
-.accepted{
-    background:#27ae60;
-    color:#fff;
-    padding:6px 12px;
-    border-radius:20px;
-    font-size:13px;
-}
-
-.response small{
-    color:#888;
-}
-
-.response button{
-    padding:10px 18px;
-    border:none;
-    border-radius:6px;
-    background:#d62828;
-    color:#fff;
-    cursor:pointer;
-    transition:.3s;
-}
-
-.response button:hover{
-    background:#b91d1d;
-}
-
-/* ==========================
-   Right Panel
-========================== */
-
-.right-panel{
-    display:flex;
-    flex-direction:column;
-    gap:25px;
-}
-
-/* ==========================
-   Cards
-========================== */
-
-.map-card,
-.notification-card,
-.summary{
-    background:#fff;
-    padding:25px;
-    border-radius:14px;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
-}
-
-.card-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:20px;
-}
-
-.card-header h3{
-    color:#d62828;
-}
-
-.card-header a{
-    text-decoration:none;
-    color:#d62828;
-    font-size:14px;
-}
-
-.card-header button{
-    padding:10px 18px;
-    border:none;
-    border-radius:6px;
-    background:#d62828;
-    color:#fff;
-    cursor:pointer;
-}
-
-/* ==========================
-   Live Map
-========================== */
-
-#map{
-    width:100%;
-    height:260px;
-    overflow:hidden;
-    border-radius:10px;
-    margin-bottom:20px;
-}
-
-#map iframe{
-    width:100%;
-    height:100%;
-    border:none;
-}
-
-.location-info p{
-    margin:10px 0;
-    color:#555;
-}
-
-#status{
-    color:#d62828;
-    font-weight:bold;
-}
-
-/* ==========================
-   Notifications
-========================== */
-
-.notification-card ul{
-    list-style:none;
-}
-
-.notification-card li{
-    padding:14px 0;
-    border-bottom:1px solid #eee;
-    line-height:1.6;
-}
-
-.notification-card li:last-child{
-    border-bottom:none;
-}
-
-.notification-card span{
-    display:inline-block;
-    background:#ffe5e5;
-    color:#d62828;
-    padding:4px 10px;
-    border-radius:20px;
-    margin-right:10px;
-    font-size:12px;
-    font-weight:bold;
-}
-
-/* ==========================
-   Summary
-========================== */
-
-.summary h3{
-    color:#d62828;
-    margin-bottom:20px;
-}
-
-.summary-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:18px;
-}
-
-.summary-grid div{
-    background:#fafafa;
-    text-align:center;
-    padding:22px;
-    border-radius:10px;
-    transition:.3s;
-}
-
-.summary-grid div:hover{
-    background:#ffeaea;
-}
-
-.summary-grid h2{
-    color:#d62828;
-    font-size:34px;
-    margin-bottom:8px;
-}
-
-.summary-grid p{
-    color:#666;
-    font-size:14px;
-}
-
-/* ==========================
-   Create Emergency Button
-========================== */
-
-#createEmergency{
-    padding:16px;
-    border:none;
-    border-radius:10px;
-    background:#d62828;
-    color:#fff;
-    font-size:16px;
-    cursor:pointer;
-    transition:.3s;
-}
-
-#createEmergency:hover{
-    background:#b91d1d;
-}
-
-/* ==========================
-   Responsive
-========================== */
-
-@media(max-width:1200px){
-
-    .dashboard{
-        grid-template-columns:1fr;
-    }
-
-    .request-card{
-        grid-template-columns:1fr;
-        text-align:center;
-    }
-
-    .response{
-        grid-template-columns:1fr;
-        text-align:center;
-    }
-
-}
-
-@media(max-width:900px){
-
-    aside{
-        position:fixed;
-        left:-270px;
-        transition:.3s;
-        z-index:1000;
-    }
-
-    aside.show{
-        left:0;
-    }
-
-    main{
-        width:100%;
-        margin-left:0;
-    }
-
-    #menuBtn{
-        display:block;
-    }
-
-    header{
-        flex-direction:column;
-        align-items:flex-start;
-        gap:20px;
-    }
-
-}
-
-@media(max-width:600px){
-
-    .alert-banner{
-        flex-direction:column;
-        gap:20px;
-        text-align:center;
-    }
-
-    .summary-grid{
-        grid-template-columns:1fr;
-    }
-
-    .profile{
-        display:none;
-    }
-
-    .header-left h1{
-        font-size:22px;
-    }
-
-    .card-header{
-        flex-direction:column;
-        gap:15px;
-    }
-
-}
-        </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <style>
+        :root{
+            --red:#c1121f;
+            --red-dark:#9a0d18;
+            --red-light:#fdecec;
+            --ink:#1a1c22;
+            --muted:#6b7280;
+            --border:#eceef1;
+            --bg:#f6f7fb;
+            --surface:#ffffff;
+            --urgent:#e5383b;
+            --high:#f08c00;
+            --medium:#2f9e44;
+            --shadow:0 1px 2px rgba(16,24,40,.04),0 4px 16px rgba(16,24,40,.06);
+            --radius:16px;
+        }
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Inter',Arial,Helvetica,sans-serif;
+        }
+
+        body{
+            background:var(--bg);
+            color:var(--ink);
+        }
+
+        .container{
+            display:flex;
+            min-height:100vh;
+        }
+
+        aside.sidebar{
+            width:264px;
+            background:var(--surface);
+            border-right:1px solid var(--border);
+            display:flex;
+            flex-direction:column;
+            justify-content:space-between;
+            position:fixed;
+            left:0;
+            top:0;
+            height:100vh;
+            padding:28px 18px;
+            z-index:1000;
+        }
+
+        .logo{
+            margin-bottom:30px;
+            padding:0 8px;
+        }
+
+        .logo h2{
+            color:var(--red);
+            font-size:22px;
+            font-weight:800;
+            display:flex;
+            align-items:center;
+            gap:10px;
+            letter-spacing:-.3px;
+        }
+
+        .logo p{
+            color:var(--muted);
+            font-size:13px;
+            margin-top:4px;
+        }
+
+        aside ul{
+            list-style:none;
+        }
+
+        aside ul li{
+            margin:3px 0;
+        }
+
+        aside ul li a{
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:12px 16px;
+            text-decoration:none;
+            color:#4b5160;
+            border-radius:10px;
+            transition:.2s;
+            font-size:14.5px;
+            font-weight:500;
+        }
+
+        aside ul li a i{
+            width:18px;
+            text-align:center;
+            color:#9aa0ab;
+            transition:.2s;
+        }
+
+        aside ul li a:hover{
+            background:var(--red-light);
+            color:var(--red);
+        }
+
+        aside ul li a:hover i{
+            color:var(--red);
+        }
+
+        aside ul li.active a{
+            background:var(--red);
+            color:#fff;
+            box-shadow:0 4px 12px rgba(193,18,31,.28);
+        }
+
+        aside ul li.active a i{
+            color:#fff;
+        }
+
+        #logoutBtn{
+            width:100%;
+            padding:13px;
+            border:none;
+            border-radius:10px;
+            background:var(--ink);
+            color:#fff;
+            cursor:pointer;
+            font-size:14.5px;
+            font-weight:600;
+            transition:.2s;
+        }
+
+        #logoutBtn:hover{
+            background:#000;
+        }
+
+        main{
+            margin-left:264px;
+            width:calc(100% - 264px);
+            padding:28px 34px 50px;
+        }
+
+        header{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:26px;
+        }
+
+        .header-left{
+            display:flex;
+            align-items:center;
+            gap:16px;
+        }
+
+        #menuBtn{
+            display:none;
+            border:none;
+            background:none;
+            font-size:22px;
+            cursor:pointer;
+            color:var(--ink);
+        }
+
+        .header-left h1{
+            font-size:24px;
+            font-weight:700;
+            letter-spacing:-.3px;
+        }
+
+        .live{
+            background:var(--urgent);
+            color:#fff;
+            padding:5px 13px;
+            border-radius:20px;
+            font-size:11.5px;
+            font-weight:700;
+            letter-spacing:.5px;
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
+        }
+
+        .live::before{
+            content:"";
+            width:6px;
+            height:6px;
+            border-radius:50%;
+            background:#fff;
+            animation:pulse 1.4s infinite;
+        }
+
+        @keyframes pulse{
+            0%,100%{opacity:1;}
+            50%{opacity:.3;}
+        }
+
+        .header-right{
+            display:flex;
+            align-items:center;
+            gap:22px;
+        }
+
+        .header-right i{
+            font-size:19px;
+            cursor:pointer;
+            color:#6b7280;
+        }
+
+        .profile{
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+
+        .profile img{
+            width:42px;
+            height:42px;
+            border-radius:50%;
+            object-fit:cover;
+            border:2px solid var(--border);
+        }
+
+        .profile h4{
+            font-size:14px;
+            font-weight:600;
+        }
+
+        .profile p{
+            color:var(--muted);
+            font-size:12.5px;
+        }
+
+        .dashboard{
+            display:grid;
+            grid-template-columns:2fr 1fr;
+            gap:24px;
+        }
+
+        .alert-banner{
+            background:linear-gradient(135deg,#fff5f5,var(--red-light));
+            border:1px solid #f6c9cb;
+            padding:24px 26px;
+            border-radius:var(--radius);
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:26px;
+        }
+
+        .alert-banner>div{
+            display:flex;
+            align-items:center;
+            gap:18px;
+        }
+
+        .alert-banner i{
+            font-size:38px;
+            color:var(--red);
+        }
+
+        .alert-banner h2{
+            color:var(--red-dark);
+            margin-bottom:5px;
+            font-size:18.5px;
+            font-weight:700;
+        }
+
+        .alert-banner p{
+            color:#7a4c4f;
+            font-size:14px;
+        }
+
+        #viewAllBtn{
+            padding:12px 20px;
+            border:none;
+            border-radius:10px;
+            background:var(--red);
+            color:#fff;
+            cursor:pointer;
+            transition:.2s;
+            font-weight:600;
+            font-size:14px;
+            display:flex;
+            align-items:center;
+            gap:8px;
+            white-space:nowrap;
+        }
+
+        #viewAllBtn:hover{
+            background:var(--red-dark);
+        }
+
+        .section-title{
+            margin-bottom:16px;
+            color:var(--ink);
+            font-size:16.5px;
+            font-weight:700;
+        }
+
+        .request-card{
+            background:var(--surface);
+            border:1px solid var(--border);
+            border-radius:var(--radius);
+            padding:22px;
+            display:grid;
+            grid-template-columns:104px 2fr 1.2fr 1fr 1.2fr;
+            gap:18px;
+            align-items:center;
+            margin-bottom:16px;
+            box-shadow:var(--shadow);
+            transition:.2s;
+        }
+
+        .request-card:hover{
+            transform:translateY(-3px);
+            box-shadow:0 8px 24px rgba(16,24,40,.08);
+        }
+
+        .priority{
+            text-align:center;
+            padding:9px 6px;
+            border-radius:20px;
+            color:#fff;
+            font-weight:700;
+            font-size:12px;
+            letter-spacing:.4px;
+        }
+
+        .urgent .priority{ background:var(--urgent); }
+        .high .priority{ background:var(--high); }
+        .medium .priority{ background:var(--medium); }
+
+        .request-info h3{
+            color:var(--ink);
+            margin-bottom:8px;
+            font-size:16px;
+            font-weight:700;
+        }
+
+        .request-info p{
+            margin-bottom:12px;
+            color:var(--muted);
+            font-size:14px;
+        }
+
+        .tags{
+            display:flex;
+            flex-wrap:wrap;
+            gap:6px;
+        }
+
+        .tags span{
+            background:#f2f3f6;
+            color:#4b5160;
+            padding:5px 11px;
+            border-radius:20px;
+            font-size:12.5px;
+            font-weight:500;
+        }
+
+        .hospital p,
+        .time p{
+            font-weight:600;
+            margin-bottom:6px;
+            font-size:13.5px;
+            color:var(--ink);
+        }
+
+        .hospital span,
+        .time span{
+            color:var(--muted);
+            font-size:12.5px;
+        }
+
+        .action{
+            text-align:center;
+        }
+
+        .respondBtn{
+            width:100%;
+            padding:11px;
+            border:none;
+            border-radius:9px;
+            background:var(--red);
+            color:#fff;
+            cursor:pointer;
+            margin-bottom:10px;
+            transition:.2s;
+            font-weight:600;
+            font-size:13.5px;
+        }
+
+        .respondBtn:hover{
+            background:var(--red-dark);
+        }
+
+        .respondBtn:disabled{
+            cursor:default;
+        }
+
+        .action p{
+            font-weight:600;
+            margin-bottom:4px;
+            font-size:13px;
+        }
+
+        .action span{
+            color:var(--muted);
+            font-size:12px;
+        }
+
+        .empty-state{
+            background:var(--surface);
+            border:1px dashed var(--border);
+            border-radius:var(--radius);
+            padding:40px 20px;
+            text-align:center;
+            color:var(--muted);
+            font-size:14px;
+            margin-bottom:16px;
+        }
+
+        .view-all{
+            text-align:center;
+            margin:26px 0;
+        }
+
+        .view-all button{
+            padding:13px 28px;
+            border:1px solid var(--border);
+            border-radius:10px;
+            background:var(--surface);
+            color:var(--ink);
+            font-size:14px;
+            font-weight:600;
+            cursor:pointer;
+            transition:.2s;
+        }
+
+        .view-all button:hover{
+            border-color:var(--red);
+            color:var(--red);
+        }
+
+        .responses{
+            background:var(--surface);
+            padding:24px;
+            border-radius:var(--radius);
+            box-shadow:var(--shadow);
+            border:1px solid var(--border);
+        }
+
+        .responses h2{
+            margin-bottom:16px;
+            color:var(--ink);
+            font-size:17px;
+            font-weight:700;
+        }
+
+        .response{
+            display:grid;
+            grid-template-columns:52px 1fr auto auto auto;
+            gap:14px;
+            align-items:center;
+            padding:16px 0;
+            border-bottom:1px solid var(--border);
+        }
+
+        .response:last-child{
+            border-bottom:none;
+        }
+
+        .response img{
+            width:48px;
+            height:48px;
+            border-radius:50%;
+            object-fit:cover;
+        }
+
+        .response-info h4{
+            margin-bottom:4px;
+            font-size:14.5px;
+            font-weight:600;
+        }
+
+        .response-info p{
+            color:var(--muted);
+            font-size:13.5px;
+        }
+
+        .badge-type{
+            padding:5px 12px;
+            border-radius:20px;
+            font-size:12px;
+            font-weight:700;
+            white-space:nowrap;
+        }
+
+        .badge-emergency{
+            background:var(--red-light);
+            color:var(--red);
+        }
+
+        .badge-normal{
+            background:#e6f7ec;
+            color:var(--medium);
+        }
+
+        .response small{
+            color:#9aa0ab;
+            font-size:12.5px;
+        }
+
+        .response button{
+            padding:9px 16px;
+            border:1px solid var(--border);
+            border-radius:8px;
+            background:var(--surface);
+            color:var(--ink);
+            cursor:pointer;
+            transition:.2s;
+            font-size:13px;
+            font-weight:500;
+        }
+
+        .response button:hover{
+            border-color:var(--red);
+            color:var(--red);
+        }
+
+        .right-panel{
+            display:flex;
+            flex-direction:column;
+            gap:24px;
+        }
+
+        .map-card,
+        .notification-card,
+        .summary{
+            background:var(--surface);
+            padding:24px;
+            border-radius:var(--radius);
+            box-shadow:var(--shadow);
+            border:1px solid var(--border);
+        }
+
+        .card-header{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:18px;
+        }
+
+        .card-header h3{
+            color:var(--ink);
+            font-size:16px;
+            font-weight:700;
+        }
+
+        .card-header a{
+            text-decoration:none;
+            color:var(--red);
+            font-size:13.5px;
+            font-weight:600;
+        }
+
+        .card-header button{
+            padding:9px 15px;
+            border:1px solid var(--border);
+            border-radius:8px;
+            background:var(--surface);
+            color:var(--ink);
+            cursor:pointer;
+            font-size:13px;
+            font-weight:500;
+            transition:.2s;
+        }
+
+        .card-header button:hover{
+            border-color:var(--red);
+            color:var(--red);
+        }
+
+        #map{
+            width:100%;
+            height:220px;
+            overflow:hidden;
+            border-radius:12px;
+            margin-bottom:18px;
+            border:1px solid var(--border);
+        }
+
+        #map iframe{
+            width:100%;
+            height:100%;
+            border:none;
+        }
+
+        .location-info p{
+            margin:8px 0;
+            color:#4b5160;
+            font-size:13.5px;
+        }
+
+        #status{
+            color:var(--red);
+            font-weight:600;
+        }
+
+        .notification-card ul{
+            list-style:none;
+        }
+
+        .notification-card li{
+            padding:13px 0;
+            border-bottom:1px solid var(--border);
+            line-height:1.6;
+            font-size:13.5px;
+            color:#4b5160;
+        }
+
+        .notification-card li:last-child{
+            border-bottom:none;
+        }
+
+        .notification-card span{
+            display:inline-block;
+            background:var(--red-light);
+            color:var(--red);
+            padding:3px 9px;
+            border-radius:20px;
+            margin-right:8px;
+            font-size:11.5px;
+            font-weight:700;
+        }
+
+        .summary h3{
+            color:var(--ink);
+            margin-bottom:18px;
+            font-size:16px;
+            font-weight:700;
+        }
+
+        .summary-grid{
+            display:grid;
+            grid-template-columns:repeat(2,1fr);
+            gap:14px;
+        }
+
+        .summary-grid div{
+            background:#fafbfc;
+            text-align:center;
+            padding:20px 10px;
+            border-radius:12px;
+            transition:.2s;
+            border:1px solid var(--border);
+        }
+
+        .summary-grid div:hover{
+            background:var(--red-light);
+            border-color:#f6c9cb;
+        }
+
+        .summary-grid h2{
+            color:var(--red);
+            font-size:28px;
+            margin-bottom:6px;
+            font-weight:800;
+        }
+
+        .summary-grid p{
+            color:var(--muted);
+            font-size:12.5px;
+            font-weight:500;
+        }
+
+        #createEmergency{
+            padding:15px;
+            border:none;
+            border-radius:12px;
+            background:var(--red);
+            color:#fff;
+            font-size:14.5px;
+            font-weight:700;
+            cursor:pointer;
+            transition:.2s;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:8px;
+            box-shadow:0 6px 16px rgba(193,18,31,.25);
+        }
+
+        #createEmergency:hover{
+            background:var(--red-dark);
+        }
+
+        @media(max-width:1200px){
+
+            .dashboard{
+                grid-template-columns:1fr;
+            }
+
+            .request-card{
+                grid-template-columns:1fr;
+                text-align:center;
+            }
+
+            .response{
+                grid-template-columns:1fr;
+                text-align:center;
+            }
+
+        }
+
+        @media(max-width:900px){
+
+            aside.sidebar{
+                left:-264px;
+                transition:.3s;
+            }
+
+            aside.sidebar.show{
+                left:0;
+            }
+
+            main{
+                width:100%;
+                margin-left:0;
+            }
+
+            #menuBtn{
+                display:block;
+            }
+
+            header{
+                flex-direction:column;
+                align-items:flex-start;
+                gap:16px;
+            }
+
+        }
+
+        @media(max-width:600px){
+
+            .alert-banner{
+                flex-direction:column;
+                gap:18px;
+                text-align:center;
+            }
+
+            .summary-grid{
+                grid-template-columns:1fr;
+            }
+
+            .profile{
+                display:none;
+            }
+
+            .header-left h1{
+                font-size:19px;
+            }
+
+            .card-header{
+                flex-direction:column;
+                gap:12px;
+            }
+
+        }
+    </style>
 </head>
 
 <body>
 
 <div class="container">
 
-    <aside>
+    <aside class="sidebar">
 
         <div class="logo">
-
-            <h2>
-                <i class="fa-solid fa-droplet"></i>
-                BloodConnect
-            </h2>
-
+            <h2><i class="fa-solid fa-droplet"></i> BloodConnect</h2>
             <p>Save a Life</p>
-
         </div>
 
         <ul>
-
-            <li>
-                <a href="home.html">
-                    <i class="fa-solid fa-house"></i>
-                    Dashboard
-                </a>
-            </li>
-
-            <li>
-                <a href="blood-requests.html">
-                    <i class="fa-solid fa-droplet"></i>
-                    Blood Requests
-                </a>
-            </li>
-
-            <li class="active">
-                <a href="emergency-requests.html">
-                    <i class="fa-solid fa-bell"></i>
-                    Emergency Requests
-                </a>
-            </li>
-
-            <li>
-                <a href="smart-matching.html">
-                    <i class="fa-solid fa-crosshairs"></i>
-                    Smart Matching
-                </a>
-            </li>
-
-            <li>
-                <a href="donors.html">
-                    <i class="fa-solid fa-users"></i>
-                    Donor Network
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                    <i class="fa-solid fa-heart"></i>
-                    My Donations
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                    <i class="fa-solid fa-message"></i>
-                    Messages
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                    <i class="fa-solid fa-bell"></i>
-                    Notifications
-                </a>
-            </li>
-
-            <li>
-                <a href="profile.html">
-                    <i class="fa-solid fa-user"></i>
-                    Profile
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                    <i class="fa-solid fa-gear"></i>
-                    Settings
-                </a>
-            </li>
-
+            <li><a href="home.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+            <li><a href="blood-requests.html"><i class="fa-solid fa-droplet"></i> Blood Requests</a></li>
+            <li class="active"><a href="emergency-requests.html"><i class="fa-solid fa-bell"></i> Emergency Requests</a></li>
+            <li><a href="donors.html"><i class="fa-solid fa-users"></i> Donor Network</a></li>
+            <li><a href="profile.html"><i class="fa-solid fa-user"></i> Profile</a></li>
+            <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
         </ul>
 
-        <button id="logoutBtn">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            Logout
-        </button>
+        <button id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
 
     </aside>
 
@@ -800,39 +809,20 @@ header{
         <header>
 
             <div class="header-left">
-
-                <button id="menuBtn">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-
-                <h1>
-                    Real-Time Emergency Requests
-                </h1>
-
-                <span class="live">
-                    LIVE
-                </span>
-
+                <button id="menuBtn"><i class="fa-solid fa-bars"></i></button>
+                <h1>Real-Time Emergency Requests</h1>
+                <span class="live">LIVE</span>
             </div>
 
             <div class="header-right">
-
                 <i class="fa-regular fa-bell"></i>
-
                 <div class="profile">
-
-                    <img src="images/user.png" alt="Profile">
-
+                    <img id="profileImg" src="images/user.png" alt="Profile">
                     <div>
-
-                        <h4>Tahmid Hasan</h4>
-
+                        <h4 id="profileName">User Name</h4>
                         <p>Donor</p>
-
                     </div>
-
                 </div>
-
             </div>
 
         </header>
@@ -844,21 +834,11 @@ header{
                 <div class="alert-banner">
 
                     <div>
-
-                        <i class="fa-solid fa-siren-on"></i>
-
+                        <i class="fa-solid fa-triangle-exclamation"></i>
                         <div>
-
-                            <h2>
-                                Emergency Request Active
-                            </h2>
-
-                            <p>
-                                Multiple emergency requests need immediate attention.
-                            </p>
-
+                            <h2>Emergency Request Active</h2>
+                            <p>Live emergency posts from the community requiring attention.</p>
                         </div>
-
                     </div>
 
                     <button id="viewAllBtn">
@@ -869,516 +849,71 @@ header{
                 </div>
 
                 <h2 class="section-title">
-
-                    Active Emergency Requests (3)
-
+                    Active Emergency Requests (<span id="emergencyCountLabel">0</span>)
                 </h2>
 
-                <!-- Emergency Card 1 -->
-
-                <div class="request-card urgent">
-
-                    <div class="priority">
-                        URGENT
-                    </div>
-
-                    <div class="request-info">
-
-                        <h3>O+ Blood Required</h3>
-
-                        <p>2 Units Needed</p>
-
-                        <div class="tags">
-
-                            <span>Patient: Rahim Hasan</span>
-
-                            <span>Age: 28</span>
-
-                            <span>Case: Accident</span>
-
-                        </div>
-
-                    </div>
-
-                    <div class="hospital">
-
-                        <p>
-
-                            <i class="fa-solid fa-location-dot"></i>
-
-                            Dhanmondi, Dhaka
-
-                        </p>
-
-                        <span>Green Life Hospital</span>
-
-                    </div>
-
-                    <div class="time">
-
-                        <p>
-
-                            <i class="fa-regular fa-clock"></i>
-
-                            15 min ago
-
-                        </p>
-
-                        <span>Critical Condition</span>
-
-                    </div>
-
-                    <div class="action">
-
-                        <button class="respondBtn">
-
-                            <i class="fa-solid fa-bolt"></i>
-
-                            Respond Now
-
-                        </button>
-
-                        <p>5.2 km away</p>
-
-                        <span>5 donors notified</span>
-
-                    </div>
-
-                </div>
-
-                <!-- Emergency Card 2 -->
-
-                <div class="request-card high">
-
-                    <div class="priority">
-                        HIGH
-                    </div>
-
-                    <div class="request-info">
-
-                        <h3>A- Blood Required</h3>
-
-                        <p>1 Unit Needed</p>
-
-                        <div class="tags">
-
-                            <span>Patient: Nusrat Jahan</span>
-
-                            <span>Age: 35</span>
-
-                            <span>Case: Surgery</span>
-
-                        </div>
-
-                    </div>
-
-                    <div class="hospital">
-
-                        <p>
-
-                            <i class="fa-solid fa-location-dot"></i>
-
-                            Mirpur, Dhaka
-
-                        </p>
-
-                        <span>Popular Medical Center</span>
-
-                    </div>
-
-                    <div class="time">
-
-                        <p>
-
-                            <i class="fa-regular fa-clock"></i>
-
-                            32 min ago
-
-                        </p>
-
-                        <span>Serious Condition</span>
-
-                    </div>
-
-                    <div class="action">
-
-                        <button class="respondBtn">
-
-                            <i class="fa-solid fa-bolt"></i>
-
-                            Respond Now
-
-                        </button>
-
-                        <p>6.8 km away</p>
-
-                        <span>8 donors notified</span>
-
-                    </div>
-
-                </div>
-
-                                <!-- Emergency Card 3 -->
-
-                <div class="request-card medium">
-
-                    <div class="priority">
-                        MEDIUM
-                    </div>
-
-                    <div class="request-info">
-
-                        <h3>B+ Blood Required</h3>
-
-                        <p>2 Units Needed</p>
-
-                        <div class="tags">
-
-                            <span>Patient: Kamal Ahmed</span>
-
-                            <span>Age: 42</span>
-
-                            <span>Case: Thalassemia</span>
-
-                        </div>
-
-                    </div>
-
-                    <div class="hospital">
-
-                        <p>
-                            <i class="fa-solid fa-location-dot"></i>
-                            Uttara, Dhaka
-                        </p>
-
-                        <span>United Hospital</span>
-
-                    </div>
-
-                    <div class="time">
-
-                        <p>
-                            <i class="fa-regular fa-clock"></i>
-                            1 hr ago
-                        </p>
-
-                        <span>Stable Condition</span>
-
-                    </div>
-
-                    <div class="action">
-
-                        <button class="respondBtn">
-
-                            <i class="fa-solid fa-bolt"></i>
-
-                            Respond Now
-
-                        </button>
-
-                        <p>8.1 km away</p>
-
-                        <span>6 donors notified</span>
-
-                    </div>
-
-                </div>
+                <div id="emergencyContainer"></div>
 
                 <div class="view-all">
-
-                    <button>
-
-                        View All Emergency Requests
-
-                    </button>
-
+                    <button onclick="window.location.href='blood-requests.html'">View All Blood Requests</button>
                 </div>
 
-                <!-- Recent Responses -->
-
                 <section class="responses">
-
-                    <h2>
-
-                        Recent Responses
-
-                    </h2>
-
-                    <div class="response">
-
-                        <img src="images/user.png" alt="">
-
-                        <div class="response-info">
-
-                            <h4>Sakib Rahman</h4>
-
-                            <p>Responded to <strong>O+</strong> request</p>
-
-                        </div>
-
-                        <span class="accepted">
-
-                            Accepted
-
-                        </span>
-
-                        <small>2 min ago</small>
-
-                        <button>
-
-                            <i class="fa-regular fa-message"></i>
-
-                            Message
-
-                        </button>
-
-                    </div>
-
-                    <div class="response">
-
-                        <img src="images/user.png" alt="">
-
-                        <div class="response-info">
-
-                            <h4>Faria Islam</h4>
-
-                            <p>Responded to <strong>A-</strong> request</p>
-
-                        </div>
-
-                        <span class="accepted">
-
-                            Accepted
-
-                        </span>
-
-                        <small>5 min ago</small>
-
-                        <button>
-
-                            <i class="fa-regular fa-message"></i>
-
-                            Message
-
-                        </button>
-
-                    </div>
-
-                    <div class="response">
-
-                        <img src="images/user.png" alt="">
-
-                        <div class="response-info">
-
-                            <h4>Hasan Mahmud</h4>
-
-                            <p>Responded to <strong>B+</strong> request</p>
-
-                        </div>
-
-                        <span class="accepted">
-
-                            Accepted
-
-                        </span>
-
-                        <small>8 min ago</small>
-
-                        <button>
-
-                            <i class="fa-regular fa-message"></i>
-
-                            Message
-
-                        </button>
-
-                    </div>
-
+                    <h2>Recent Community Activity</h2>
+                    <div id="responsesContainer"></div>
                 </section>
 
             </section>
 
-            <!-- Right Panel -->
-
             <aside class="right-panel">
-
-                <!-- Live Location -->
 
                 <div class="map-card">
 
                     <div class="card-header">
-
-                        <h3>
-
-                            Live Location
-
-                        </h3>
-
-                        <button id="locationBtn">
-
-                            Get My Location
-
-                        </button>
-
+                        <h3>Live Location</h3>
+                        <button id="locationBtn">Get My Location</button>
                     </div>
 
                     <div id="map">
-
                         <iframe
-                            src="https://maps.google.com/maps?q=Dhaka&t=&z=12&ie=UTF8&iwloc=&output=embed"
+                            src="https://maps.google.com/maps?q=Sylhet,Bangladesh&t=&z=13&ie=UTF8&iwloc=&output=embed"
                             loading="lazy">
                         </iframe>
-
                     </div>
 
                     <div class="location-info">
-
-                        <p>
-
-                            <strong>Latitude:</strong>
-
-                            <span id="latitude">
-
-                                --
-
-                            </span>
-
-                        </p>
-
-                        <p>
-
-                            <strong>Longitude:</strong>
-
-                            <span id="longitude">
-
-                                --
-
-                            </span>
-
-                        </p>
-
-                        <p id="status">
-
-                            Waiting for location...
-
-                        </p>
-
+                        <p><strong>Latitude:</strong> <span id="latitude">--</span></p>
+                        <p><strong>Longitude:</strong> <span id="longitude">--</span></p>
+                        <p id="status">Waiting for location...</p>
                     </div>
 
                 </div>
-
-                <!-- Notifications -->
 
                 <div class="notification-card">
-
                     <div class="card-header">
-
-                        <h3>
-
-                            Live Notifications
-
-                        </h3>
-
-                        <a href="#">
-
-                            View All
-
-                        </a>
-
+                        <h3>Live Feed</h3>
+                        <a href="donors.html">View Donors</a>
                     </div>
-
-                    <ul>
-
-                        <li>
-
-                            <span>2 min</span>
-
-                            New <strong>O+</strong> emergency request in Dhanmondi
-
-                        </li>
-
-                        <li>
-
-                            <span>5 min</span>
-
-                            <strong>Faria Islam</strong> accepted your request
-
-                        </li>
-
-                        <li>
-
-                            <span>7 min</span>
-
-                            New <strong>A-</strong> request in Mirpur
-
-                        </li>
-
-                        <li>
-
-                            <span>12 min</span>
-
-                            <strong>Sakib Rahman</strong> is on the way
-
-                        </li>
-
-                    </ul>
-
+                    <ul id="notificationList"></ul>
                 </div>
-
-                <!-- Summary -->
 
                 <div class="summary">
 
-                    <h3>
-
-                        Emergency Summary
-
-                    </h3>
+                    <h3>Emergency Summary</h3>
 
                     <div class="summary-grid">
-
-                        <div>
-
-                            <h2>3</h2>
-
-                            <p>Active Requests</p>
-
-                        </div>
-
-                        <div>
-
-                            <h2>19</h2>
-
-                            <p>Donors Notified</p>
-
-                        </div>
-
-                        <div>
-
-                            <h2>7</h2>
-
-                            <p>Responses</p>
-
-                        </div>
-
-                        <div>
-
-                            <h2>2</h2>
-
-                            <p>Completed</p>
-
-                        </div>
-
+                        <div><h2 id="statActive">0</h2><p>Active Emergency Posts</p></div>
+                        <div><h2 id="statDonors">0</h2><p>Registered Donors</p></div>
+                        <div><h2 id="statActivity">0</h2><p>Total Community Posts</p></div>
+                        <div><h2 id="statCompleted">0</h2><p>Requests Completed</p></div>
                     </div>
 
                 </div>
 
                 <button id="createEmergency">
-
                     <i class="fa-solid fa-plus"></i>
-
+                    
                     Create Emergency Request
-
                 </button>
 
             </aside>
@@ -1389,235 +924,386 @@ header{
 
 </div>
 
-<script src="emergency-requests.js">
-
-    document.addEventListener("DOMContentLoaded", function () {
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
     const menuBtn = document.getElementById("menuBtn");
-    const sidebar = document.querySelector("aside");
+    const sidebar = document.querySelector(".sidebar");
     const logoutBtn = document.getElementById("logoutBtn");
     const locationBtn = document.getElementById("locationBtn");
     const latitude = document.getElementById("latitude");
     const longitude = document.getElementById("longitude");
     const statusText = document.getElementById("status");
-    const respondButtons = document.querySelectorAll(".respondBtn");
     const createEmergency = document.getElementById("createEmergency");
     const viewAllBtn = document.getElementById("viewAllBtn");
 
-    menuBtn.addEventListener("click", function () {
-        sidebar.classList.toggle("show");
-    });
+    const currentUser = JSON.parse(localStorage.getItem("currentUser")) || {};
 
-    logoutBtn.addEventListener("click", function () {
+    const profileImg = document.getElementById("profileImg");
+    const profileName = document.getElementById("profileName");
 
-        const confirmLogout = confirm("Are you sure you want to logout?");
+    if (profileImg) profileImg.src = currentUser.photo || "images/user.png";
+    if (profileName) profileName.textContent = currentUser.name || "User Name";
 
-        if (confirmLogout) {
-            alert("Logged out successfully.");
-            window.location.href = "index.html";
+    if (menuBtn) {
+        menuBtn.addEventListener("click", function () {
+            sidebar.classList.toggle("show");
+        });
+    }
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", function () {
+            if (confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem("currentUser");
+                window.location.href = "index.html";
+            }
+        });
+    }
+
+    if (viewAllBtn) {
+        viewAllBtn.addEventListener("click", function () {
+            window.location.href = "blood-requests.html";
+        });
+    }
+
+    if (createEmergency) {
+        createEmergency.addEventListener("click", function () {
+            window.location.href = "createpost.html";
+        });
+    }
+
+    /* ================= Priority mapping ================= */
+
+    function priorityClass(urgency) {
+        if (urgency === "Emergency") return "urgent";
+        if (urgency === "Urgent") return "high";
+        return "medium";
+    }
+
+    function priorityLabel(urgency) {
+        if (urgency === "Emergency") return "URGENT";
+        if (urgency === "Urgent") return "HIGH";
+        return "MEDIUM";
+    }
+
+    /* ================= Active Emergency Requests (from posts) ================= */
+
+    function renderEmergencyRequests() {
+
+        const container = document.getElementById("emergencyContainer");
+        const countLabel = document.getElementById("emergencyCountLabel");
+
+        const allPosts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
+        const emergencyPosts = allPosts
+            .filter(p => p.emergency === true)
+            .sort((a, b) => (b.id || 0) - (a.id || 0));
+
+        if (countLabel) countLabel.textContent = emergencyPosts.length;
+
+        container.innerHTML = "";
+
+        if (emergencyPosts.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fa-regular fa-circle-check" style="font-size:28px;margin-bottom:10px;display:block;"></i>
+                    No emergency requests right now.
+                </div>
+            `;
+            return;
         }
 
-    });
+        emergencyPosts.forEach(function (post) {
 
-    viewAllBtn.addEventListener("click", function () {
+            const card = document.createElement("div");
+            card.className = "request-card " + priorityClass(post.urgency);
+            card.dataset.id = post.id;
 
-        alert("Showing all emergency requests.");
+            card.innerHTML = `
+                <div class="priority">${priorityLabel(post.urgency)}</div>
 
-    });
+                <div class="request-info">
+                    <h3>${post.bloodGroup || "N/A"} Blood Required</h3>
+                    <p>${(post.description || "").slice(0, 90) || "No additional details provided."}</p>
+                    <div class="tags">
+                        <span>Posted by: ${post.userName || "Anonymous"}</span>
+                        ${post.requiredDate ? `<span>Needed by: ${post.requiredDate}</span>` : ""}
+                    </div>
+                </div>
 
-    createEmergency.addEventListener("click", function () {
+                <div class="hospital">
+                    <p><i class="fa-solid fa-location-dot"></i> ${post.location || "Not specified"}</p>
+                    <span>${post.hospital || "Hospital not specified"}</span>
+                </div>
 
-        window.location.href = "blood-requests.html";
+                <div class="time">
+                    <p><i class="fa-regular fa-clock"></i> ${post.createdAt || ""}</p>
+                    <span>${post.urgency || "Normal"} Condition</span>
+                </div>
 
-    });
+                <div class="action">
+                    <button class="respondBtn" data-id="${post.id}">
+                        <i class="fa-solid fa-bolt"></i> Respond Now
+                    </button>
+                    <p>${post.contact || "No contact"}</p>
+                    <span>Blood Group: ${post.bloodGroup || "N/A"}</span>
+                </div>
+            `;
 
-    respondButtons.forEach(function (button) {
+            container.appendChild(card);
 
-        button.addEventListener("click", function () {
+        });
 
-            const card = button.closest(".request-card");
-            const request = card.querySelector("h3").textContent;
+    }
 
-            const confirmResponse = confirm(
-                "Do you want to respond to this emergency request?\n\n" +
-                request
-            );
+    document.getElementById("emergencyContainer").addEventListener("click", function (e) {
+
+        if (e.target.closest(".respondBtn")) {
+
+            const btn = e.target.closest(".respondBtn");
+            const postId = btn.dataset.id;
+
+            if (btn.disabled) return;
+
+            const confirmResponse = confirm("Respond to this emergency request?");
 
             if (confirmResponse) {
 
-                button.innerHTML =
-                    '<i class="fa-solid fa-circle-check"></i> Responded';
+                const responses = JSON.parse(localStorage.getItem("emergencyResponses")) || [];
 
-                button.style.background = "#27ae60";
+                responses.push({
+                    id: Date.now(),
+                    postId: postId,
+                    responderEmail: currentUser.email || "",
+                    responderName: currentUser.name || "Anonymous",
+                    responderPhoto: currentUser.photo || "images/user.png",
+                    time: new Date().toLocaleString()
+                });
 
-                button.disabled = true;
+                localStorage.setItem("emergencyResponses", JSON.stringify(responses));
+
+                btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Responded';
+                btn.style.background = "#2f9e44";
+                btn.disabled = true;
 
                 alert("Response submitted successfully.");
 
+                renderResponses();
+                renderSummary();
+
             }
-
-        });
-
-    });
-
-    locationBtn.addEventListener("click", function () {
-
-        if (!navigator.geolocation) {
-
-            statusText.textContent =
-                "Geolocation is not supported.";
-
-            return;
 
         }
 
-        statusText.textContent =
-            "Getting your location...";
-
-        navigator.geolocation.getCurrentPosition(
-
-            function (position) {
-
-                latitude.textContent =
-                    position.coords.latitude.toFixed(6);
-
-                longitude.textContent =
-                    position.coords.longitude.toFixed(6);
-
-                statusText.textContent =
-                    "Location found successfully.";
-
-            },
-
-            function () {
-
-                statusText.textContent =
-                    "Location access denied.";
-
-            }
-
-        );
-
     });
 
-    const summaryCards =
-        document.querySelectorAll(".summary-grid h2");
+    /* ================= Recent Community Activity (any post) ================= */
 
-    summaryCards.forEach(function (counter) {
+    function renderResponses() {
 
-        const target = parseInt(counter.textContent);
+        const container = document.getElementById("responsesContainer");
+
+        const allPosts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
+
+        const recent = allPosts
+            .slice()
+            .sort((a, b) => (b.id || 0) - (a.id || 0))
+            .slice(0, 6);
+
+        container.innerHTML = "";
+
+        if (recent.length === 0) {
+            container.innerHTML = `<div class="empty-state">No community activity yet.</div>`;
+            return;
+        }
+
+        recent.forEach(function (post) {
+
+            const isEmergency = post.emergency === true;
+            const badgeClass = isEmergency ? "badge-emergency" : "badge-normal";
+            const badgeText = isEmergency ? "Emergency" : (post.postType || "Post");
+            const desc = post.text || post.description || "";
+
+            const item = document.createElement("div");
+            item.className = "response";
+
+            item.innerHTML = `
+                <img src="${post.userPhoto || "images/user.png"}" alt="">
+                <div class="response-info">
+                    <h4>${post.userName || "Anonymous"}</h4>
+                    <p>${desc.slice(0, 70) || "Shared an update"}</p>
+                </div>
+                <span class="badge-type ${badgeClass}">${badgeText}</span>
+                <small>${post.date || post.createdAt || ""}</small>
+                <button class="viewPostBtn" data-id="${post.id}">
+                    <i class="fa-regular fa-eye"></i> View
+                </button>
+            `;
+
+            container.appendChild(item);
+
+        });
+
+        container.querySelectorAll(".viewPostBtn").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                window.location.href = "profile.html";
+            });
+        });
+
+    }
+
+    /* ================= Live Feed (donors + blood requests) ================= */
+
+    let feedItems = [];
+    let feedIndex = 0;
+    let feedInterval = null;
+
+    function buildFeedItems() {
+
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+        const requests = JSON.parse(localStorage.getItem("bloodRequests")) || [];
+
+        const items = [];
+
+        users.slice(-5).reverse().forEach(function (u) {
+            items.push(`New donor registered: <strong>${u.name || "Unknown"}</strong> (${u.bloodGroup || "N/A"})`);
+        });
+
+        requests.slice(-5).reverse().forEach(function (r) {
+            items.push(`New <strong>${r.bloodGroup}</strong> request at ${r.hospital || "a hospital"} in ${r.location || "an unknown area"}`);
+        });
+
+        return items;
+
+    }
+
+    function renderNotifications() {
+
+        const list = document.getElementById("notificationList");
+
+        feedItems = buildFeedItems();
+        feedIndex = 0;
+
+        list.innerHTML = "";
+
+        if (feedItems.length === 0) {
+            list.innerHTML = `<li><span>--</span> No live activity yet. Register donors or create requests to see updates here.</li>`;
+            return;
+        }
+
+        feedItems.slice(0, 4).forEach(function (text) {
+            const li = document.createElement("li");
+            li.innerHTML = `<span>Live</span> ${text}`;
+            list.appendChild(li);
+        });
+
+        feedIndex = 4;
+
+        if (feedInterval) clearInterval(feedInterval);
+
+        feedInterval = setInterval(function () {
+
+            if (feedItems.length === 0) return;
+
+            const text = feedItems[feedIndex % feedItems.length];
+
+            const li = document.createElement("li");
+            li.innerHTML = `<span>Live</span> ${text}`;
+
+            list.prepend(li);
+
+            if (list.children.length > 6) {
+                list.removeChild(list.lastElementChild);
+            }
+
+            feedIndex++;
+
+        }, 10000);
+
+    }
+
+    /* ================= Emergency Summary ================= */
+
+    function renderSummary() {
+
+        const allPosts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+        const requests = JSON.parse(localStorage.getItem("bloodRequests")) || [];
+
+        const emergencyCount = allPosts.filter(p => p.emergency === true).length;
+        const completedCount = requests.filter(r => r.status === "Completed").length;
+
+        animateCounter(document.getElementById("statActive"), emergencyCount);
+        animateCounter(document.getElementById("statDonors"), users.length);
+        animateCounter(document.getElementById("statActivity"), allPosts.length);
+        animateCounter(document.getElementById("statCompleted"), completedCount);
+
+    }
+
+    function animateCounter(el, target) {
+
+        if (!el) return;
 
         let current = 0;
+        const increment = Math.max(1, Math.ceil(target / 40));
 
-        function updateCounter() {
-
-            const increment = Math.ceil(target / 50);
-
+        function step() {
             current += increment;
-
             if (current < target) {
-
-                counter.textContent = current;
-
-                requestAnimationFrame(updateCounter);
-
+                el.textContent = current;
+                requestAnimationFrame(step);
             } else {
+                el.textContent = target;
+            }
+        }
 
-                counter.textContent = target;
+        if (target === 0) {
+            el.textContent = 0;
+        } else {
+            step();
+        }
 
+    }
+
+    /* ================= Geolocation ================= */
+
+    if (locationBtn) {
+        locationBtn.addEventListener("click", function () {
+
+            if (!navigator.geolocation) {
+                statusText.textContent = "Geolocation is not supported.";
+                return;
             }
 
-        }
+            statusText.textContent = "Getting your location...";
 
-        updateCounter();
-
-    });
-
-    const notificationList =
-        document.querySelector(".notification-card ul");
-
-    const notifications = [
-
-        "New O- emergency request received.",
-        "Nearby donor accepted the request.",
-        "Hospital updated patient status.",
-        "Emergency request completed.",
-        "Another donor is available nearby."
-
-    ];
-
-    let index = 0;
-
-    setInterval(function () {
-
-        const li = document.createElement("li");
-
-        li.innerHTML =
-            "<span>Now</span> " + notifications[index];
-
-        notificationList.prepend(li);
-
-        if (notificationList.children.length > 6) {
-
-            notificationList.removeChild(
-                notificationList.lastElementChild
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    latitude.textContent = position.coords.latitude.toFixed(6);
+                    longitude.textContent = position.coords.longitude.toFixed(6);
+                    statusText.textContent = "Location found successfully.";
+                },
+                function () {
+                    statusText.textContent = "Location access denied.";
+                }
             );
 
-        }
-
-        index++;
-
-        if (index >= notifications.length) {
-
-            index = 0;
-
-        }
-
-    }, 10000);
-
-    const responseCards =
-        document.querySelectorAll(".response");
-
-    responseCards.forEach(function (card, index) {
-
-        card.style.opacity = "0";
-        card.style.transform = "translateY(20px)";
-
-        setTimeout(function () {
-
-            card.style.transition = "0.5s";
-
-            card.style.opacity = "1";
-
-            card.style.transform = "translateY(0)";
-
-        }, index * 150);
-
-    });
-
-    const requestCards =
-        document.querySelectorAll(".request-card");
-
-    requestCards.forEach(function (card) {
-
-        card.addEventListener("mouseenter", function () {
-
-            card.style.transform =
-                "translateY(-6px)";
-
         });
+    }
 
-        card.addEventListener("mouseleave", function () {
+    /* ================= Initial render + refresh on focus ================= */
 
-            card.style.transform =
-                "translateY(0)";
+    function renderAll() {
+        renderEmergencyRequests();
+        renderResponses();
+        renderNotifications();
+        renderSummary();
+    }
 
-        });
+    renderAll();
 
-    });
+    window.addEventListener("focus", renderAll);
 
 });
-
 </script>
 
 </body>
