@@ -3,56 +3,54 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BloodConnect | Hospitals</title>
 
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-    <title>BloodConnect | Hospitals</title>
+<style>
 
-    <link rel="stylesheet"
-        href="hospitals.css">
-
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
-    <style>
-   
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
-
+:root{
+    --red:#d62828;
+    --red-dark:#b71c1c;
+    --red-light:#ffe9e9;
+    --ink:#20232a;
+    --muted:#6b7280;
+    --border:#ececec;
+    --bg:#f6f8fb;
+    --surface:#ffffff;
+    --radius:18px;
+    --shadow:0 10px 30px rgba(0,0,0,.07);
+}
 
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
 }
 
-html{
-    scroll-behavior:smooth;
-}
+html{ scroll-behavior:smooth; }
 
 body{
-    font-family:'Poppins',sans-serif;
-    background:#f6f8fb;
-    color:#333;
-    overflow-x:hidden;
-    line-height:1.6;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    overflow-x: hidden;
+
+    background-image: url("samples/search-bg.png");
+    background-repeat: no-repeat;
+    background-position:top;   /* or center center */
+    
 }
 
-img{
-    width:100%;
-    display:block;
-}
-
-a{
-    text-decoration:none;
-}
-
-button{
-    font-family:'Poppins',sans-serif;
-    cursor:pointer;
-    border:none;
-}
+img{ width:100%; display:block; }
+a{ text-decoration:none; }
+button{ font-family:'Poppins',sans-serif; cursor:pointer; border:none; }
 
 section{
     width:90%;
@@ -60,1775 +58,1240 @@ section{
     margin:auto;
 }
 
-/*=========================================
-  HEADER
-=========================================*/
+/* ===== HEADER ===== */
 
 header{
-
     position:sticky;
     top:0;
-    left:0;
     width:100%;
     height:85px;
-
     display:flex;
     justify-content:space-between;
     align-items:center;
-
     padding:0 6%;
-
-    background:#ffffff;
-
+    background:var(--surface);
     box-shadow:0 5px 20px rgba(0,0,0,.08);
-
     z-index:1000;
-
 }
 
 .logo{
-
     display:flex;
     align-items:center;
-    gap:15px;
-
+    gap:14px;
 }
 
 .logo i{
-
-    width:58px;
-    height:58px;
-
-    background:#d62828;
+    width:52px;
+    height:52px;
+    background:var(--red);
     color:#fff;
-
     border-radius:50%;
-
     display:flex;
     align-items:center;
     justify-content:center;
-
-    font-size:24px;
-
+    font-size:21px;
     box-shadow:0 10px 20px rgba(214,40,40,.25);
-
 }
 
 .logo h2{
-
-    color:#d62828;
-    font-size:28px;
+    color:var(--red);
+    font-size:24px;
     font-weight:700;
-
 }
 
 .logo p{
-
-    color:#777;
-    font-size:13px;
-
+    color:#888;
+    font-size:12.5px;
 }
 
 nav{
-
     display:flex;
     align-items:center;
-    gap:32px;
-
-}
-
-nav a{
-
-    color:#444;
-    font-size:15px;
-    font-weight:600;
-
-    position:relative;
-
-    transition:.35s;
-
-}
-
-nav a:hover{
-
-    color:#d62828;
-
-}
-
-nav a.active{
-
-    color:#d62828;
-
-}
-
-nav a::after{
-
-    content:"";
-
-    position:absolute;
-
-    left:0;
-    bottom:-8px;
-
-    width:0%;
-    height:3px;
-
-    background:#d62828;
-
-    border-radius:20px;
-
-    transition:.35s;
-
-}
-
-nav a:hover::after,
-nav a.active::after{
-
-    width:100%;
-
-}
-
-.loginBtn{
-
-    padding:14px 28px;
-
-    background:#d62828;
-
-    color:#fff;
-
-    border-radius:12px;
-
-    font-size:15px;
-    font-weight:600;
-
-    transition:.35s;
-
-    display:flex;
-    align-items:center;
-    gap:10px;
-
-    box-shadow:0 15px 30px rgba(214,40,40,.25);
-
-}
-
-.loginBtn:hover{
-
-    transform:translateY(-3px);
-
-    background:#b91f1f;
-
-}
-
-/*=========================================
-  HERO
-=========================================*/
-
-.hero{
-
-    width:90%;
-    max-width:1350px;
-
-    margin:70px auto;
-
-    display:grid;
-
-    grid-template-columns:1.1fr .9fr;
-
-    align-items:center;
-
-    gap:70px;
-
-}
-
-.hero-left h1{
-
-    font-size:60px;
-
-    line-height:1.15;
-
-    color:#222;
-
-    margin:20px 0;
-
-    font-weight:700;
-
-}
-
-.hero-left h1 span{
-
-    color:#d62828;
-
-}
-
-.hero-left p{
-
-    font-size:17px;
-
-    color:#666;
-
-    line-height:1.9;
-
-    max-width:620px;
-
-}
-
-.badge{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    gap:10px;
-
-    padding:10px 22px;
-
-    border-radius:40px;
-
-    background:#ffe9e9;
-
-    color:#d62828;
-
-    font-weight:600;
-
-    font-size:14px;
-
-}
-
-.badge i{
-
-    font-size:16px;
-
-}
-
-.hero-buttons{
-
-    display:flex;
-
-    gap:18px;
-
-    margin-top:40px;
-
-}
-
-.hero-buttons button{
-
-    padding:16px 34px;
-
-    border-radius:12px;
-
-    font-size:15px;
-
-    font-weight:600;
-
-    transition:.35s;
-
-}
-
-#findHospital{
-
-    background:#d62828;
-    color:#fff;
-
-    box-shadow:0 18px 30px rgba(214,40,40,.28);
-
-}
-
-#findHospital:hover{
-
-    transform:translateY(-4px);
-
-}
-
-#emergencyBtn{
-
-    background:#fff;
-
-    border:2px solid #d62828;
-
-    color:#d62828;
-
-}
-
-#emergencyBtn:hover{
-
-    background:#d62828;
-    color:#fff;
-
-}
-
-.hero-stats{
-
-    display:flex;
-
-    gap:45px;
-
-    margin-top:60px;
-
-}
-
-.hero-stats div{
-
-    background:#fff;
-
-    padding:20px 28px;
-
-    border-radius:18px;
-
-    box-shadow:0 15px 35px rgba(0,0,0,.06);
-
-    min-width:150px;
-
-    text-align:center;
-
-}
-
-.hero-stats h2{
-
-    color:#d62828;
-
-    font-size:34px;
-
-    margin-bottom:6px;
-
-}
-
-.hero-stats p{
-
-    font-size:14px;
-
-    color:#777;
-
-}
-
-.hero-right{
-
-    position:relative;
-
-}
-
-.hero-right img{
-
-    width:100%;
-
-    border-radius:30px;
-
-    object-fit:cover;
-
-    box-shadow:0 30px 60px rgba(0,0,0,.12);
-
-}
-/* ===========================
-   HOSPITAL CARDS
-=========================== */
-
-.hospital-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
     gap:30px;
 }
 
-.hospital-card{
-    background:#fff;
-    border-radius:18px;
-    overflow:hidden;
-    box-shadow:0 10px 30px rgba(0,0,0,.08);
-    transition:.35s;
-    border:1px solid #ececec;
-}
-
-.hospital-card:hover{
-    transform:translateY(-10px);
-    box-shadow:0 20px 45px rgba(214,40,40,.18);
-}
-
-.hospital-card img{
-    width:100%;
-    height:230px;
-    object-fit:cover;
-}
-
-.hospital-content{
-    padding:28px;
-}
-
-.hospital-content h3{
-    color:#d62828;
-    font-size:24px;
-    margin-bottom:15px;
-}
-
-.hospital-content p{
-    color:#666;
-    line-height:1.8;
-    margin-bottom:12px;
-    font-size:15px;
-}
-
-.hospital-info{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-    margin:22px 0;
-}
-
-.info-row{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    color:#555;
-}
-
-.info-row i{
-    color:#d62828;
-    width:24px;
-    font-size:18px;
-}
-
-.hospital-buttons{
-    display:flex;
-    gap:15px;
-    margin-top:25px;
-    flex-wrap:wrap;
-}
-
-.hospital-buttons button{
-    flex:1;
-    min-width:140px;
-    padding:13px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:15px;
+nav a{
+    color:#444;
+    font-size:14.5px;
     font-weight:600;
+    position:relative;
     transition:.3s;
 }
 
-.view-btn{
-    background:#d62828;
+nav a:hover{ color:var(--red); }
+nav a.active{ color:var(--red); }
+
+nav a::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-8px;
+    width:0%;
+    height:3px;
+    background:var(--red);
+    border-radius:20px;
+    transition:.3s;
+}
+
+nav a:hover::after,
+nav a.active::after{ width:100%; }
+
+.profileBtn{
+    padding:13px 26px;
+    background:var(--red);
     color:#fff;
+    border-radius:12px;
+    font-size:14.5px;
+    font-weight:600;
+    transition:.3s;
+    display:flex;
+    align-items:center;
+    gap:9px;
+    box-shadow:0 12px 26px rgba(214,40,40,.25);
 }
 
-.view-btn:hover{
-    background:#b71c1c;
+.profileBtn:hover{
+    transform:translateY(-3px);
+    background:var(--red-dark);
 }
 
-.direction-btn{
-    background:#fff;
-    color:#d62828;
-    border:2px solid #d62828 !important;
-}
+/* ===== HERO ===== */
 
-.direction-btn:hover{
-    background:#d62828;
-    color:#fff;
-}
-
-/* ===========================
-   EMERGENCY CONTACT
-=========================== */
-
-.emergency-contact{
-    margin-top:70px;
+.hero{
+    width:90%;
+    max-width:1350px;
+    margin:65px auto;
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:25px;
+    grid-template-columns:1.1fr .9fr;
+    align-items:center;
+    gap:60px;
 }
 
-.contact-card{
-    background:#fff;
-    padding:35px;
-    border-radius:18px;
-    text-align:center;
-    box-shadow:0 10px 30px rgba(0,0,0,.08);
-    transition:.35s;
-}
-
-.contact-card:hover{
-    transform:translateY(-8px);
-}
-
-.contact-card i{
-    width:80px;
-    height:80px;
-    line-height:80px;
-    border-radius:50%;
-    background:#ffe8e8;
-    color:#d62828;
-    font-size:32px;
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    padding:9px 20px;
+    border-radius:40px;
+    background:var(--red-light);
+    color:var(--red);
+    font-weight:600;
+    font-size:13.5px;
     margin-bottom:20px;
 }
 
-.contact-card h3{
-    color:#d62828;
-    margin-bottom:12px;
-    font-size:24px;
-}
-
-.contact-card h2{
+.hero-left h1{
+    font-size:52px;
+    line-height:1.18;
     color:#222;
-    margin:15px 0;
-    font-size:30px;
+    font-weight:700;
+    margin-bottom:20px;
 }
 
-.contact-card p{
+.hero-left h1 span{ color:var(--red); }
+
+.hero-left p{
+    font-size:16.5px;
     color:#666;
-    line-height:1.7;
+    max-width:600px;
+    margin-bottom:35px;
 }
 
-.contact-card button{
-    margin-top:25px;
-    padding:13px 30px;
-    border:none;
-    border-radius:10px;
-    background:#d62828;
-    color:#fff;
-    cursor:pointer;
+.hero-buttons{
+    display:flex;
+    gap:16px;
+    margin-bottom:50px;
+}
+
+.hero-buttons button{
+    padding:15px 30px;
+    border-radius:12px;
+    font-size:14.5px;
+    font-weight:600;
     transition:.3s;
-    font-size:15px;
+    display:flex;
+    align-items:center;
+    gap:9px;
 }
 
-.contact-card button:hover{
-    background:#b71c1c;
+#findHospital{
+    background:var(--red);
+    color:#fff;
+    box-shadow:0 16px 28px rgba(214,40,40,.28);
 }
-/* ==========================
-   SEARCH SECTION
-========================== */
+
+#findHospital:hover{ transform:translateY(-3px); }
+
+#requestHospitalBtn{
+    background:#fff;
+    border:2px solid var(--red);
+    color:var(--red);
+}
+
+#requestHospitalBtn:hover{
+    background:var(--red);
+    color:#fff;
+}
+
+.hero-stats{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.hero-stats div{
+    background:var(--surface);
+    padding:18px 26px;
+    border-radius:16px;
+    box-shadow:var(--shadow);
+    min-width:130px;
+    text-align:center;
+}
+
+.hero-stats h2{
+    color:var(--red);
+    font-size:30px;
+    margin-bottom:4px;
+}
+
+.hero-stats p{
+    font-size:13px;
+    color:#777;
+}
+
+.hero-right img{
+    width:100%;
+    border-radius:26px;
+    object-fit:cover;
+    box-shadow:0 30px 60px rgba(0,0,0,.12);
+}
+
+/* ===== SEARCH ===== */
 
 .search-section{
-    background:#fff;
-    padding:45px;
-    border-radius:20px;
-    margin:60px 0;
-    box-shadow:0 12px 35px rgba(0,0,0,.08);
+    background:var(--surface);
+    padding:40px;
+    border-radius:var(--radius);
+    margin:50px auto;
+    box-shadow:var(--shadow);
 }
 
 .search-section h2{
-    color:#d62828;
-    font-size:34px;
-    margin-bottom:10px;
+    color:var(--red);
+    font-size:28px;
+    margin-bottom:8px;
 }
 
 .search-section p{
     color:#666;
-    margin-bottom:35px;
-    font-size:16px;
+    margin-bottom:28px;
+    font-size:15px;
 }
 
 .search-box{
     display:grid;
     grid-template-columns:2fr 1fr 1fr auto;
-    gap:18px;
+    gap:16px;
 }
 
 .search-box input,
 .search-box select{
-    height:56px;
+    height:52px;
     border:1px solid #ddd;
     border-radius:10px;
-    padding:0 18px;
-    font-size:15px;
+    padding:0 16px;
+    font-size:14.5px;
     outline:none;
     transition:.3s;
 }
 
 .search-box input:focus,
 .search-box select:focus{
-    border-color:#d62828;
-    box-shadow:0 0 0 4px rgba(214,40,40,.12);
+    border-color:var(--red);
+    box-shadow:0 0 0 4px rgba(214,40,40,.1);
 }
 
 .search-box button{
-    height:56px;
-    padding:0 35px;
-    border:none;
+    height:52px;
+    padding:0 30px;
     border-radius:10px;
-    background:#d62828;
+    background:var(--red);
     color:#fff;
-    font-size:16px;
-    cursor:pointer;
+    font-size:14.5px;
+    font-weight:600;
     transition:.3s;
 }
 
-.search-box button:hover{
-    background:#b71c1c;
+.search-box button:hover{ background:var(--red-dark); }
+
+/* ===== MAP ===== */
+
+.map-section{
+    margin:60px auto;
 }
-/* ==========================
-   BLOOD BANK NETWORK
-========================== */
+
+.section-heading{
+    margin-bottom:26px;
+}
+
+.section-heading span{
+    display:inline-block;
+    background:var(--red-light);
+    color:var(--red);
+    padding:7px 18px;
+    border-radius:30px;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.6px;
+    margin-bottom:14px;
+}
+
+.section-heading h2{
+    font-size:32px;
+    color:#222;
+    margin-bottom:8px;
+}
+
+.section-heading p{
+    color:#666;
+    font-size:15px;
+    max-width:640px;
+}
+
+#hospitalMap{
+    width:100%;
+    height:440px;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    border:1px solid var(--border);
+}
+
+/* ===== HOSPITAL CARDS ===== */
+
+.hospital-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:26px;
+    margin:40px auto;
+}
+
+.hospital-card{
+    background:var(--surface);
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    transition:.3s;
+    border:1px solid var(--border);
+}
+
+.hospital-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 20px 42px rgba(214,40,40,.15);
+}
+
+.hospital-image{
+    position:relative;
+}
+
+.hospital-image img{
+    height:190px;
+    object-fit:cover;
+}
+
+.status-tag{
+    position:absolute;
+    top:16px;
+    right:16px;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:700;
+    color:#fff;
+}
+
+.status-tag.open{ background:#2f9e44; }
+.status-tag.emergency{ background:var(--red); }
+
+.hospital-content{
+    padding:24px;
+}
+
+.title-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+}
+
+.title-row h3{
+    color:var(--red);
+    font-size:20px;
+}
+
+.rating{
+    background:var(--red-light);
+    color:var(--red);
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:12.5px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+
+.hospital-content .location{
+    color:#666;
+    font-size:13.5px;
+    margin-bottom:10px;
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.hospital-content .location i{ color:var(--red); }
+
+.hospital-content .description{
+    color:#666;
+    font-size:14px;
+    margin-bottom:16px;
+}
+
+.blood-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:20px;
+}
+
+.blood-list span{
+    background:#f2f3f6;
+    color:#4b5160;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12.5px;
+    font-weight:600;
+}
+
+.hospital-buttons{
+    display:flex;
+    gap:12px;
+}
+
+.hospital-buttons button{
+    flex:1;
+    padding:12px;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:600;
+    transition:.3s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+}
+
+.callBtn{
+    background:var(--red);
+    color:#fff;
+}
+
+.callBtn:hover{ background:var(--red-dark); }
+
+.mapBtn{
+    background:#fff;
+    color:var(--red);
+    border:2px solid var(--red) !important;
+}
+
+.mapBtn:hover{
+    background:var(--red);
+    color:#fff;
+}
+
+/* ===== HOSPITAL BLOOD REQUESTS (real data) ===== */
+
+.requests-section{
+    margin:60px auto;
+}
+
+.hospital-request-list{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+}
+
+.hospital-request-card{
+    background:var(--surface);
+    border-radius:14px;
+    padding:20px 24px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.hospital-request-card .req-info h4{
+    color:var(--ink);
+    font-size:15.5px;
+    margin-bottom:5px;
+}
+
+.hospital-request-card .req-info p{
+    color:var(--muted);
+    font-size:13.5px;
+}
+
+.hospital-request-card .req-tag{
+    background:var(--red-light);
+    color:var(--red);
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:12.5px;
+    font-weight:700;
+}
+
+.empty-state{
+    background:var(--surface);
+    border:1px dashed var(--border);
+    border-radius:var(--radius);
+    padding:40px;
+    text-align:center;
+    color:var(--muted);
+    font-size:14.5px;
+}
+
+/* ===== BLOOD BANKS ===== */
 
 .blood-network{
-    margin:80px 0;
-}
-
-.blood-network-header{
-    text-align:center;
-    margin-bottom:50px;
-}
-
-.blood-network-header span{
-    display:inline-block;
-    background:#ffe5e5;
-    color:#d62828;
-    padding:8px 20px;
-    border-radius:30px;
-    font-size:13px;
-    font-weight:700;
-    letter-spacing:1px;
-    margin-bottom:18px;
-}
-
-.blood-network-header h2{
-    font-size:42px;
-    color:#222;
-    margin-bottom:15px;
-}
-
-.blood-network-header p{
-    max-width:700px;
-    margin:auto;
-    color:#666;
-    line-height:1.8;
-    font-size:16px;
+    margin:70px auto;
 }
 
 .blood-bank-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
-    gap:30px;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:26px;
 }
-/* ===========================
-   FOOTER
-=========================== */
+
+.bank-card{
+    background:var(--surface);
+    padding:32px;
+    border-radius:var(--radius);
+    text-align:center;
+    box-shadow:var(--shadow);
+    transition:.3s;
+}
+
+.bank-card:hover{ transform:translateY(-6px); }
+
+.bank-card i{
+    width:70px;
+    height:70px;
+    line-height:70px;
+    border-radius:50%;
+    background:var(--red-light);
+    color:var(--red);
+    font-size:28px;
+    margin:0 auto 18px;
+}
+
+.bank-card h3{
+    color:var(--red);
+    margin-bottom:10px;
+    font-size:18px;
+}
+
+.bank-card h2{
+    color:#222;
+    font-size:26px;
+    margin-bottom:6px;
+}
+
+.bank-card p{
+    color:#777;
+    font-size:13.5px;
+}
+
+/* ===== FOOTER ===== */
 
 footer{
     margin-top:80px;
-    background:#d62828;
+    background:var(--red);
     color:#fff;
-    text-align:center;
-    padding:60px 8% 35px;
+    padding:55px 8% 30px;
 }
 
 .footer-content{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:40px;
-    margin-bottom:40px;
-    text-align:left;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:36px;
+    margin-bottom:35px;
+    max-width:1350px;
+    margin-left:auto;
+    margin-right:auto;
 }
 
 .footer-box h3{
-    margin-bottom:18px;
-    font-size:24px;
+    margin-bottom:16px;
+    font-size:20px;
 }
 
 .footer-box p{
+    color:#f6d6d6;
+    margin-bottom:8px;
     line-height:1.8;
-    color:#f5f5f5;
-    margin-bottom:10px;
 }
 
 .footer-box a{
     display:block;
     color:#fff;
-    text-decoration:none;
-    margin-bottom:12px;
-    transition:.3s;
+    margin-bottom:10px;
+    transition:.2s;
+    font-size:14.5px;
 }
 
-.footer-box a:hover{
-    padding-left:8px;
-}
-
-.social-links{
-    display:flex;
-    gap:15px;
-    margin-top:18px;
-}
-
-.social-links a{
-    width:45px;
-    height:45px;
-    background:rgba(255,255,255,.18);
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#fff;
-    font-size:18px;
-    transition:.3s;
-}
-
-.social-links a:hover{
-    background:#fff;
-    color:#d62828;
-    transform:translateY(-5px);
-}
+.footer-box a:hover{ padding-left:6px; }
 
 .footer-bottom{
     border-top:1px solid rgba(255,255,255,.3);
-    padding-top:25px;
+    padding-top:22px;
     text-align:center;
-    font-size:15px;
+    font-size:14px;
+    max-width:1350px;
+    margin:auto;
 }
 
-/* ===========================
-   RESPONSIVE
-=========================== */
+/* ===== RESPONSIVE ===== */
 
-@media(max-width:992px){
+@media(max-width:1000px){
 
-    header{
-        flex-direction:column;
-        gap:20px;
-    }
-
-    nav{
-        justify-content:center;
-    }
-
-    .hero h1{
-        font-size:42px;
-    }
-
-    .hero p{
-        font-size:17px;
-    }
-
-    .search-box{
-        flex-direction:column;
-    }
-
-    .hospital-grid{
-        grid-template-columns:1fr;
-    }
+    header{ flex-direction:column; height:auto; padding:16px 6%; gap:14px; }
+    nav{ flex-wrap:wrap; justify-content:center; gap:16px; }
+    .hero{ grid-template-columns:1fr; text-align:center; }
+    .hero-buttons{ justify-content:center; }
+    .hero-stats{ justify-content:center; }
+    .hero-left p{ margin-left:auto; margin-right:auto; }
+    .search-box{ grid-template-columns:1fr; }
 
 }
 
-@media(max-width:768px){
+@media(max-width:600px){
 
-    main{
-        width:92%;
-    }
-
-    .hero{
-        padding:70px 25px;
-    }
-
-    .hero h1{
-        font-size:34px;
-    }
-
-    .hero p{
-        font-size:16px;
-    }
-
-    .hospital-buttons{
-        flex-direction:column;
-    }
-
-    .hospital-buttons button{
-        width:100%;
-    }
-
-    .footer-content{
-        text-align:center;
-    }
-
-    .social-links{
-        justify-content:center;
-    }
+    .hero-left h1{ font-size:34px; }
+    .hospital-buttons{ flex-direction:column; }
+    .hospital-request-card{ flex-direction:column; align-items:flex-start; }
 
 }
 
-@media(max-width:480px){
+</style>
 
-    .logo h2{
-        font-size:24px;
-    }
-
-    nav{
-        gap:10px;
-    }
-
-    nav a{
-        font-size:14px;
-    }
-
-    .hero h1{
-        font-size:28px;
-    }
-
-    .hero p{
-        font-size:15px;
-    }
-
-    .section-title h2{
-        font-size:30px;
-    }
- 
-    .hospital-card img{
-        height:200px;
-    }
-
-}
-    </style>
-    </head>
+</head>
 
 <body>
 
-    <!--================ HEADER ================-->
+<header>
 
-    <header>
-
-        <div class="logo">
-
-            <i class="fa-solid fa-droplet"></i>
-
-            <div>
-
-                <h2>BloodConnect</h2>
-
-                <p>Saving Lives Together</p>
-
-            </div>
-
+    <div class="logo">
+        <i class="fa-solid fa-droplet"></i>
+        <div>
+            <h2>BloodConnect</h2>
+            <p>Saving Lives Together</p>
         </div>
+    </div>
 
-        <nav>
+    <nav>
+        <a href="home.html">Home</a>
+        <a href="donors.html">Donors</a>
+        <a href="blood-requests.html">Requests</a>
+        <a href="emergency-requests.html">Emergency</a>
+        <a href="hospitals.html" class="active">Hospitals</a>
+        <a href="profile.html">Profile</a>
+    </nav>
 
-            <a href="home.html">Home</a>
+    <button class="profileBtn" id="profileBtn">
+        <i class="fa-solid fa-user"></i>
+        My Profile
+    </button>
 
-            <a href="donors.html">Donors</a>
+</header>
 
-            <a href="blood-requests.html">Requests</a>
+<section class="hero">
 
-            <a href="emergency-requests.html">Emergency</a>
+    <div class="hero-left">
 
-            <a href="Hospitals.html" class="active">Hospitals</a>
+        <span class="badge">
+            <i class="fa-solid fa-heart-pulse"></i>
+            Trusted Healthcare Network
+        </span>
 
-            <a href="profile.html">Profile</a>
-
-        </nav>
-
-        <div class="header-right">
-
-            <button class="loginBtn">
-
-                <i class="fa-solid fa-user"></i>
-
-                My Profile
-
-            </button>
-
-        </div>
-
-    </header>
-
-
-
-    <!--================ HERO ================-->
-
-    <section class="hero">
-
-        <div class="hero-left">
-
-            <span class="badge">
-
-                <i class="fa-solid fa-heart-pulse"></i>
-
-                Trusted Healthcare Network
-
-            </span>
-
-            <h1>
-
-                Find Hospitals &
-
-                <span>Blood Banks</span>
-
-                Near You
-
-            </h1>
-
-            <p>
-
-                BloodConnect connects patients, donors and hospitals
-                across Bangladesh. Search verified hospitals,
-                emergency blood banks and available blood units
-                within seconds.
-
-            </p>
-
-            <div class="hero-buttons">
-
-                <button id="findHospital">
-
-                    <i class="fa-solid fa-hospital"></i>
-
-                    Find Hospital
-
-                </button>
-
-                <button id="emergencyBtn">
-
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-
-                    Emergency Help
-
-                </button>
-
-            </div>
-
-            <div class="hero-stats">
-
-                <div>
-
-                    <h2>180+</h2>
-
-                    <p>Hospitals</p>
-
-                </div>
-
-                <div>
-
-                    <h2>72+</h2>
-
-                    <p>Blood Banks</p>
-
-                </div>
-
-                <div>
-
-                    <h2>24/7</h2>
-
-                    <p>Emergency</p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="hero-right">
-
-            <img src="images/hospital-banner.png"
-                alt="Hospital">
-
-        </div>
-
-    </section>
-
-
-
-    <!--================ SEARCH ================-->
-
-    <section class="search-area">
-
-        <h2>
-
-            Search Hospitals
-
-        </h2>
+        <h1>Find Hospitals & <span>Blood Banks</span> Near You</h1>
 
         <p>
-
-            Search hospitals by city, district or blood availability.
-
+            BloodConnect connects patients, donors and hospitals across
+            Bangladesh. Search verified hospitals, emergency blood banks,
+            and post a real blood request directly to any hospital on the platform.
         </p>
 
-        <div class="search-box">
+        <div class="hero-buttons">
 
-            <div class="input-box">
+            <button id="findHospital">
+                <i class="fa-solid fa-hospital"></i>
+                Find Hospital
+            </button>
 
-                <i class="fa-solid fa-location-dot"></i>
-
-                <input type="text"
-                    id="location"
-                    placeholder="Enter City or District">
-
-            </div>
-
-            <div class="input-box">
-
+            <button id="requestHospitalBtn">
                 <i class="fa-solid fa-droplet"></i>
-
-                <select id="bloodGroup">
-
-                    <option>Blood Group</option>
-
-                    <option>A+</option>
-
-                    <option>A-</option>
-
-                    <option>B+</option>
-
-                    <option>B-</option>
-
-                    <option>AB+</option>
-
-                    <option>AB-</option>
-
-                    <option>O+</option>
-
-                    <option>O-</option>
-
-                </select>
-
-            </div>
-
-            <div class="input-box">
-
-                <i class="fa-solid fa-building"></i>
-
-                <select id="hospitalType">
-
-                    <option>Hospital Type</option>
-
-                    <option>Government</option>
-
-                    <option>Private</option>
-
-                    <option>Blood Bank</option>
-
-                </select>
-
-            </div>
-
-            <button id="searchHospital">
-
-                <i class="fa-solid fa-magnifying-glass"></i>
-
-                Search
-
+                Request Blood
             </button>
 
         </div>
 
-    </section>
+        <div class="hero-stats">
 
+            <div>
+                <h2 id="statHospitals">4</h2>
+                <p>Partner Hospitals</p>
+            </div>
 
+            <div>
+                <h2 id="statRequests">0</h2>
+                <p>Active Requests</p>
+            </div>
 
-    <!--================ FEATURES ================-->
-
-    <section class="features">
-
-        <div class="feature-card">
-
-            <i class="fa-solid fa-ambulance"></i>
-
-            <h3>24/7 Emergency</h3>
-
-            <p>
-
-                Immediate emergency blood support anytime.
-
-            </p>
+            <div>
+                <h2>24/7</h2>
+                <p>Emergency</p>
+            </div>
 
         </div>
 
-        <div class="feature-card">
+    </div>
 
-            <i class="fa-solid fa-shield-heart"></i>
+    <div class="hero-right">
+        <img src="images/hospital-banner.png" alt="Hospital" onerror="this.style.display='none'">
+    </div>
 
-            <h3>Verified Hospitals</h3>
+</section>
 
-            <p>
+<section class="search-section">
 
-                Only trusted and verified medical institutions.
+    <h2>Search Hospitals</h2>
+    <p>Search hospitals by city, blood group availability, or type.</p>
 
-            </p>
+    <div class="search-box">
 
-        </div>
+        <input type="text" id="location" placeholder="Enter city or area">
 
-        <div class="feature-card">
+        <select id="bloodGroup">
+            <option>Blood Group</option>
+            <option>A+</option>
+            <option>A-</option>
+            <option>B+</option>
+            <option>B-</option>
+            <option>AB+</option>
+            <option>AB-</option>
+            <option>O+</option>
+            <option>O-</option>
+        </select>
 
-            <i class="fa-solid fa-map-location-dot"></i>
+        <select id="hospitalType">
+            <option>Hospital Type</option>
+            <option>Government</option>
+            <option>Private</option>
+        </select>
 
-            <h3>Nearby Hospitals</h3>
+        <button id="searchHospital">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            Search
+        </button>
 
-            <p>
+    </div>
 
-                Locate hospitals nearest to your location.
+</section>
 
-            </p>
+<section class="map-section">
 
-        </div>
+    <div class="section-heading">
+        <span>LIVE MAP</span>
+        <h2>Hospitals Near You</h2>
+        <p>Your current location is centered on the map — nearby hospitals are highlighted around it.</p>
+    </div>
 
-        <div class="feature-card">
+    <div id="hospitalMap"></div>
 
+</section>
+
+<section>
+
+    <div class="section-heading">
+        <span>TOP RATED</span>
+        <h2>Featured Hospitals</h2>
+        <p>Verified hospitals with emergency blood support and 24-hour medical services.</p>
+    </div>
+
+    <div class="hospital-grid" id="hospitalGrid"></div>
+
+</section>
+
+<section class="requests-section">
+
+    <div class="section-heading">
+        <span>LIVE REQUESTS</span>
+        <h2>Active Hospital Blood Requests</h2>
+        <p>Real requests posted through Create Post, tagged to a specific hospital.</p>
+    </div>
+
+    <div class="hospital-request-list" id="hospitalRequestList"></div>
+
+</section>
+
+<section class="blood-network">
+
+    <div class="section-heading">
+        <span>BLOOD NETWORK</span>
+        <h2>Partner Blood Banks</h2>
+        <p>Blood banks connected with BloodConnect for faster emergency response.</p>
+    </div>
+
+    <div class="blood-bank-grid">
+
+        <div class="bank-card">
             <i class="fa-solid fa-droplet"></i>
-
-            <h3>Blood Availability</h3>
-
-            <p>
-
-                Check available blood units before visiting.
-
-            </p>
-
+            <h3>Quantum Blood Bank</h3>
+            <h2>420+</h2>
+            <p>Available Blood Units</p>
         </div>
 
-    </section>
-        <!--================ FEATURED HOSPITALS ================-->
-
-    <section class="hospital-section">
-
-        <div class="section-header">
-
-            <div>
-
-                <span>TOP RATED</span>
-
-                <h2>Featured Hospitals</h2>
-
-                <p>
-                    Verified hospitals with emergency blood support and
-                    24-hour medical services.
-                </p>
-
-            </div>
-
-            <button class="view-all">
-
-                View All
-
-                <i class="fa-solid fa-arrow-right"></i>
-
-            </button>
-
+        <div class="bank-card">
+            <i class="fa-solid fa-heart-circle-plus"></i>
+            <h3>Red Crescent</h3>
+            <h2>350+</h2>
+            <p>Available Blood Units</p>
         </div>
 
-        <div class="hospital-grid">
-
-            <!-- Hospital -->
-
-            <div class="hospital-card">
-
-                <div class="hospital-image">
-
-                    <img src="images/hospital1.jpg" alt="Hospital">
-
-                    <span class="status open">
-
-                        Open 24/7
-
-                    </span>
-
-                </div>
-
-                <div class="hospital-content">
-
-                    <div class="title-row">
-
-                        <h3>Square Hospital</h3>
-
-                        <span class="rating">
-
-                            <i class="fa-solid fa-star"></i>
-
-                            4.9
-
-                        </span>
-
-                    </div>
-
-                    <p class="location">
-
-                        <i class="fa-solid fa-location-dot"></i>
-
-                        Panthapath, Dhaka
-
-                    </p>
-
-                    <p class="description">
-
-                        Multi-specialized hospital with emergency blood
-                        bank, ICU and trauma center.
-
-                    </p>
-
-                    <div class="blood-list">
-
-                        <span>A+</span>
-                        <span>O+</span>
-                        <span>B+</span>
-                        <span>AB+</span>
-
-                    </div>
-
-                    <div class="hospital-buttons">
-
-                        <button class="callBtn">
-
-                            <i class="fa-solid fa-phone"></i>
-
-                            Call
-
-                        </button>
-
-                        <button class="mapBtn">
-
-                            <i class="fa-solid fa-location-crosshairs"></i>
-
-                            Directions
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- Hospital -->
-
-            <div class="hospital-card">
-
-                <div class="hospital-image">
-
-                    <img src="images/hospital2.jpg" alt="Hospital">
-
-                    <span class="status open">
-
-                        Open
-
-                    </span>
-
-                </div>
-
-                <div class="hospital-content">
-
-                    <div class="title-row">
-
-                        <h3>Evercare Hospital</h3>
-
-                        <span class="rating">
-
-                            <i class="fa-solid fa-star"></i>
-
-                            4.8
-
-                        </span>
-
-                    </div>
-
-                    <p class="location">
-
-                        <i class="fa-solid fa-location-dot"></i>
-
-                        Bashundhara, Dhaka
-
-                    </p>
-
-                    <p class="description">
-
-                        International standard hospital with advanced
-                        blood donation facilities.
-
-                    </p>
-
-                    <div class="blood-list">
-
-                        <span>O+</span>
-                        <span>O-</span>
-                        <span>A+</span>
-
-                    </div>
-
-                    <div class="hospital-buttons">
-
-                        <button class="callBtn">
-
-                            <i class="fa-solid fa-phone"></i>
-
-                            Call
-
-                        </button>
-
-                        <button class="mapBtn">
-
-                            <i class="fa-solid fa-location-crosshairs"></i>
-
-                            Directions
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- Hospital -->
-
-            <div class="hospital-card">
-
-                <div class="hospital-image">
-
-                    <img src="images/hospital3.jpg" alt="Hospital">
-
-                    <span class="status emergency">
-
-                        Emergency
-
-                    </span>
-
-                </div>
-
-                <div class="hospital-content">
-
-                    <div class="title-row">
-
-                        <h3>Dhaka Medical College</h3>
-
-                        <span class="rating">
-
-                            <i class="fa-solid fa-star"></i>
-
-                            4.7
-
-                        </span>
-
-                    </div>
-
-                    <p class="location">
-
-                        <i class="fa-solid fa-location-dot"></i>
-
-                        Old Dhaka
-
-                    </p>
-
-                    <p class="description">
-
-                        Government hospital with one of the largest
-                        emergency blood centers in Bangladesh.
-
-                    </p>
-
-                    <div class="blood-list">
-
-                        <span>A+</span>
-                        <span>B+</span>
-                        <span>AB-</span>
-                        <span>O+</span>
-
-                    </div>
-
-                    <div class="hospital-buttons">
-
-                        <button class="callBtn">
-
-                            <i class="fa-solid fa-phone"></i>
-
-                            Call
-
-                        </button>
-
-                        <button class="mapBtn">
-
-                            <i class="fa-solid fa-location-crosshairs"></i>
-
-                            Directions
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- Hospital -->
-
-            <div class="hospital-card">
-
-                <div class="hospital-image">
-
-                    <img src="images/hospital4.jpg" alt="Hospital">
-
-                    <span class="status open">
-
-                        Available
-
-                    </span>
-
-                </div>
-
-                <div class="hospital-content">
-
-                    <div class="title-row">
-
-                        <h3>United Hospital</h3>
-
-                        <span class="rating">
-
-                            <i class="fa-solid fa-star"></i>
-
-                            4.8
-
-                        </span>
-
-                    </div>
-
-                    <p class="location">
-
-                        <i class="fa-solid fa-location-dot"></i>
-
-                        Gulshan, Dhaka
-
-                    </p>
-
-                    <p class="description">
-
-                        Premium healthcare facility with advanced ICU,
-                        surgery and blood bank.
-
-                    </p>
-
-                    <div class="blood-list">
-
-                        <span>A-</span>
-                        <span>AB+</span>
-                        <span>O+</span>
-
-                    </div>
-
-                    <div class="hospital-buttons">
-
-                        <button class="callBtn">
-
-                            <i class="fa-solid fa-phone"></i>
-
-                            Call
-
-                        </button>
-
-                        <button class="mapBtn">
-
-                            <i class="fa-solid fa-location-crosshairs"></i>
-
-                            Directions
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
+        <div class="bank-card">
+            <i class="fa-solid fa-kit-medical"></i>
+            <h3>National Blood Centre</h3>
+            <h2>510+</h2>
+            <p>Available Blood Units</p>
         </div>
 
-    </section>
-
-    <!--================ BLOOD BANKS ================-->
-
-    <section class="blood-bank">
-
-        <div class="section-header">
-
-            <div>
-
-                <span>BLOOD NETWORK</span>
-
-                <h2>Partner Blood Banks</h2>
-
-                <p>
-
-                    Blood banks connected with BloodConnect for
-                    faster emergency response.
-
-                </p>
-
-            </div>
-
+        <div class="bank-card">
+            <i class="fa-solid fa-hand-holding-medical"></i>
+            <h3>Central Blood Bank</h3>
+            <h2>275+</h2>
+            <p>Available Blood Units</p>
         </div>
 
-        <div class="bank-grid">
+    </div>
 
-            <div class="bank-card">
+</section>
 
-                <i class="fa-solid fa-droplet"></i>
+<footer>
 
-                <h3>Quantum Blood Bank</h3>
+    <div class="footer-content">
 
-                <h2>420+</h2>
-
-                <p>Available Blood Units</p>
-
-            </div>
-
-            <div class="bank-card">
-
-                <i class="fa-solid fa-heart-circle-plus"></i>
-
-                <h3>Red Crescent</h3>
-
-                <h2>350+</h2>
-
-                <p>Available Blood Units</p>
-
-            </div>
-
-            <div class="bank-card">
-
-                <i class="fa-solid fa-kit-medical"></i>
-
-                <h3>National Blood Centre</h3>
-
-                <h2>510+</h2>
-
-                <p>Available Blood Units</p>
-
-            </div>
-
-            <div class="bank-card">
-
-                <i class="fa-solid fa-hand-holding-medical"></i>
-
-                <h3>Central Blood Bank</h3>
-
-                <h2>275+</h2>
-
-                <p>Available Blood Units</p>
-
-            </div>
-
+        <div class="footer-box">
+            <h2>BloodConnect</h2>
+            <p>Connecting blood donors, hospitals and blood banks to save lives through one secure platform.</p>
         </div>
 
-    </section>
-            </section>
-
-    </main>
-
-    <!-- ==========================
-            FOOTER
-    =========================== -->
-
-    <footer class="footer">
-
-        <div class="footer-container">
-
-            <div class="footer-col">
-
-                <h2>BloodConnect</h2>
-
-                <p>
-                    Connecting blood donors, hospitals and blood banks
-                    to save lives through one secure platform.
-                </p>
-
-            </div>
-
-            <div class="footer-col">
-
-                <h3>Quick Links</h3>
-
-                <a href="home.html">Home</a>
-                <a href="donors.html">Donors</a>
-                <a href="blood-requests.html">Blood Requests</a>
-                <a href="profile.html">Profile</a>
-
-            </div>
-
-            <div class="footer-col">
-
-                <h3>Support</h3>
-
-                <a href="#">Help Center</a>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms & Conditions</a>
-                <a href="#">Contact</a>
-
-            </div>
-
-            <div class="footer-col">
-
-                <h3>Emergency</h3>
-
-                <p>24/7 Blood Support</p>
-
-                <h2 class="hotline">
-                    📞 999
-                </h2>
-
-            </div>
-
+        <div class="footer-box">
+            <h3>Quick Links</h3>
+            <a href="home.html">Home</a>
+            <a href="donors.html">Donors</a>
+            <a href="blood-requests.html">Blood Requests</a>
+            <a href="profile.html">Profile</a>
         </div>
 
-        <hr>
+        <div class="footer-box">
+            <h3>Support</h3>
+            <a href="#">Help Center</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+        </div>
 
-        <p class="copyright">
-            © 2026 BloodConnect. All Rights Reserved.
-        </p>
+        <div class="footer-box">
+            <h3>Emergency</h3>
+            <p>24/7 Blood Support</p>
+            <h2>📞 999</h2>
+        </div>
 
-    </footer>
+    </div>
 
-</div>
+    <div class="footer-bottom">
+        © 2026 BloodConnect. All Rights Reserved.
+    </div>
+
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-
 document.addEventListener("DOMContentLoaded", function () {
 
-    /* Sidebar */
+    /* ================= Profile button ================= */
 
-    const menuBtn = document.getElementById("menuBtn");
-    const sidebar = document.querySelector(".sidebar");
+    const profileBtn = document.getElementById("profileBtn");
+    if (profileBtn) {
+        profileBtn.addEventListener("click", function () {
+            window.location.href = "profile.html";
+        });
+    }
 
-    if(menuBtn){
+    const findHospitalBtn = document.getElementById("findHospital");
+    if (findHospitalBtn) {
+        findHospitalBtn.addEventListener("click", function () {
+            document.getElementById("hospitalGrid").scrollIntoView({ behavior: "smooth" });
+        });
+    }
 
-        menuBtn.addEventListener("click", function(){
+    const requestHospitalBtn = document.getElementById("requestHospitalBtn");
+    if (requestHospitalBtn) {
+        requestHospitalBtn.addEventListener("click", function () {
+            window.location.href = "createpost.html";
+        });
+    }
 
-            sidebar.classList.toggle("show");
+    /* ================= Hospital data (Featured) ================= */
+
+    const hospitals = [
+        {
+            name: "Sylhet MAG Osmani Medical College Hospital",
+            location: "Kajolshah, Sylhet",
+            type: "Government",
+            status: "emergency",
+            statusLabel: "Emergency",
+            rating: "4.6",
+            desc: "The largest government hospital in Sylhet with a dedicated emergency blood bank and trauma center.",
+            bloodGroups: ["A+", "B+", "O+", "AB+"],
+            phone: "tel:+880821-713736",
+            photo: "samples/somc.jpg",
+            lat: 24.9004,
+            lng: 91.8687
+        },
+        {
+            name: "Mount Adora Hospital",
+            location: "Amberkhana, Sylhet",
+            type: "Private",
+            status: "open",
+            statusLabel: "Open 24/7",
+            rating: "4.7",
+            desc: "Leading private hospital in Sylhet offering advanced diagnostics, surgery, and blood transfusion services.",
+            bloodGroups: ["O+", "O-", "A+", "B-"],
+            phone: "tel:+880821-711750",
+            photo: "samples/adora.png",
+
+            lat: 24.8996,
+            lng: 91.8710
+        },
+        {
+            name: "North East Medical College Hospital",
+            location: "Toltikor, Sylhet",
+            type: "Private",
+            status: "open",
+            statusLabel: "Available",
+            rating: "4.5",
+            desc: "Teaching hospital with a growing blood donation program and 24-hour emergency services.",
+            bloodGroups: ["A+", "AB-", "O+", "B+"],
+            phone: "tel:+880821-761020",
+            photo: "samples/nemc.webp",
+
+            lat: 24.8811,
+            lng: 91.8493
+        },
+        {
+            name: "Ibn Sina Hospital, Sylhet",
+            location: "Subid Bazar, Sylhet",
+            type: "Private",
+            status: "open",
+            statusLabel: "Open",
+            rating: "4.6",
+            desc: "Modern private hospital with ICU, surgical care, and an on-site blood bank for patients and donors.",
+            bloodGroups: ["A-", "AB+", "O+", "B+"],
+            phone: "tel:+880821-2871644",
+                        photo: "samples/ibn.jpg",
+
+            lat: 24.8935,
+            lng: 91.8630
+        },
+       {
+            name: "Combined Military Hospital (CMH) Sylhet",
+            location: "Sylhet Cantonment, Sylhet",
+            type: "Government",
+            status: "open",
+            statusLabel: "Open 24/7",
+            rating: "4.8",
+            desc: "Military hospital serving both armed forces personnel and civilians, with a well-equipped blood bank and trauma unit.",
+            bloodGroups: ["A+", "B+", "O+", "O-"],
+            phone: "tel:+880821-716317",
+            photo: "samples/cmh.jfif",
+            lat: 24.9382901,
+            lng: 91.9790164
+        }
+    ];
+
+    /* ================= Render Featured hospital cards ================= */
+
+    const grid = document.getElementById("hospitalGrid");
+
+    hospitals.forEach(function (h, index) {
+
+        const card = document.createElement("div");
+        card.className = "hospital-card";
+        card.dataset.index = index;
+
+        card.innerHTML = `
+            <div class="hospital-image">
+                <img src="${h.photo}" alt="${h.name}" onerror="this.src='images/user.png'">
+                <span class="status-tag ${h.status}">${h.statusLabel}</span>
+            </div>
+            <div class="hospital-content">
+                <div class="title-row">
+                    <h3>${h.name}</h3>
+                    <span class="rating"><i class="fa-solid fa-star"></i> ${h.rating}</span>
+                </div>
+                <p class="location"><i class="fa-solid fa-location-dot"></i> ${h.location}</p>
+                <p class="description">${h.desc}</p>
+                <div class="blood-list">
+                    ${h.bloodGroups.map(g => `<span>${g}</span>`).join("")}
+                </div>
+                <div class="hospital-buttons">
+                    <button class="callBtn"><i class="fa-solid fa-phone"></i> Call</button>
+                    <button class="mapBtn"><i class="fa-solid fa-location-crosshairs"></i> Directions</button>
+                </div>
+            </div>
+        `;
+
+        grid.appendChild(card);
+
+        card.querySelector(".callBtn").addEventListener("click", function () {
+            window.location.href = h.phone;
+        });
+
+        card.querySelector(".mapBtn").addEventListener("click", function () {
+            window.open("https://www.google.com/maps/dir/?api=1&destination=" + h.lat + "," + h.lng, "_blank");
+        });
+
+    });
+
+    document.getElementById("statHospitals").textContent = hospitals.length;
+
+    /* ================= Map ================= */
+
+    let map;
+    const hospitalMarkers = [];
+
+    function initMap(centerLat, centerLng) {
+
+        map = L.map("hospitalMap").setView([centerLat, centerLng], 13);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: "&copy; OpenStreetMap contributors"
+        }).addTo(map);
+
+        const userIcon = L.divIcon({
+            className: "",
+            html: '<div style="background:#1a73e8;width:16px;height:16px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 4px rgba(26,115,232,.3);"></div>',
+            iconSize: [16, 16]
+        });
+
+        L.marker([centerLat, centerLng], { icon: userIcon })
+            .addTo(map)
+            .bindPopup("You are here")
+            .openPopup();
+
+        /* Featured hospitals — red pins */
+
+        hospitals.forEach(function (h) {
+
+            const hospitalIcon = L.divIcon({
+                className: "",
+                html: '<div style="background:#d62828;width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(214,40,40,.4);"><i class="fa-solid fa-hospital" style="transform:rotate(45deg);color:#fff;font-size:13px;"></i></div>',
+                iconSize: [30, 30],
+                iconAnchor: [15, 30]
+            });
+
+            const marker = L.marker([h.lat, h.lng], { icon: hospitalIcon }).addTo(map);
+
+            marker.bindPopup(
+                "<strong>" + h.name + "</strong><br>" +
+                h.location + "<br>" +
+                "Blood: " + h.bloodGroups.join(", ")
+            );
+
+            marker.hospitalName = h.name;
+
+            hospitalMarkers.push(marker);
+
+        });
+
+        /* All other real nearby hospitals — gray pins, from live map data */
+
+        loadNearbyHospitals(centerLat, centerLng);
+
+    }
+
+    function loadNearbyHospitals(centerLat, centerLng) {
+
+        const radius = 8000; // 8km search radius
+
+        const query = `[out:json];(
+            node["amenity"="hospital"](around:${radius},${centerLat},${centerLng});
+            way["amenity"="hospital"](around:${radius},${centerLat},${centerLng});
+            relation["amenity"="hospital"](around:${radius},${centerLat},${centerLng});
+        );out center;`;
+
+        const url = "https://overpass-api.de/api/interpreter?data=" + encodeURIComponent(query);
+
+        fetch(url)
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+
+                data.elements.forEach(function (el) {
+
+                    const elLat = el.lat || (el.center && el.center.lat);
+                    const elLng = el.lon || (el.center && el.center.lon);
+
+                    if (!elLat || !elLng) return;
+
+                    const name = (el.tags && el.tags.name) || "Unnamed Hospital";
+
+                    // Skip if it's essentially one of our Featured hospitals (avoid duplicate pins)
+                    const isFeatured = hospitals.some(function (h) {
+                        return Math.abs(h.lat - elLat) < 0.003 && Math.abs(h.lng - elLng) < 0.003;
+                    });
+
+                    if (isFeatured) return;
+
+                    const nearbyIcon = L.divIcon({
+                        className: "",
+                        html: '<div style="background:#6b7280;width:24px;height:24px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(0,0,0,.3);"><i class="fa-solid fa-hospital" style="transform:rotate(45deg);color:#fff;font-size:10px;"></i></div>',
+                        iconSize: [24, 24],
+                        iconAnchor: [12, 24]
+                    });
+
+                    L.marker([elLat, elLng], { icon: nearbyIcon })
+                        .addTo(map)
+                        .bindPopup("<strong>" + name + "</strong><br>Nearby hospital");
+
+                });
+
+            })
+            .catch(function (err) {
+                console.log("Could not load nearby hospitals:", err);
+            });
+
+    }
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                initMap(position.coords.latitude, position.coords.longitude);
+            },
+            function () {
+                initMap(24.8949, 91.8687); // fallback: Sylhet center
+            }
+        );
+    } else {
+        initMap(24.8949, 91.8687);
+    }
+
+    /* ================= Search ================= */
+
+    const locationInput = document.getElementById("location");
+    const bloodGroupSelect = document.getElementById("bloodGroup");
+    const hospitalTypeSelect = document.getElementById("hospitalType");
+    const searchBtn = document.getElementById("searchHospital");
+    const cards = document.querySelectorAll(".hospital-card");
+
+    function runSearch() {
+
+        const locationVal = (locationInput.value || "").toLowerCase().trim();
+        const groupVal = bloodGroupSelect.value;
+        const typeVal = hospitalTypeSelect.value;
+
+        let matchedName = null;
+
+        cards.forEach(function (card) {
+
+            const h = hospitals[card.dataset.index];
+
+            const locationMatch = locationVal === "" || h.location.toLowerCase().includes(locationVal) || h.name.toLowerCase().includes(locationVal);
+            const groupMatch = groupVal === "Blood Group" || h.bloodGroups.includes(groupVal);
+            const typeMatch = typeVal === "Hospital Type" || h.type === typeVal;
+
+            if (locationMatch && groupMatch && typeMatch) {
+                card.style.display = "block";
+                if (!matchedName) matchedName = h.name;
+            } else {
+                card.style.display = "none";
+            }
+
+        });
+
+        if (matchedName && map) {
+            const marker = hospitalMarkers.find(m => m.hospitalName === matchedName);
+            if (marker) {
+                map.setView(marker.getLatLng(), 15);
+                marker.openPopup();
+            }
+        }
+
+    }
+
+    if (searchBtn) searchBtn.addEventListener("click", runSearch);
+
+    /* ================= Real hospital blood requests ================= */
+
+    function renderHospitalRequests() {
+
+        const list = document.getElementById("hospitalRequestList");
+        const allRequests = JSON.parse(localStorage.getItem("bloodRequests")) || [];
+
+        const hospitalNames = hospitals.map(h => h.name.toLowerCase());
+
+        const matched = allRequests.filter(function (r) {
+            const h = (r.hospital || "").toLowerCase();
+            return hospitalNames.some(name => h.includes(name.split(" ")[0].toLowerCase())) || r.hospital;
+        }).filter(r => r.status !== "Completed");
+
+        list.innerHTML = "";
+
+        document.getElementById("statRequests").textContent = matched.length;
+
+        if (matched.length === 0) {
+            list.innerHTML = `<div class="empty-state">No active hospital blood requests right now. Create one from Create Post.</div>`;
+            return;
+        }
+
+        matched.slice().reverse().forEach(function (r) {
+
+            const card = document.createElement("div");
+            card.className = "hospital-request-card";
+
+            card.innerHTML = `
+                <div class="req-info">
+                    <h4>${r.bloodGroup} needed at ${r.hospital}</h4>
+                    <p>${r.patientName || "Patient"} &middot; ${r.location || "Location not specified"} &middot; ${r.units || 1} unit(s)</p>
+                </div>
+                <span class="req-tag">${r.urgency || "Normal"}</span>
+            `;
+
+            list.appendChild(card);
 
         });
 
     }
 
-    /* Logout */
+    renderHospitalRequests();
 
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    logoutBtn.addEventListener("click", function(){
-
-        if(confirm("Are you sure you want to logout?")){
-
-            localStorage.removeItem("currentUser");
-
-            window.location.href="index.html";
-
-        }
-
-    });
-
-    /* Search */
-
-    const searchInput =
-        document.getElementById("hospitalSearch");
-
-    const cards =
-        document.querySelectorAll(".hospital-card");
-
-    searchInput.addEventListener("keyup", function(){
-
-        const value =
-            this.value.toLowerCase();
-
-        cards.forEach(function(card){
-
-            const text =
-                card.innerText.toLowerCase();
-
-            if(text.includes(value)){
-
-                card.style.display="block";
-
-            }else{
-
-                card.style.display="none";
-
-            }
-
-        });
-
-    });
-
-    /* Filter */
-
-    const filter =
-        document.getElementById("hospitalFilter");
-
-    filter.addEventListener("change", function(){
-
-        const value = this.value;
-
-        cards.forEach(function(card){
-
-            if(value==="all"){
-
-                card.style.display="block";
-
-            }
-
-            else if(card.dataset.type===value){
-
-                card.style.display="block";
-
-            }
-
-            else{
-
-                card.style.display="none";
-
-            }
-
-        });
-
-    });
-
-    /* Buttons */
-
-    document.querySelectorAll(".viewBtn")
-    .forEach(function(btn){
-
-        btn.addEventListener("click",function(){
-
-            alert("Opening Hospital Details...");
-
-        });
-
-    });
-
-    document.querySelectorAll(".callBtn")
-    .forEach(function(btn){
-
-        btn.addEventListener("click",function(){
-
-            alert("Calling Hospital...");
-
-        });
-
-    });
-
-    document.querySelectorAll(".locationBtn")
-    .forEach(function(btn){
-
-        btn.addEventListener("click",function(){
-
-            alert("Opening Google Maps...");
-
-        });
-
-    });
-
-    /* Favorite */
-
-    document.querySelectorAll(".favBtn")
-    .forEach(function(btn){
-
-        btn.addEventListener("click",function(){
-
-            btn.classList.toggle("active");
-
-            if(btn.classList.contains("active")){
-
-                btn.innerHTML="❤";
-
-            }
-
-            else{
-
-                btn.innerHTML="♡";
-
-            }
-
-        });
-
-    });
+    window.addEventListener("focus", renderHospitalRequests);
 
 });
-
 </script>
 
 </body>
