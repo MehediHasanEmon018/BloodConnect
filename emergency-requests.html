@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloodConnect - Emergency Requests</title>
+    <link rel="stylesheet" href="emergency-requests.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+        <style>
+            *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f5f6fa;
+    color:#333;
+}
+
+.container{
+    display:flex;
+    min-height:100vh;
+}
+
+/* ==========================
+   Sidebar
+========================== */
+
+aside{
+    width:270px;
+    background:#fff;
+    border-right:1px solid #e5e5e5;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    position:fixed;
+    left:0;
+    top:0;
+    height:100vh;
+    padding:25px 20px;
+}
+
+.logo{
+    margin-bottom:35px;
+}
+
+.logo h2{
+    color:#d62828;
+    font-size:28px;
+    margin-bottom:5px;
+}
+
+.logo p{
+    color:#777;
+    font-size:14px;
+}
+
+aside ul{
+    list-style:none;
+}
+
+aside ul li{
+    margin:8px 0;
+}
+
+aside ul li a{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:14px 18px;
+    text-decoration:none;
+    color:#444;
+    border-radius:8px;
+    transition:.3s;
+    font-size:15px;
+}
+
+aside ul li a:hover{
+    background:#ffe7e7;
+    color:#d62828;
+}
+
+aside ul li.active a{
+    background:#d62828;
+    color:#fff;
+}
+
+#logoutBtn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:8px;
+    background:#d62828;
+    color:#fff;
+    cursor:pointer;
+    font-size:15px;
+    transition:.3s;
+}
+
+#logoutBtn:hover{
+    background:#b91d1d;
+}
+
+/* ==========================
+   Main
+========================== */
+
+main{
+    margin-left:270px;
+    width:calc(100% - 270px);
+    padding:30px;
+}
+
+/* ==========================
+   Header
+========================== */
+
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+#menuBtn{
+    display:none;
+    border:none;
+    background:none;
+    font-size:24px;
+    cursor:pointer;
+}
+
+.header-left h1{
+    font-size:30px;
+}
+
+.live{
+    background:#ff3b30;
+    color:#fff;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:25px;
+}
+
+.header-right i{
+    font-size:22px;
+    cursor:pointer;
+}
+
+.profile{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.profile img{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.profile h4{
+    margin-bottom:4px;
+}
+
+.profile p{
+    color:#777;
+    font-size:14px;
+}
+
+/* ==========================
+   Dashboard Layout
+========================== */
+
+.dashboard{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:25px;
+}
+
+/* ==========================
+   Alert Banner
+========================== */
+
+.alert-banner{
+    background:#ffefef;
+    border-left:6px solid #d62828;
+    padding:25px;
+    border-radius:12px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.alert-banner>div{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.alert-banner i{
+    font-size:45px;
+    color:#d62828;
+}
+
+.alert-banner h2{
+    color:#d62828;
+    margin-bottom:6px;
+}
+
+.alert-banner p{
+    color:#666;
+}
+
+#viewAllBtn{
+    padding:12px 22px;
+    border:none;
+    border-radius:8px;
+    background:#d62828;
+    color:#fff;
+    cursor:pointer;
+    transition:.3s;
+}
+
+#viewAllBtn:hover{
+    background:#b91d1d;
+}
+
+/* ==========================
+   Section Title
+========================== */
+
+.section-title{
+    margin-bottom:20px;
+    color:#222;
+}
+
+/* ==========================
+   Emergency Request Cards
+========================== */
+
+.request-card{
+    background:#fff;
+    border-radius:14px;
+    padding:25px;
+    display:grid;
+    grid-template-columns:120px 2fr 1.2fr 1fr 1.2fr;
+    gap:20px;
+    align-items:center;
+    margin-bottom:20px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.request-card:hover{
+    transform:translateY(-4px);
+}
+
+.priority{
+    text-align:center;
+    padding:10px;
+    border-radius:25px;
+    color:#fff;
+    font-weight:bold;
+}
+
+.urgent .priority{
+    background:#e53935;
+}
+
+.high .priority{
+    background:#fb8c00;
+}
+
+.medium .priority{
+    background:#43a047;
+}
+
+.request-info h3{
+    color:#d62828;
+    margin-bottom:10px;
+}
+
+.request-info p{
+    margin-bottom:12px;
+}
+
+.tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+.tags span{
+    background:#f3f3f3;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+}
+
+.hospital p,
+.time p{
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+.hospital span,
+.time span{
+    color:#777;
+    font-size:14px;
+}
+
+.action{
+    text-align:center;
+}
+
+.respondBtn{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:#d62828;
+    color:#fff;
+    cursor:pointer;
+    margin-bottom:12px;
+    transition:.3s;
+}
+
+.respondBtn:hover{
+    background:#b91d1d;
+}
+
+.action p{
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+.action span{
+    color:#777;
+    font-size:13px;
+}
+
+/* ==========================
+   View All Button
+========================== */
+
+.view-all{
+    text-align:center;
+    margin:30px 0;
+}
+
+.view-all button{
+    padding:14px 30px;
+    border:none;
+    border-radius:8px;
+    background:#d62828;
+    color:#fff;
+    font-size:15px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.view-all button:hover{
+    background:#b91d1d;
+}
+
+/* ==========================
+   Recent Responses
+========================== */
+
+.responses{
+    background:#fff;
+    padding:25px;
+    border-radius:14px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.responses h2{
+    margin-bottom:20px;
+    color:#d62828;
+}
+
+.response{
+    display:grid;
+    grid-template-columns:60px 1fr auto auto auto;
+    gap:15px;
+    align-items:center;
+    padding:18px 0;
+    border-bottom:1px solid #eee;
+}
+
+.response:last-child{
+    border-bottom:none;
+}
+
+.response img{
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.response-info h4{
+    margin-bottom:6px;
+}
+
+.response-info p{
+    color:#666;
+}
+
+.accepted{
+    background:#27ae60;
+    color:#fff;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+}
+
+.response small{
+    color:#888;
+}
+
+.response button{
+    padding:10px 18px;
+    border:none;
+    border-radius:6px;
+    background:#d62828;
+    color:#fff;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.response button:hover{
+    background:#b91d1d;
+}
+
+/* ==========================
+   Right Panel
+========================== */
+
+.right-panel{
+    display:flex;
+    flex-direction:column;
+    gap:25px;
+}
+
+/* ==========================
+   Cards
+========================== */
+
+.map-card,
+.notification-card,
+.summary{
+    background:#fff;
+    padding:25px;
+    border-radius:14px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.card-header h3{
+    color:#d62828;
+}
+
+.card-header a{
+    text-decoration:none;
+    color:#d62828;
+    font-size:14px;
+}
+
+.card-header button{
+    padding:10px 18px;
+    border:none;
+    border-radius:6px;
+    background:#d62828;
+    color:#fff;
+    cursor:pointer;
+}
+
+/* ==========================
+   Live Map
+========================== */
+
+#map{
+    width:100%;
+    height:260px;
+    overflow:hidden;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+#map iframe{
+    width:100%;
+    height:100%;
+    border:none;
+}
+
+.location-info p{
+    margin:10px 0;
+    color:#555;
+}
+
+#status{
+    color:#d62828;
+    font-weight:bold;
+}
+
+/* ==========================
+   Notifications
+========================== */
+
+.notification-card ul{
+    list-style:none;
+}
+
+.notification-card li{
+    padding:14px 0;
+    border-bottom:1px solid #eee;
+    line-height:1.6;
+}
+
+.notification-card li:last-child{
+    border-bottom:none;
+}
+
+.notification-card span{
+    display:inline-block;
+    background:#ffe5e5;
+    color:#d62828;
+    padding:4px 10px;
+    border-radius:20px;
+    margin-right:10px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+/* ==========================
+   Summary
+========================== */
+
+.summary h3{
+    color:#d62828;
+    margin-bottom:20px;
+}
+
+.summary-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.summary-grid div{
+    background:#fafafa;
+    text-align:center;
+    padding:22px;
+    border-radius:10px;
+    transition:.3s;
+}
+
+.summary-grid div:hover{
+    background:#ffeaea;
+}
+
+.summary-grid h2{
+    color:#d62828;
+    font-size:34px;
+    margin-bottom:8px;
+}
+
+.summary-grid p{
+    color:#666;
+    font-size:14px;
+}
+
+/* ==========================
+   Create Emergency Button
+========================== */
+
+#createEmergency{
+    padding:16px;
+    border:none;
+    border-radius:10px;
+    background:#d62828;
+    color:#fff;
+    font-size:16px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+#createEmergency:hover{
+    background:#b91d1d;
+}
+
+/* ==========================
+   Responsive
+========================== */
+
+@media(max-width:1200px){
+
+    .dashboard{
+        grid-template-columns:1fr;
+    }
+
+    .request-card{
+        grid-template-columns:1fr;
+        text-align:center;
+    }
+
+    .response{
+        grid-template-columns:1fr;
+        text-align:center;
+    }
+
+}
+
+@media(max-width:900px){
+
+    aside{
+        position:fixed;
+        left:-270px;
+        transition:.3s;
+        z-index:1000;
+    }
+
+    aside.show{
+        left:0;
+    }
+
+    main{
+        width:100%;
+        margin-left:0;
+    }
+
+    #menuBtn{
+        display:block;
+    }
+
+    header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:20px;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .alert-banner{
+        flex-direction:column;
+        gap:20px;
+        text-align:center;
+    }
+
+    .summary-grid{
+        grid-template-columns:1fr;
+    }
+
+    .profile{
+        display:none;
+    }
+
+    .header-left h1{
+        font-size:22px;
+    }
+
+    .card-header{
+        flex-direction:column;
+        gap:15px;
+    }
+
+}
+        </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <aside>
+
+        <div class="logo">
+
+            <h2>
+                <i class="fa-solid fa-droplet"></i>
+                BloodConnect
+            </h2>
+
+            <p>Save a Life</p>
+
+        </div>
+
+        <ul>
+
+            <li>
+                <a href="Home.html">
+                    <i class="fa-solid fa-house"></i>
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="blood-requests.html">
+                    <i class="fa-solid fa-droplet"></i>
+                    Blood Requests
+                </a>
+            </li>
+
+            <li class="active">
+                <a href="emergency-requests.html">
+                    <i class="fa-solid fa-bell"></i>
+                    Emergency Requests
+                </a>
+            </li>
+
+            <li>
+                <a href="smart-matching.html">
+                    <i class="fa-solid fa-crosshairs"></i>
+                    Smart Matching
+                </a>
+            </li>
+
+            <li>
+                <a href="donors.html">
+                    <i class="fa-solid fa-users"></i>
+                    Donor Network
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-heart"></i>
+                    My Donations
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-message"></i>
+                    Messages
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-bell"></i>
+                    Notifications
+                </a>
+            </li>
+
+            <li>
+                <a href="profile.html">
+                    <i class="fa-solid fa-user"></i>
+                    Profile
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-gear"></i>
+                    Settings
+                </a>
+            </li>
+
+        </ul>
+
+        <button id="logoutBtn">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+        </button>
+
+    </aside>
+
+    <main>
+
+        <header>
+
+            <div class="header-left">
+
+                <button id="menuBtn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <h1>
+                    Real-Time Emergency Requests
+                </h1>
+
+                <span class="live">
+                    LIVE
+                </span>
+
+            </div>
+
+            <div class="header-right">
+
+                <i class="fa-regular fa-bell"></i>
+
+                <div class="profile">
+
+                    <img src="images/user.png" alt="Profile">
+
+                    <div>
+
+                        <h4>Tahmid Hasan</h4>
+
+                        <p>Donor</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <div class="dashboard">
+
+            <section class="left-panel">
+
+                <div class="alert-banner">
+
+                    <div>
+
+                        <i class="fa-solid fa-siren-on"></i>
+
+                        <div>
+
+                            <h2>
+                                Emergency Request Active
+                            </h2>
+
+                            <p>
+                                Multiple emergency requests need immediate attention.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <button id="viewAllBtn">
+                        View All Requests
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                </div>
+
+                <h2 class="section-title">
+
+                    Active Emergency Requests (3)
+
+                </h2>
+
+                <!-- Emergency Card 1 -->
+
+                <div class="request-card urgent">
+
+                    <div class="priority">
+                        URGENT
+                    </div>
+
+                    <div class="request-info">
+
+                        <h3>O+ Blood Required</h3>
+
+                        <p>2 Units Needed</p>
+
+                        <div class="tags">
+
+                            <span>Patient: Rahim Hasan</span>
+
+                            <span>Age: 28</span>
+
+                            <span>Case: Accident</span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="hospital">
+
+                        <p>
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            Dhanmondi, Dhaka
+
+                        </p>
+
+                        <span>Green Life Hospital</span>
+
+                    </div>
+
+                    <div class="time">
+
+                        <p>
+
+                            <i class="fa-regular fa-clock"></i>
+
+                            15 min ago
+
+                        </p>
+
+                        <span>Critical Condition</span>
+
+                    </div>
+
+                    <div class="action">
+
+                        <button class="respondBtn">
+
+                            <i class="fa-solid fa-bolt"></i>
+
+                            Respond Now
+
+                        </button>
+
+                        <p>5.2 km away</p>
+
+                        <span>5 donors notified</span>
+
+                    </div>
+
+                </div>
+
+                <!-- Emergency Card 2 -->
+
+                <div class="request-card high">
+
+                    <div class="priority">
+                        HIGH
+                    </div>
+
+                    <div class="request-info">
+
+                        <h3>A- Blood Required</h3>
+
+                        <p>1 Unit Needed</p>
+
+                        <div class="tags">
+
+                            <span>Patient: Nusrat Jahan</span>
+
+                            <span>Age: 35</span>
+
+                            <span>Case: Surgery</span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="hospital">
+
+                        <p>
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            Mirpur, Dhaka
+
+                        </p>
+
+                        <span>Popular Medical Center</span>
+
+                    </div>
+
+                    <div class="time">
+
+                        <p>
+
+                            <i class="fa-regular fa-clock"></i>
+
+                            32 min ago
+
+                        </p>
+
+                        <span>Serious Condition</span>
+
+                    </div>
+
+                    <div class="action">
+
+                        <button class="respondBtn">
+
+                            <i class="fa-solid fa-bolt"></i>
+
+                            Respond Now
+
+                        </button>
+
+                        <p>6.8 km away</p>
+
+                        <span>8 donors notified</span>
+
+                    </div>
+
+                </div>
+
+                                <!-- Emergency Card 3 -->
+
+                <div class="request-card medium">
+
+                    <div class="priority">
+                        MEDIUM
+                    </div>
+
+                    <div class="request-info">
+
+                        <h3>B+ Blood Required</h3>
+
+                        <p>2 Units Needed</p>
+
+                        <div class="tags">
+
+                            <span>Patient: Kamal Ahmed</span>
+
+                            <span>Age: 42</span>
+
+                            <span>Case: Thalassemia</span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="hospital">
+
+                        <p>
+                            <i class="fa-solid fa-location-dot"></i>
+                            Uttara, Dhaka
+                        </p>
+
+                        <span>United Hospital</span>
+
+                    </div>
+
+                    <div class="time">
+
+                        <p>
+                            <i class="fa-regular fa-clock"></i>
+                            1 hr ago
+                        </p>
+
+                        <span>Stable Condition</span>
+
+                    </div>
+
+                    <div class="action">
+
+                        <button class="respondBtn">
+
+                            <i class="fa-solid fa-bolt"></i>
+
+                            Respond Now
+
+                        </button>
+
+                        <p>8.1 km away</p>
+
+                        <span>6 donors notified</span>
+
+                    </div>
+
+                </div>
+
+                <div class="view-all">
+
+                    <button>
+
+                        View All Emergency Requests
+
+                    </button>
+
+                </div>
+
+                <!-- Recent Responses -->
+
+                <section class="responses">
+
+                    <h2>
+
+                        Recent Responses
+
+                    </h2>
+
+                    <div class="response">
+
+                        <img src="images/user.png" alt="">
+
+                        <div class="response-info">
+
+                            <h4>Sakib Rahman</h4>
+
+                            <p>Responded to <strong>O+</strong> request</p>
+
+                        </div>
+
+                        <span class="accepted">
+
+                            Accepted
+
+                        </span>
+
+                        <small>2 min ago</small>
+
+                        <button>
+
+                            <i class="fa-regular fa-message"></i>
+
+                            Message
+
+                        </button>
+
+                    </div>
+
+                    <div class="response">
+
+                        <img src="images/user.png" alt="">
+
+                        <div class="response-info">
+
+                            <h4>Faria Islam</h4>
+
+                            <p>Responded to <strong>A-</strong> request</p>
+
+                        </div>
+
+                        <span class="accepted">
+
+                            Accepted
+
+                        </span>
+
+                        <small>5 min ago</small>
+
+                        <button>
+
+                            <i class="fa-regular fa-message"></i>
+
+                            Message
+
+                        </button>
+
+                    </div>
+
+                    <div class="response">
+
+                        <img src="images/user.png" alt="">
+
+                        <div class="response-info">
+
+                            <h4>Hasan Mahmud</h4>
+
+                            <p>Responded to <strong>B+</strong> request</p>
+
+                        </div>
+
+                        <span class="accepted">
+
+                            Accepted
+
+                        </span>
+
+                        <small>8 min ago</small>
+
+                        <button>
+
+                            <i class="fa-regular fa-message"></i>
+
+                            Message
+
+                        </button>
+
+                    </div>
+
+                </section>
+
+            </section>
+
+            <!-- Right Panel -->
+
+            <aside class="right-panel">
+
+                <!-- Live Location -->
+
+                <div class="map-card">
+
+                    <div class="card-header">
+
+                        <h3>
+
+                            Live Location
+
+                        </h3>
+
+                        <button id="locationBtn">
+
+                            Get My Location
+
+                        </button>
+
+                    </div>
+
+                    <div id="map">
+
+                        <iframe
+                            src="https://maps.google.com/maps?q=Dhaka&t=&z=12&ie=UTF8&iwloc=&output=embed"
+                            loading="lazy">
+                        </iframe>
+
+                    </div>
+
+                    <div class="location-info">
+
+                        <p>
+
+                            <strong>Latitude:</strong>
+
+                            <span id="latitude">
+
+                                --
+
+                            </span>
+
+                        </p>
+
+                        <p>
+
+                            <strong>Longitude:</strong>
+
+                            <span id="longitude">
+
+                                --
+
+                            </span>
+
+                        </p>
+
+                        <p id="status">
+
+                            Waiting for location...
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- Notifications -->
+
+                <div class="notification-card">
+
+                    <div class="card-header">
+
+                        <h3>
+
+                            Live Notifications
+
+                        </h3>
+
+                        <a href="#">
+
+                            View All
+
+                        </a>
+
+                    </div>
+
+                    <ul>
+
+                        <li>
+
+                            <span>2 min</span>
+
+                            New <strong>O+</strong> emergency request in Dhanmondi
+
+                        </li>
+
+                        <li>
+
+                            <span>5 min</span>
+
+                            <strong>Faria Islam</strong> accepted your request
+
+                        </li>
+
+                        <li>
+
+                            <span>7 min</span>
+
+                            New <strong>A-</strong> request in Mirpur
+
+                        </li>
+
+                        <li>
+
+                            <span>12 min</span>
+
+                            <strong>Sakib Rahman</strong> is on the way
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+                <!-- Summary -->
+
+                <div class="summary">
+
+                    <h3>
+
+                        Emergency Summary
+
+                    </h3>
+
+                    <div class="summary-grid">
+
+                        <div>
+
+                            <h2>3</h2>
+
+                            <p>Active Requests</p>
+
+                        </div>
+
+                        <div>
+
+                            <h2>19</h2>
+
+                            <p>Donors Notified</p>
+
+                        </div>
+
+                        <div>
+
+                            <h2>7</h2>
+
+                            <p>Responses</p>
+
+                        </div>
+
+                        <div>
+
+                            <h2>2</h2>
+
+                            <p>Completed</p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <button id="createEmergency">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Create Emergency Request
+
+                </button>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script src="emergency-requests.js">
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+    const menuBtn = document.getElementById("menuBtn");
+    const sidebar = document.querySelector("aside");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const locationBtn = document.getElementById("locationBtn");
+    const latitude = document.getElementById("latitude");
+    const longitude = document.getElementById("longitude");
+    const statusText = document.getElementById("status");
+    const respondButtons = document.querySelectorAll(".respondBtn");
+    const createEmergency = document.getElementById("createEmergency");
+    const viewAllBtn = document.getElementById("viewAllBtn");
+
+    menuBtn.addEventListener("click", function () {
+        sidebar.classList.toggle("show");
+    });
+
+    logoutBtn.addEventListener("click", function () {
+
+        const confirmLogout = confirm("Are you sure you want to logout?");
+
+        if (confirmLogout) {
+            alert("Logged out successfully.");
+            window.location.href = "index.html";
+        }
+
+    });
+
+    viewAllBtn.addEventListener("click", function () {
+
+        alert("Showing all emergency requests.");
+
+    });
+
+    createEmergency.addEventListener("click", function () {
+
+        window.location.href = "blood-requests.html";
+
+    });
+
+    respondButtons.forEach(function (button) {
+
+        button.addEventListener("click", function () {
+
+            const card = button.closest(".request-card");
+            const request = card.querySelector("h3").textContent;
+
+            const confirmResponse = confirm(
+                "Do you want to respond to this emergency request?\n\n" +
+                request
+            );
+
+            if (confirmResponse) {
+
+                button.innerHTML =
+                    '<i class="fa-solid fa-circle-check"></i> Responded';
+
+                button.style.background = "#27ae60";
+
+                button.disabled = true;
+
+                alert("Response submitted successfully.");
+
+            }
+
+        });
+
+    });
+
+    locationBtn.addEventListener("click", function () {
+
+        if (!navigator.geolocation) {
+
+            statusText.textContent =
+                "Geolocation is not supported.";
+
+            return;
+
+        }
+
+        statusText.textContent =
+            "Getting your location...";
+
+        navigator.geolocation.getCurrentPosition(
+
+            function (position) {
+
+                latitude.textContent =
+                    position.coords.latitude.toFixed(6);
+
+                longitude.textContent =
+                    position.coords.longitude.toFixed(6);
+
+                statusText.textContent =
+                    "Location found successfully.";
+
+            },
+
+            function () {
+
+                statusText.textContent =
+                    "Location access denied.";
+
+            }
+
+        );
+
+    });
+
+    const summaryCards =
+        document.querySelectorAll(".summary-grid h2");
+
+    summaryCards.forEach(function (counter) {
+
+        const target = parseInt(counter.textContent);
+
+        let current = 0;
+
+        function updateCounter() {
+
+            const increment = Math.ceil(target / 50);
+
+            current += increment;
+
+            if (current < target) {
+
+                counter.textContent = current;
+
+                requestAnimationFrame(updateCounter);
+
+            } else {
+
+                counter.textContent = target;
+
+            }
+
+        }
+
+        updateCounter();
+
+    });
+
+    const notificationList =
+        document.querySelector(".notification-card ul");
+
+    const notifications = [
+
+        "New O- emergency request received.",
+        "Nearby donor accepted the request.",
+        "Hospital updated patient status.",
+        "Emergency request completed.",
+        "Another donor is available nearby."
+
+    ];
+
+    let index = 0;
+
+    setInterval(function () {
+
+        const li = document.createElement("li");
+
+        li.innerHTML =
+            "<span>Now</span> " + notifications[index];
+
+        notificationList.prepend(li);
+
+        if (notificationList.children.length > 6) {
+
+            notificationList.removeChild(
+                notificationList.lastElementChild
+            );
+
+        }
+
+        index++;
+
+        if (index >= notifications.length) {
+
+            index = 0;
+
+        }
+
+    }, 10000);
+
+    const responseCards =
+        document.querySelectorAll(".response");
+
+    responseCards.forEach(function (card, index) {
+
+        card.style.opacity = "0";
+        card.style.transform = "translateY(20px)";
+
+        setTimeout(function () {
+
+            card.style.transition = "0.5s";
+
+            card.style.opacity = "1";
+
+            card.style.transform = "translateY(0)";
+
+        }, index * 150);
+
+    });
+
+    const requestCards =
+        document.querySelectorAll(".request-card");
+
+    requestCards.forEach(function (card) {
+
+        card.addEventListener("mouseenter", function () {
+
+            card.style.transform =
+                "translateY(-6px)";
+
+        });
+
+        card.addEventListener("mouseleave", function () {
+
+            card.style.transform =
+                "translateY(0)";
+
+        });
+
+    });
+
+});
+
+</script>
+
+</body>
+
+</html>

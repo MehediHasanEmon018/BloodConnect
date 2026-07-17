@@ -301,7 +301,6 @@ footer p{
             <a href="donors.html" class="active">Donors</a>
             <a href="blood-requests.html">Blood Requests</a>
             <a href="emergency-requests.html">Emergency</a>
-            <a href="smart-matching.html">Smart Matching</a>
             <a href="hospitals.html">Hospitals</a>
             <a href="analytics.html">Analytics</a>
             <a href="profile.html">Profile</a>
@@ -351,153 +350,8 @@ footer p{
 
             <h2>Available Donors</h2>
 
-            <div class="grid">
-
-                <div class="card">
-
-                    <img src="images/user.png" alt="Donor">
-
-                    <h3>Ahmed Rahman</h3>
-
-                    <p><strong>Blood Group:</strong> O+</p>
-
-                    <p><strong>Location:</strong> Dhaka</p>
-
-                    <p><strong>Last Donation:</strong> 5 Months Ago</p>
-
-                    <p><strong>Status:</strong> Available</p>
-
-                    <button>Contact</button>
-
-                </div>
-
-                <div class="card">
-
-                    <img src="images/user.png" alt="Donor">
-
-                    <h3>Fatema Khan</h3>
-
-                    <p><strong>Blood Group:</strong> A+</p>
-
-                    <p><strong>Location:</strong> Chattogram</p>
-
-                    <p><strong>Last Donation:</strong> 4 Months Ago</p>
-
-                    <p><strong>Status:</strong> Available</p>
-
-                    <button>Contact</button>
-
-                </div>
-
-                <div class="card">
-
-                    <img src="images/user.png" alt="Donor">
-
-                    <h3>Rakib Hasan</h3>
-
-                    <p><strong>Blood Group:</strong> B+</p>
-
-                    <p><strong>Location:</strong> Sylhet</p>
-
-                    <p><strong>Last Donation:</strong> 6 Months Ago</p>
-
-                    <p><strong>Status:</strong> Available</p>
-
-                    <button>Contact</button>
-
-                </div>
-
-                <div class="card">
-
-                    <img src="images/user.png" alt="Donor">
-
-                    <h3>Nusrat Jahan</h3>
-
-                    <p><strong>Blood Group:</strong> AB+</p>
-
-                    <p><strong>Location:</strong> Khulna</p>
-
-                    <p><strong>Last Donation:</strong> 7 Months Ago</p>
-
-                    <p><strong>Status:</strong> Available</p>
-
-                    <button>Contact</button>
-
-                </div>
-
-                <div class="card">
-
-                    <img src="images/user.png" alt="Donor">
-
-                    <h3>Tanvir Islam</h3>
-
-                    <p><strong>Blood Group:</strong> O-</p>
-
-                    <p><strong>Location:</strong> Rajshahi</p>
-
-                    <p><strong>Last Donation:</strong> 5 Months Ago</p>
-
-                    <p><strong>Status:</strong> Available</p>
-
-                    <button>Contact</button>
-
-                </div>
-
-                <div class="card">
-
-                    <img src="images/user.png" alt="Donor">
-
-                    <h3>Shanta Akter</h3>
-
-                    <p><strong>Blood Group:</strong> B-</p>
-
-                    <p><strong>Location:</strong> Barishal</p>
-
-                    <p><strong>Last Donation:</strong> 8 Months Ago</p>
-
-                    <p><strong>Status:</strong> Available</p>
-
-                    <button>Contact</button>
-
-                </div>
-
-                <div class="card">
-
-                    <img src="images/user.png" alt="Donor">
-
-                    <h3>Mehedi Hasan</h3>
-
-                    <p><strong>Blood Group:</strong> A-</p>
-
-                    <p><strong>Location:</strong> Cumilla</p>
-
-                    <p><strong>Last Donation:</strong> 5 Months Ago</p>
-
-                    <p><strong>Status:</strong> Available</p>
-
-                    <button>Contact</button>
-
-                </div>
-
-                <div class="card">
-
-                    <img src="images/user.png" alt="Donor">
-
-                    <h3>Sabina Yasmin</h3>
-
-                    <p><strong>Blood Group:</strong> AB-</p>
-
-                    <p><strong>Location:</strong> Rangpur</p>
-
-                    <p><strong>Last Donation:</strong> 6 Months Ago</p>
-
-                    <p><strong>Status:</strong> Available</p>
-
-                    <button>Contact</button>
-
-                </div>
-
-            </div>
+            
+            <div class="grid" id="donorGrid"></div>
 
         </section>
 
@@ -513,107 +367,155 @@ footer p{
 
     </footer>
 
-    <script src="donors.js">
-        document.addEventListener("DOMContentLoaded", function () {
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
 
     const backBtn = document.getElementById("backBtn");
     const searchBtn = document.getElementById("searchBtn");
     const bloodGroup = document.getElementById("bloodGroup");
     const location = document.getElementById("location");
-    const donorCards = document.querySelectorAll(".card");
-    const contactButtons = document.querySelectorAll(".card button");
+    const donorGrid = document.getElementById("donorGrid");
 
-    backBtn.addEventListener("click", function () {
-        window.location.href = "Home.html";
-    });
+    if (backBtn) {
+        backBtn.addEventListener("click", function () {
+            window.location.href = "Home.html";
+        });
+    }
 
-    searchBtn.addEventListener("click", function () {
+    function getDonationPosts() {
 
-        const selectedGroup = bloodGroup.value.toUpperCase().trim();
-        const selectedLocation = location.value.toUpperCase().trim();
+        const posts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
 
-        let found = false;
+        return posts.filter(function (post) {
 
-        donorCards.forEach(function (card) {
-
-            const bloodText = card.querySelectorAll("p")[0].textContent.toUpperCase();
-            const locationText = card.querySelectorAll("p")[1].textContent.toUpperCase();
-
-            const groupMatch =
-                selectedGroup === "SELECT BLOOD GROUP" ||
-                bloodText.includes(selectedGroup);
-
-            const locationMatch =
-                selectedLocation === "" ||
-                locationText.includes(selectedLocation);
-
-            if (groupMatch && locationMatch) {
-                card.style.display = "block";
-                found = true;
-            } else {
-                card.style.display = "none";
-            }
+            return post.postType === "Blood Available";
 
         });
 
-        if (!found) {
-            alert("No matching donors found.");
+    }
+
+    function renderDonors(donors) {
+
+        donorGrid.innerHTML = "";
+
+        if (donors.length === 0) {
+
+            donorGrid.innerHTML = `
+                <div style="grid-column:1/-1;text-align:center;padding:50px;">
+                    <h2>No blood donors available.</h2>
+                </div>
+            `;
+
+            return;
         }
 
-    });
+        donors.forEach(function (donor, index) {
 
-    contactButtons.forEach(function (button) {
+            const card = document.createElement("div");
+            card.className = "card";
 
-        button.addEventListener("click", function () {
+            card.innerHTML = `
 
-            const card = button.parentElement;
-            const donorName = card.querySelector("h3").textContent;
+                <img src="${donor.userPhoto || "images/user.png"}" alt="Donor">
 
-            alert("Contact request sent to " + donorName + ".");
+                <h3>${donor.userName || "Unknown User"}</h3>
+
+                <p><strong>Blood Group:</strong> ${donor.bloodGroup || "N/A"}</p>
+
+                <p><strong>Location:</strong> ${donor.location || "Unknown"}</p>
+
+                <p><strong>Hospital:</strong> ${donor.hospital || "Not Provided"}</p>
+
+                <p><strong>Contact:</strong> ${donor.contact || "Not Provided"}</p>
+
+                <p><strong>Status:</strong> Available</p>
+
+                <button class="contactBtn">Contact</button>
+
+            `;
+
+            donorGrid.appendChild(card);
+
+            card.style.opacity = "0";
+            card.style.transform = "translateY(30px)";
+
+            setTimeout(function () {
+
+                card.style.transition = "0.5s";
+                card.style.opacity = "1";
+                card.style.transform = "translateY(0)";
+
+            }, index * 100);
+
+            card.addEventListener("mouseenter", function () {
+
+                card.style.transform = "translateY(-8px) scale(1.02)";
+
+            });
+
+            card.addEventListener("mouseleave", function () {
+
+                card.style.transform = "translateY(0)";
+
+            });
+
+            card.querySelector(".contactBtn").addEventListener("click", function () {
+
+                alert("Contact request sent to " + (donor.userName || "the donor") + ".");
+
+            });
 
         });
 
-    });
+    }
 
-    donorCards.forEach(function (card) {
+    function searchDonors() {
 
-        card.addEventListener("mouseenter", function () {
-            card.style.transform = "translateY(-8px) scale(1.02)";
+        const group = bloodGroup.value.trim().toUpperCase();
+        const city = location.value.trim().toUpperCase();
+
+        let donors = getDonationPosts();
+
+        donors = donors.filter(function (donor) {
+
+            const groupMatch =
+                group === "" ||
+                group === "SELECT BLOOD GROUP" ||
+                (donor.bloodGroup || "").toUpperCase() === group;
+
+            const locationMatch =
+                city === "" ||
+                (donor.location || "").toUpperCase().includes(city);
+
+            return groupMatch && locationMatch;
+
         });
 
-        card.addEventListener("mouseleave", function () {
-            card.style.transform = "translateY(0)";
-        });
+        renderDonors(donors);
 
-    });
+    }
+
+    if (searchBtn) {
+
+        searchBtn.addEventListener("click", searchDonors);
+
+    }
 
     const navLinks = document.querySelectorAll("nav a");
 
     navLinks.forEach(function (link) {
 
         link.addEventListener("click", function () {
+
             console.log("Opening " + link.textContent);
+
         });
 
     });
 
-    donorCards.forEach(function (card, index) {
-
-        card.style.opacity = "0";
-        card.style.transform = "translateY(30px)";
-
-        setTimeout(function () {
-
-            card.style.transition = "0.5s";
-            card.style.opacity = "1";
-            card.style.transform = "translateY(0)";
-
-        }, index * 120);
-
-    });
+    renderDonors(getDonationPosts());
 
 });
-    </script>
-
+</script>
 </body>
 </html>

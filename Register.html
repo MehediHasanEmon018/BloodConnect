@@ -312,60 +312,98 @@ Login
 </footer>
 
 <script>
+document.getElementById("registerForm").addEventListener("submit", function (e) {
 
-document.getElementById("registerForm").addEventListener("submit",function(e){
+    e.preventDefault();
 
-e.preventDefault();
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim().toLowerCase();
+    const phone = document.getElementById("phone").value.trim();
+    const bloodGroup = document.getElementById("bloodGroup").value;
+    const gender = document.getElementById("gender").value;
+    const dob = document.getElementById("dob").value;
+    const division = document.getElementById("division").value.trim();
+    const district = document.getElementById("district").value.trim();
+    const password = document.getElementById("password").value;
+    const confirm = document.getElementById("confirmPassword").value;
+    const lastDonation = document.getElementById("lastDonation").value;
 
-const password=document.getElementById("password").value;
-const confirm=document.getElementById("confirmPassword").value;
+    const message = document.getElementById("message");
 
-const message=document.getElementById("message");
+    if (password.length < 6) {
+        message.style.color = "red";
+        message.innerHTML = "Password must be at least 6 characters.";
+        return;
+    }
 
-if(password.length<6){
+    if (password !== confirm) {
+        message.style.color = "red";
+        message.innerHTML = "Passwords do not match.";
+        return;
+    }
 
-message.style.color="red";
-message.innerHTML="Password must be at least 6 characters.";
-return;
-
+const users = JSON.parse(localStorage.getItem("users")) || [];
+const me = JSON.parse(localStorage.getItem("currentUser"));
+if (me && !users.find(u => u.email === me.email)) {
+    users.push(me);
+    localStorage.setItem("users", JSON.stringify(users));
 }
+    // Prevent duplicate accounts
+    const existing = users.find(u => u.email === email);
 
-if(password!==confirm){
+    if (existing) {
+        message.style.color = "red";
+        message.innerHTML = "An account with this email already exists.";
+        return;
+    }
 
-message.style.color="red";
-message.innerHTML="Passwords do not match.";
-return;
+    const newUser = {
+        name: name,
+        email: email,
+        phone: phone,
+        bloodGroup: bloodGroup,
+        gender: gender,
+        dob: dob,
+        location: [division, district].filter(Boolean).join(", "),
+        division: division,
+        district: district,
+        password: password, // NOTE: plain text, fine for a local demo only
+        lastDonation: lastDonation,
+        photo: "images/user.png",
+        coverImage: "",
+        memberSince: new Date().toLocaleString("en-US", { month: "long", year: "numeric" }),
+        reliability: "98%",
+        totalDonations: "0",
+        livesSaved: "0"
+    };
 
-}
+    users.push(newUser);
 
-message.style.color="green";
-message.innerHTML="Registration Successful! Redirecting to Login...";
+    localStorage.setItem("users", JSON.stringify(users));
 
-setTimeout(function(){
+    message.style.color = "green";
+    message.innerHTML = "Registration Successful! Redirecting to Login...";
 
-window.location.href="login.html";
-
-},1800);
+    setTimeout(function () {
+        window.location.href = "login.html";
+    }, 1800);
 
 });
 
-const inputs=document.querySelectorAll("input,select");
+const inputs = document.querySelectorAll("input,select");
 
-inputs.forEach(function(input){
+inputs.forEach(function (input) {
 
-input.addEventListener("focus",function(){
+    input.addEventListener("focus", function () {
+        this.style.background = "#fff7f7";
+    });
 
-this.style.background="#fff7f7";
-
-});
-
-input.addEventListener("blur",function(){
-
-this.style.background="white";
+    input.addEventListener("blur", function () {
+        this.style.background = "white";
+    });
 
 });
 
-});
 
 </script>
 

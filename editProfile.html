@@ -1,0 +1,1976 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BloodConnect | Edit Profile</title>
+
+    <link rel="stylesheet" href="edit-profile.css">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+        <style>
+            *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Cambria, "Times New Roman", serif;
+}
+
+body{
+    background:#f5f6fb;
+    color:#222;
+}
+
+.container{
+    display:flex;
+    min-height:100vh;
+}
+
+
+/* ================= Sidebar ================= */
+
+.sidebar{
+    width:250px;
+    background:rgb(14,3,77);
+    color:white;
+    padding:25px 15px;
+    position:fixed;
+    height:100vh;
+    left:0;
+    top:0;
+}
+
+.logo{
+    text-align:center;
+    margin-bottom:35px;
+}
+
+.logo h2{
+    font-size:24px;
+}
+
+.logo h2 i{
+    color:#ff304f;
+    margin-right:8px;
+}
+
+.logo p{
+    font-size:14px;
+    margin-top:8px;
+    color:#ddd;
+}
+
+
+.sidebar ul{
+    list-style:none;
+}
+
+.sidebar ul li{
+    margin:12px 0;
+}
+
+
+.sidebar ul li a{
+    text-decoration:none;
+    color:white;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:13px 15px;
+    border-radius:10px;
+    transition:.3s;
+    font-size:17px;
+}
+
+
+.sidebar ul li a:hover,
+.sidebar ul li.active a{
+    background:rgb(60,45,131);
+}
+
+
+.sidebar ul li i{
+    width:20px;
+}
+
+
+#logoutBtn{
+    position:absolute;
+    bottom:25px;
+    left:20px;
+    width:210px;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#ff304f;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+
+#logoutBtn:hover{
+    background:#d90429;
+}
+
+
+
+/* ================= Main Content ================= */
+
+.main-content{
+    margin-left:250px;
+    width:calc(100% - 250px);
+    padding:20px 35px;
+}
+
+
+/* ================= Header ================= */
+
+header{
+    height:70px;
+    background:white;
+    border-radius:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 25px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+
+.header-left h1{
+    font-size:28px;
+}
+
+
+#menuBtn{
+    border:none;
+    background:none;
+    font-size:22px;
+    cursor:pointer;
+}
+
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:22px;
+}
+
+
+.header-right i{
+    font-size:20px;
+    color:#555;
+    cursor:pointer;
+}
+
+
+.header-right img{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    object-fit:cover;
+    border:2px solid #ff304f;
+}
+
+
+
+/* ================= Cover ================= */
+
+.cover-section{
+    margin-top:25px;
+    height:260px;
+    position:relative;
+    overflow:hidden;
+    border-radius:18px;
+}
+
+
+.cover-section img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+
+.cover-overlay{
+    position:absolute;
+    bottom:20px;
+    right:25px;
+}
+
+
+.cover-overlay label{
+    background:#ffffff;
+    padding:12px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    color:#333;
+}
+
+
+.cover-overlay i{
+    margin-right:8px;
+    color:#ff304f;
+}
+
+
+#coverImage{
+    display:none;
+}
+
+/* ================= Profile Preview ================= */
+
+.profile-preview{
+    background:white;
+    margin-top:25px;
+    padding:25px;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    gap:30px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+
+.profile-image{
+    position:relative;
+}
+
+
+.profile-image img{
+    width:130px;
+    height:130px;
+    border-radius:50%;
+    object-fit:cover;
+    border:5px solid #ff304f;
+}
+
+
+.profile-image label{
+    position:absolute;
+    bottom:8px;
+    right:8px;
+    background:#ff304f;
+    color:white;
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+}
+
+
+#profileImage{
+    display:none;
+}
+
+
+.profile-details h2{
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+
+.profile-details p{
+    color:#666;
+    margin-bottom:15px;
+}
+
+
+.profile-badges{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+
+.profile-badges span{
+    background:#ffe5ea;
+    color:#d90429;
+    padding:7px 15px;
+    border-radius:20px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+
+
+/* ================= Section Title ================= */
+
+.section-title{
+    margin:35px 0 20px;
+}
+
+
+.section-title h2{
+    font-size:28px;
+    color:rgb(14,3,77);
+}
+
+
+.section-title p{
+    margin-top:8px;
+    color:#666;
+}
+
+
+
+/* ================= Form Section ================= */
+
+.form-section{
+    background:white;
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:25px;
+}
+
+
+.input-group{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+
+.input-group label{
+    font-weight:bold;
+    color:#333;
+    font-size:16px;
+}
+
+
+.input-group input,
+.input-group select,
+.input-group textarea{
+
+    padding:13px 15px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    outline:none;
+    font-size:15px;
+    transition:.3s;
+}
+
+
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus{
+
+    border-color:#ff304f;
+    box-shadow:0 0 5px rgba(255,48,79,.3);
+
+}
+
+
+.input-group textarea{
+    resize:none;
+}
+
+
+.full-width{
+    margin-top:25px;
+}
+
+
+
+.sub-heading{
+    margin:35px 0 20px;
+    color:rgb(14,3,77);
+    font-size:22px;
+    border-left:5px solid #ff304f;
+    padding-left:12px;
+}
+
+
+
+/* ================= Checkbox ================= */
+
+.checkbox-group{
+
+    display:flex;
+    flex-wrap:wrap;
+    gap:25px;
+    margin-top:15px;
+
+}
+
+
+.checkbox-group label{
+
+    background:#f7f7f7;
+    padding:12px 18px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+
+.checkbox-group input{
+
+    margin-right:8px;
+
+}
+
+
+
+/* ================= Buttons ================= */
+
+.button-group{
+
+    margin-top:40px;
+    display:flex;
+    gap:15px;
+
+}
+
+
+.button-group button{
+
+    padding:13px 25px;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    transition:.3s;
+
+}
+
+
+#saveChanges{
+
+    background:#ff304f;
+    color:white;
+
+}
+
+
+#saveChanges:hover{
+
+    background:#d90429;
+
+}
+
+
+#resetForm{
+
+    background:#eee;
+    color:#333;
+
+}
+
+
+#resetForm:hover{
+
+    background:#ddd;
+
+}
+
+
+#cancelChanges{
+
+    background:rgb(14,3,77);
+    color:white;
+
+}
+
+
+#cancelChanges:hover{
+
+    background:rgb(60,45,131);
+
+}
+
+/* ================= Account Information ================= */
+
+.account-info{
+
+    background:white;
+    margin-top:30px;
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+
+.account-info h2{
+
+    color:rgb(14,3,77);
+    margin-bottom:25px;
+    font-size:24px;
+
+}
+
+
+.info-grid{
+
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+
+}
+
+
+.info-grid div{
+
+    background:#f8f8ff;
+    padding:20px;
+    border-radius:12px;
+    text-align:center;
+
+}
+
+
+.info-grid strong{
+
+    display:block;
+    color:#555;
+    margin-bottom:10px;
+
+}
+
+
+.info-grid p{
+
+    font-size:24px;
+    font-weight:bold;
+    color:#ff304f;
+
+}
+
+
+
+/* ================= Danger Zone ================= */
+
+.danger-zone{
+
+    margin-top:30px;
+    background:#fff0f2;
+    border:1px solid #ffccd5;
+    padding:30px;
+    border-radius:18px;
+
+}
+
+
+.danger-zone h2{
+
+    color:#d90429;
+    margin-bottom:10px;
+
+}
+
+
+.danger-zone p{
+
+    color:#666;
+    margin-bottom:20px;
+
+}
+
+
+#deleteAccount{
+
+    background:#d90429;
+    color:white;
+    border:none;
+    padding:13px 25px;
+    border-radius:10px;
+    font-size:16px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    transition:.3s;
+
+}
+
+
+#deleteAccount:hover{
+
+    background:#a30020;
+
+}
+
+
+
+/* ================= Footer ================= */
+
+footer{
+
+    margin-top:40px;
+    background:rgb(14,3,77);
+    color:white;
+    text-align:center;
+    padding:25px;
+    border-radius:18px 18px 0 0;
+
+}
+
+
+footer h3{
+
+    font-size:25px;
+    margin-bottom:10px;
+
+}
+
+
+footer p{
+
+    color:#ddd;
+    margin:8px 0;
+    font-size:15px;
+
+}
+
+
+
+/* ================= Responsive Design ================= */
+
+
+@media(max-width:1100px){
+
+    .form-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .info-grid{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+
+
+@media(max-width:850px){
+
+
+    .sidebar{
+
+        transform:translateX(-100%);
+        transition:.3s;
+        z-index:1000;
+
+    }
+
+
+    .sidebar.active{
+
+        transform:translateX(0);
+
+    }
+
+
+    .main-content{
+
+        margin-left:0;
+        width:100%;
+        padding:15px;
+
+    }
+
+
+    header{
+
+        padding:0 15px;
+
+    }
+
+
+    .profile-preview{
+
+        flex-direction:column;
+        text-align:center;
+
+    }
+
+
+    .profile-badges{
+
+        justify-content:center;
+
+    }
+
+
+}
+
+
+
+@media(max-width:600px){
+
+
+    .header-left h1{
+
+        font-size:22px;
+
+    }
+
+
+    .header-right i{
+
+        display:none;
+
+    }
+
+
+    .form-section{
+
+        padding:20px;
+
+    }
+
+
+    .info-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .button-group{
+
+        flex-direction:column;
+
+    }
+
+
+    .button-group button{
+
+        justify-content:center;
+
+    }
+
+
+    .checkbox-group{
+
+        flex-direction:column;
+
+    }
+
+
+}
+        </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ================= Sidebar ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <h2>
+
+                <i class="fa-solid fa-droplet"></i>
+
+                BloodConnect
+
+            </h2>
+
+            <p>Save Lives Together</p>
+
+        </div>
+
+        <ul>
+
+            <li>
+
+                <a href="Home.html">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    Home
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="profile.html">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    Profile
+
+                </a>
+
+            </li>
+
+            <li class="active">
+
+                <a href="edit-profile.html">
+
+                    <i class="fa-solid fa-user-pen"></i>
+
+                    Edit Profile
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="createpost.html">
+
+                    <i class="fa-solid fa-square-plus"></i>
+
+                    Create Post
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="donors.html">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    Donors
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="blood-requests.html">
+
+                    <i class="fa-solid fa-droplet"></i>
+
+                    Blood Requests
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="emergency-requests.html">
+
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+
+                    Emergency
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="Settings.html">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    Settings
+
+                </a>
+
+            </li>
+
+        </ul>
+
+        <button id="logoutBtn">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            Logout
+
+        </button>
+
+    </aside>
+
+    <!-- ================= Main Content ================= -->
+
+    <main class="main-content">
+
+        <!-- Header -->
+
+        <header>
+
+            <div class="header-left">
+
+                <button id="menuBtn">
+
+                    <i class="fa-solid fa-bars"></i>
+
+                </button>
+
+                <h1>Edit Profile</h1>
+
+            </div>
+
+            <div class="header-right">
+
+                <i class="fa-regular fa-bell"></i>
+
+                <i class="fa-regular fa-envelope"></i>
+
+                <img
+                    src="images/user.png"
+                    id="headerPhoto"
+                    alt="Profile">
+
+            </div>
+
+        </header>
+
+        <!-- Cover -->
+
+        <section class="cover-section">
+
+            <img
+                src="images/cover.jpg"
+                id="coverPreview"
+                alt="Cover">
+
+            <div class="cover-overlay">
+
+                <label for="coverImage">
+
+                    <i class="fa-solid fa-camera"></i>
+
+                    Change Cover
+
+                </label>
+
+                <input
+                    type="file"
+                    id="coverImage"
+                    accept="image/*">
+
+            </div>
+
+        </section>
+
+        <!-- Profile Preview -->
+
+        <section class="profile-preview">
+
+            <div class="profile-image">
+
+                <img
+                    src="images/user.png"
+                    id="profilePreview"
+                    alt="Profile">
+
+                <label for="profileImage">
+
+                    <i class="fa-solid fa-camera"></i>
+
+                </label>
+
+                <input
+                    type="file"
+                    id="profileImage"
+                    accept="image/*">
+
+            </div>
+
+            <div class="profile-details">
+
+                <h2 id="previewName">
+
+                    User Name
+
+                </h2>
+
+                <p id="previewEmail">
+
+                    example@email.com
+
+                </p>
+
+                <div class="profile-badges">
+
+                    <span id="previewBlood">
+
+                        O+
+
+                    </span>
+
+                    <span>
+
+                        Verified Donor
+
+                    </span>
+
+                    <span>
+
+                        Reliability 98%
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Page Title -->
+
+        <section class="section-title">
+
+            <h2>
+
+                Personal Information
+
+            </h2>
+
+            <p>
+
+                Update your account information below.
+                Changes will automatically appear on your
+                Home page, Profile page and future posts.
+
+            </p>
+
+        </section>
+
+                <!-- Personal Information Form -->
+
+        <section class="form-section">
+
+            <form id="editProfileForm">
+
+                <div class="form-grid">
+
+                    <div class="input-group">
+
+                        <label>
+
+                            Full Name
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="fullName"
+                            placeholder="Enter your full name">
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>
+
+                            Email Address
+
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="Enter your email">
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>
+
+                            Phone Number
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="phone"
+                            placeholder="01XXXXXXXXX">
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>
+
+                            Blood Group
+
+                        </label>
+
+                        <select id="bloodGroup">
+
+                            <option value="">Select Blood Group</option>
+
+                            <option>A+</option>
+                            <option>A-</option>
+                            <option>B+</option>
+                            <option>B-</option>
+                            <option>AB+</option>
+                            <option>AB-</option>
+                            <option>O+</option>
+                            <option>O-</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>
+
+                            Date of Birth
+
+                        </label>
+
+                        <input
+                            type="date"
+                            id="dob">
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>
+
+                            Gender
+
+                        </label>
+
+                        <select id="gender">
+
+                            <option value="">Select Gender</option>
+
+                            <option>Male</option>
+
+                            <option>Female</option>
+
+                            <option>Other</option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <!-- Contact Information -->
+
+                <h2 class="sub-heading">
+
+                    Contact Information
+
+                </h2>
+
+                <div class="form-grid">
+
+                    <div class="input-group">
+
+                        <label>
+
+                            City
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="city"
+                            placeholder="Enter your city">
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>
+
+                            District
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="district"
+                            placeholder="Enter your district">
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>
+
+                            Postal Code
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="postalCode"
+                            placeholder="Postal Code">
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>
+
+                            Country
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="country"
+                            placeholder="Bangladesh">
+
+                    </div>
+
+                </div>
+
+                <div class="input-group full-width">
+
+                    <label>
+
+                        Full Address
+
+                    </label>
+
+                    <textarea
+                        id="address"
+                        rows="4"
+                        placeholder="Enter your complete address"></textarea>
+
+                </div>
+
+                <!-- Medical Information -->
+
+                <h2 class="sub-heading">
+
+                    Donation Information
+
+                </h2>
+
+                <div class="form-grid">
+
+                    <div class="input-group">
+
+                        <label>
+
+                            Weight (kg)
+
+                        </label>
+
+                        <input
+                            type="number"
+                            id="weight"
+                            placeholder="Weight">
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>
+
+                            Last Donation Date
+
+                        </label>
+
+                        <input
+                            type="date"
+                            id="lastDonation">
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>
+
+                            Availability
+
+                        </label>
+
+                        <select id="availability">
+
+                            <option>Available</option>
+
+                            <option>Busy</option>
+
+                            <option>Unavailable</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>
+
+                            Emergency Contact
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="emergencyContact"
+                            placeholder="Emergency Phone">
+
+                    </div>
+
+                </div>
+
+                                <!-- Bio -->
+
+                <h2 class="sub-heading">
+
+                    About You
+
+                </h2>
+
+                <div class="input-group full-width">
+
+                    <label>
+
+                        Bio
+
+                    </label>
+
+                    <textarea
+                        id="bio"
+                        rows="5"
+                        placeholder="Write something about yourself..."></textarea>
+
+                </div>
+
+                <!-- Social Links -->
+
+                <h2 class="sub-heading">
+
+                    Social Links
+
+                </h2>
+
+                <div class="form-grid">
+
+                    <div class="input-group">
+
+                        <label>
+
+                            Facebook
+
+                        </label>
+
+                        <input
+                            type="url"
+                            id="facebook"
+                            placeholder="Facebook Profile URL">
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>
+
+                            LinkedIn
+
+                        </label>
+
+                        <input
+                            type="url"
+                            id="linkedin"
+                            placeholder="LinkedIn Profile URL">
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>
+
+                            Instagram
+
+                        </label>
+
+                        <input
+                            type="url"
+                            id="instagram"
+                            placeholder="Instagram Profile URL">
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>
+
+                            Website
+
+                        </label>
+
+                        <input
+                            type="url"
+                            id="website"
+                            placeholder="Personal Website">
+
+                    </div>
+
+                </div>
+
+                <!-- Notification Settings -->
+
+                <h2 class="sub-heading">
+
+                    Notification Settings
+
+                </h2>
+
+                <div class="checkbox-group">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            id="emailNotification"
+                            checked>
+
+                        Email Notifications
+
+                    </label>
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            id="smsNotification">
+
+                        SMS Notifications
+
+                    </label>
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            id="emergencyNotification"
+                            checked>
+
+                        Emergency Alerts
+
+                    </label>
+
+                </div>
+
+                <!-- Privacy -->
+
+                <h2 class="sub-heading">
+
+                    Privacy
+
+                </h2>
+
+                <div class="checkbox-group">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            id="showEmail">
+
+                        Show Email Publicly
+
+                    </label>
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            id="showPhone">
+
+                        Show Phone Number
+
+                    </label>
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            id="showLocation"
+                            checked>
+
+                        Show Location
+
+                    </label>
+
+                </div>
+
+                <!-- Buttons -->
+
+                <div class="button-group">
+
+                    <button
+                        type="submit"
+                        id="saveChanges">
+
+                        <i class="fa-solid fa-floppy-disk"></i>
+
+                        Save Changes
+
+                    </button>
+
+                    <button
+                        type="reset"
+                        id="resetForm">
+
+                        <i class="fa-solid fa-arrow-rotate-left"></i>
+
+                        Reset
+
+                    </button>
+
+                    <button
+                        type="button"
+                        id="cancelChanges"
+                        onclick="window.location.href='profile.html'">
+
+                        <i class="fa-solid fa-xmark"></i>
+
+                        Cancel
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+        <!-- Account Information -->
+
+        <section class="account-info">
+
+            <h2>
+
+                Account Information
+
+            </h2>
+
+            <div class="info-grid">
+
+                <div>
+
+                    <strong>Member Since</strong>
+
+                    <p>July 2026</p>
+
+                </div>
+
+                <div>
+
+                    <strong>Donor Reliability</strong>
+
+                    <p>98%</p>
+
+                </div>
+
+                <div>
+
+                    <strong>Total Donations</strong>
+
+                    <p>18</p>
+
+                </div>
+
+                <div>
+
+                    <strong>Lives Saved</strong>
+
+                    <p>42</p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Danger Zone -->
+
+        <section class="danger-zone">
+
+            <h2>
+
+                Danger Zone
+
+            </h2>
+
+            <p>
+
+                These actions are permanent. Proceed carefully.
+
+            </p>
+
+            <button id="deleteAccount">
+
+                <i class="fa-solid fa-trash"></i>
+
+                Delete Account
+
+            </button>
+
+        </section>
+
+        <!-- Footer -->
+
+        <footer>
+
+            <h3>
+
+                BloodConnect
+
+            </h3>
+
+            <p>
+
+                Keep your profile updated so hospitals and donors
+                can contact you quickly during emergencies.
+
+            </p>
+
+            <p>
+
+                © 2026 BloodConnect. All Rights Reserved.
+
+            </p>
+
+        </footer>
+
+    </main>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const STORAGE_KEY = "currentUser";
+
+    const form = document.getElementById("editProfileForm");
+
+    const profileImageInput = document.getElementById("profileImage");
+    const coverImageInput = document.getElementById("coverImage");
+
+    const profilePreview = document.getElementById("profilePreview");
+    const headerPhoto = document.getElementById("headerPhoto");
+    const coverPreview = document.getElementById("coverPreview");
+
+    const previewName = document.getElementById("previewName");
+    const previewEmail = document.getElementById("previewEmail");
+    const previewBlood = document.getElementById("previewBlood");
+
+    const fields = [
+        "fullName", "email", "phone", "bloodGroup", "dob", "gender",
+        "city", "district", "postalCode", "country", "address", "weight",
+        "lastDonation", "availability", "emergencyContact", "bio",
+        "facebook", "linkedin", "instagram", "website"
+    ];
+
+    let user = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+
+    // Resizes + compresses an image file into a small JPEG data URL
+    function compressImage(file, maxWidth, maxHeight, quality) {
+        return new Promise((resolve, reject) => {
+
+            const reader = new FileReader();
+
+            reader.onload = e => {
+
+                const img = new Image();
+
+                img.onload = () => {
+
+                    let { width, height } = img;
+
+                    if (width > maxWidth) {
+                        height = Math.round(height * (maxWidth / width));
+                        width = maxWidth;
+                    }
+
+                    if (height > maxHeight) {
+                        width = Math.round(width * (maxHeight / height));
+                        height = maxHeight;
+                    }
+
+                    const canvas = document.createElement("canvas");
+                    canvas.width = width;
+                    canvas.height = height;
+
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    resolve(canvas.toDataURL("image/jpeg", quality));
+
+                };
+
+                img.onerror = reject;
+                img.src = e.target.result;
+
+            };
+
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+
+        });
+    }
+
+    function loadProfile() {
+
+        fields.forEach(id => {
+            const input = document.getElementById(id);
+            if (input && user[id] !== undefined) {
+                input.value = user[id];
+            }
+        });
+
+        if (user.profileImage) {
+            if (profilePreview) profilePreview.src = user.profileImage;
+            if (headerPhoto) headerPhoto.src = user.profileImage;
+        }
+
+        if (user.coverImage && coverPreview) {
+            coverPreview.src = user.coverImage;
+        }
+
+        const checkboxIds = [
+            "emailNotification", "smsNotification", "emergencyNotification",
+            "showEmail", "showPhone", "showLocation"
+        ];
+
+        checkboxIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && user[id] !== undefined) {
+                el.checked = user[id];
+            }
+        });
+
+        updatePreview();
+
+    }
+
+    function updatePreview() {
+
+        const fullNameEl = document.getElementById("fullName");
+        const emailEl = document.getElementById("email");
+        const bloodEl = document.getElementById("bloodGroup");
+
+        if (previewName) {
+            previewName.textContent = (fullNameEl && fullNameEl.value) || "User Name";
+        }
+
+        if (previewEmail) {
+            previewEmail.textContent = (emailEl && emailEl.value) || "example@email.com";
+        }
+
+        if (previewBlood) {
+            previewBlood.textContent = (bloodEl && bloodEl.value) || "O+";
+        }
+
+    }
+
+    fields.forEach(id => {
+        const input = document.getElementById(id);
+        if (!input) return;
+        input.addEventListener("input", updatePreview);
+        input.addEventListener("change", updatePreview);
+    });
+
+    if (profileImageInput) {
+        profileImageInput.addEventListener("change", async function () {
+
+            const file = this.files[0];
+            if (!file) return;
+
+            try {
+                // Profile photo: small square-ish, e.g. max 400x400
+                const compressed = await compressImage(file, 400, 400, 0.7);
+
+                if (profilePreview) profilePreview.src = compressed;
+                if (headerPhoto) headerPhoto.src = compressed;
+
+                user.profileImage = compressed;
+
+            } catch (err) {
+                alert("Could not process that image. Try a different one.");
+                console.error(err);
+            }
+
+        });
+    }
+
+    if (coverImageInput) {
+        coverImageInput.addEventListener("change", async function () {
+
+            const file = this.files[0];
+            if (!file) return;
+
+            try {
+                // Cover photo: wider, e.g. max 1000x400
+                const compressed = await compressImage(file, 1000, 400, 0.6);
+
+                if (coverPreview) coverPreview.src = compressed;
+
+                user.coverImage = compressed;
+
+            } catch (err) {
+                alert("Could not process that image. Try a different one.");
+                console.error(err);
+            }
+
+        });
+    }
+
+    if (form) {
+        form.addEventListener("submit", function (e) {
+
+            e.preventDefault();
+
+            fields.forEach(id => {
+                const input = document.getElementById(id);
+                if (input) {
+                    user[id] = input.value.trim();
+                }
+            });
+
+            // keep profile.html in sync (it reads different key names)
+            user.name = user.fullName;
+            user.photo = user.profileImage || user.photo || "";
+            user.location = [user.city, user.district, user.country]
+                .filter(Boolean)
+                .join(", ");
+
+            const checkboxIds = [
+                "emailNotification", "smsNotification", "emergencyNotification",
+                "showEmail", "showPhone", "showLocation"
+            ];
+
+            checkboxIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) user[id] = el.checked;
+            });
+
+            user.memberSince = user.memberSince || "July 2026";
+            user.reliability = user.reliability || "98%";
+            user.totalDonations = user.totalDonations || "18";
+            user.livesSaved = user.livesSaved || "42";
+
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+                alert("Profile updated successfully!");
+                window.location.href = "profile.html";
+            } catch (err) {
+                alert("Save failed: storage quota exceeded. Try a smaller image, or clear old posts.");
+                console.error(err);
+            }
+
+        });
+    }
+
+    const resetBtn = document.getElementById("resetForm");
+    if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+            setTimeout(loadProfile, 100);
+        });
+    }
+
+    const deleteBtn = document.getElementById("deleteAccount");
+    if (deleteBtn) {
+        deleteBtn.addEventListener("click", () => {
+            if (confirm("Delete your account permanently?")) {
+                localStorage.removeItem(STORAGE_KEY);
+                alert("Account deleted.");
+                window.location.href = "Register.html";
+            }
+        });
+    }
+
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+            if (confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem("isLoggedIn");
+                window.location.href = "login.html";
+            }
+        });
+    }
+
+    const menuBtn = document.getElementById("menuBtn");
+    const sidebar = document.querySelector(".sidebar");
+
+    if (menuBtn && sidebar) {
+        menuBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("active");
+        });
+    }
+
+    if (sidebar) {
+        document.querySelectorAll(".sidebar a").forEach(link => {
+            link.addEventListener("click", () => {
+                sidebar.classList.remove("active");
+            });
+        });
+    }
+
+    const phoneEl = document.getElementById("phone");
+    if (phoneEl) {
+        phoneEl.addEventListener("input", function () {
+            this.value = this.value.replace(/\D/g, "");
+        });
+    }
+
+    const weightEl = document.getElementById("weight");
+    if (weightEl) {
+        weightEl.addEventListener("input", function () {
+            if (this.value < 0) this.value = "";
+        });
+    }
+
+    const today = new Date().toISOString().split("T")[0];
+    const dobEl = document.getElementById("dob");
+    const lastDonationEl = document.getElementById("lastDonation");
+
+    if (dobEl) dobEl.max = today;
+    if (lastDonationEl) lastDonationEl.max = today;
+
+    loadProfile();
+
+});
+
+
+                
+
+
+</script>
+
+</body>
+
+</html>

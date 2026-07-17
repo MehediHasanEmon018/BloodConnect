@@ -16,6 +16,7 @@
 
 body{
     background:#f5f6fa;
+    background-image: url("bg.png");
     color:#333;
 }
 
@@ -90,6 +91,7 @@ main{
     padding:60px;
     box-shadow:0 4px 15px rgba(0,0,0,.08);
     margin-bottom:40px;
+    text-align:center;
 }
 
 .welcome h1{
@@ -99,34 +101,12 @@ main{
 }
 
 .welcome p{
+    max-width:700px;
+    margin:0 auto 30px;
     font-size:18px;
     line-height:1.8;
-    max-width:700px;
-    margin-bottom:30px;
+    text-align:center;
 }
-
-.actions{
-    display:flex;
-    gap:15px;
-    flex-wrap:wrap;
-}
-
-.actions button{
-    padding:14px 28px;
-    border:none;
-    border-radius:6px;
-    background:#d62828;
-    color:white;
-    cursor:pointer;
-    font-size:16px;
-    transition:.3s;
-}
-
-.actions button:hover{
-    background:#b91d1d;
-    transform:translateY(-2px);
-}
-
 /* Stats */
 
 .stats{
@@ -440,7 +420,6 @@ footer p{
             <a href="donors.html">Donors</a>
             <a href="blood-requests.html">Blood Requests</a>
             <a href="emergency-requests.html">Emergency</a>
-            <a href="smart-matching.html">Smart Matching</a>
             <a href="hospitals.html">Hospitals</a>
             <a href="analytics.html">Analytics</a>
             <a href="profile.html">Profile</a>
@@ -463,10 +442,6 @@ footer p{
                     requests, and connecting patients with verified donors.
                 </p>
 
-                <div class="actions">
-                    <button id="findDonorBtn">Find Donor</button>
-                    <button id="requestBloodBtn">Request Blood</button>
-                </div>
 
             </div>
 
@@ -496,32 +471,6 @@ footer p{
 
         </section>
 
-        <section class="search">
-
-            <h2>Search Blood Donors</h2>
-
-            <div class="search-box">
-
-                <select id="bloodGroup">
-                    <option>Select Blood Group</option>
-                    <option>A+</option>
-                    <option>A-</option>
-                    <option>B+</option>
-                    <option>B-</option>
-                    <option>AB+</option>
-                    <option>AB-</option>
-                    <option>O+</option>
-                    <option>O-</option>
-                </select>
-
-                <input type="text" placeholder="Enter Location">
-
-                <button id="searchBtn">Search</button>
-
-            </div>
-
-        </section>
-
         <section class="quick-access">
 
             <h2>Quick Access</h2>
@@ -531,88 +480,33 @@ footer p{
                 <div class="item">
                     <h3>Find Donors</h3>
                     <p>Browse available donors by blood group.</p>
-                    <button>Open</button>
+                    <a href="donors.html"><button>Open</button></a>
+                    
                 </div>
 
                 <div class="item">
                     <h3>Blood Requests</h3>
                     <p>View and manage all blood requests.</p>
-                    <button>Open</button>
+                    <a href="blood-requests.html"><button>Open</button></a>
                 </div>
 
                 <div class="item">
                     <h3>Emergency</h3>
                     <p>Respond to urgent blood requests.</p>
-                    <button>Open</button>
+                    <a href="emergency-requests.html"><button>Open</button></a>
                 </div>
 
-                <div class="item">
-                    <h3>Smart Matching</h3>
-                    <p>Find the best donor automatically.</p>
-                    <button>Open</button>
-                </div>
 
                 <div class="item">
                     <h3>Hospitals</h3>
                     <p>View nearby hospitals and blood banks.</p>
-                    <button>Open</button>
-                </div>
-
-                <div class="item">
-                    <h3>Analytics</h3>
-                    <p>View donation statistics and reports.</p>
-                    <button>Open</button>
+                    <a href="Hospitals.html"><button>Open</button></a>
                 </div>
 
             </div>
 
         </section>
 
-        <section class="requests">
-
-            <h2>Recent Blood Requests</h2>
-
-            <table>
-
-                <thead>
-
-                    <tr>
-                        <th>Patient</th>
-                        <th>Blood Group</th>
-                        <th>Hospital</th>
-                        <th>Status</th>
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    <tr>
-                        <td>Rahim Ahmed</td>
-                        <td>O+</td>
-                        <td>City Hospital</td>
-                        <td>Pending</td>
-                    </tr>
-
-                    <tr>
-                        <td>Fatema Khan</td>
-                        <td>A-</td>
-                        <td>Central Medical</td>
-                        <td>Matched</td>
-                    </tr>
-
-                    <tr>
-                        <td>Hasan Ali</td>
-                        <td>B+</td>
-                        <td>Red Crescent Hospital</td>
-                        <td>Completed</td>
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </section>
 
         <section class="inventory">
 
@@ -664,21 +558,7 @@ footer p{
 
         </section>
 
-        <section class="activity">
-
-            <h2>Recent Activity</h2>
-
-            <ul>
-
-                <li>A new donor registered from Dhaka.</li>
-                <li>Emergency request for O- blood created.</li>
-                <li>Three successful donations completed today.</li>
-                <li>New hospital joined BloodConnect.</li>
-
-            </ul>
-
-        </section>
-
+       
     </main>
 
     <footer>
@@ -691,179 +571,176 @@ footer p{
 
     </footer>
 
-    <script src="home.html">
+    <script>
         document.addEventListener("DOMContentLoaded", function () {
 
     const logoutBtn = document.getElementById("logoutBtn");
-    const findDonorBtn = document.getElementById("findDonorBtn");
-    const requestBloodBtn = document.getElementById("requestBloodBtn");
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", function () {
+            const confirmLogout = confirm("Are you sure you want to logout?");
+            if (confirmLogout) {
+                localStorage.removeItem("currentUser");
+                window.location.href = "index.html";
+            }
+        });
+    }
+
+    /* ================= Search ================= */
+
     const searchBtn = document.getElementById("searchBtn");
 
-    logoutBtn.addEventListener("click", function () {
-        const confirmLogout = confirm("Are you sure you want to logout?");
+    if (searchBtn) {
+        searchBtn.addEventListener("click", function () {
 
-        if (confirmLogout) {
-            alert("Logged out successfully.");
-            window.location.href = "index.html";
-        }
-    });
+            const bloodGroup = document.getElementById("bloodGroup").value;
+            const locationInput = document.querySelector(".search-box input");
+            const location = locationInput ? locationInput.value.trim() : "";
 
-    findDonorBtn.addEventListener("click", function () {
-        window.location.href = "donors.html";
-    });
+            if (!bloodGroup || bloodGroup === "Select Blood Group") {
+                alert("Please select a blood group.");
+                return;
+            }
 
-    requestBloodBtn.addEventListener("click", function () {
-        window.location.href = "blood-requests.html";
-    });
+            if (location === "") {
+                alert("Please enter a location.");
+                return;
+            }
 
-    searchBtn.addEventListener("click", function () {
+            alert("Searching for " + bloodGroup + " donors in " + location + ".");
 
-        const bloodGroup = document.getElementById("bloodGroup").value;
-        const location = document.querySelector(".search-box input").value.trim();
+        });
+    }
 
-        if (bloodGroup === "Select Blood Group") {
-            alert("Please select a blood group.");
-            return;
-        }
-
-        if (location === "") {
-            alert("Please enter a location.");
-            return;
-        }
-
-        alert(
-            "Searching for " +
-            bloodGroup +
-            " donors in " +
-            location +
-            "."
-        );
-    });
+    /* ================= Quick Access (mapped to real nav pages) ================= */
 
     const quickButtons = document.querySelectorAll(".item button");
 
+    const quickLinks = [
+        "donors.html",
+        "blood-requests.html",
+        "emergency-requests.html",
+        "hospitals.html"
+    ];
+
     quickButtons.forEach(function (button, index) {
-
         button.addEventListener("click", function () {
+            if (quickLinks[index]) {
+                window.location.href = quickLinks[index];
+            }
+        });
+    });
 
-            switch (index) {
+    /* ================= Real Stats ================= */
 
-                case 0:
-                    window.location.href = "donors.html";
-                    break;
+    function animateCounter(el, target, suffix) {
 
-                case 1:
-                    window.location.href = "blood-requests.html";
-                    break;
+        let current = 0;
+        const increment = Math.max(1, Math.ceil(target / 60));
 
-                case 2:
-                    window.location.href = "emergency-requests.html";
-                    break;
+        function step() {
+            current += increment;
+            if (current < target) {
+                el.textContent = current.toLocaleString() + suffix;
+                requestAnimationFrame(step);
+            } else {
+                el.textContent = target.toLocaleString() + suffix;
+            }
+        }
 
-                case 3:
-                    window.location.href = "smart-matching.html";
-                    break;
+        step();
 
-                case 4:
-                    window.location.href = "hospitals.html";
-                    break;
+    }
 
-                case 5:
-                    window.location.href = "analytics.html";
-                    break;
+    function loadStats() {
 
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+        const requests = JSON.parse(localStorage.getItem("bloodRequests")) || [];
+        const donations = JSON.parse(localStorage.getItem("bloodDonations")) || [];
+
+        const hospitalSet = new Set();
+
+        requests.forEach(function (r) {
+            if (r.hospital) hospitalSet.add(r.hospital.trim().toLowerCase());
+        });
+
+        donations.forEach(function (d) {
+            if (d.hospital) hospitalSet.add(d.hospital.trim().toLowerCase());
+        });
+
+        const statCards = document.querySelectorAll(".stats .card h2");
+
+        if (statCards[0]) animateCounter(statCards[0], users.length, "");
+        if (statCards[1]) animateCounter(statCards[1], requests.length, "");
+        if (statCards[2]) animateCounter(statCards[2], donations.length, "");
+        if (statCards[3]) animateCounter(statCards[3], hospitalSet.size, "");
+
+    }
+
+    loadStats();
+
+    /* ================= Blood Inventory (from "Blood Available" posts) ================= */
+
+    function loadInventory() {
+
+        const posts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
+        const availablePosts = posts.filter(p => p.postType === "Blood Available");
+
+        const groups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+        const counts = {};
+
+        groups.forEach(g => counts[g] = 0);
+
+        availablePosts.forEach(function (p) {
+            if (counts[p.bloodGroup] !== undefined) {
+                counts[p.bloodGroup]++;
+            }
+        });
+
+        const bloodCards = document.querySelectorAll(".blood-card");
+
+        bloodCards.forEach(function (card) {
+
+            const group = card.querySelector("h3").textContent.trim();
+            const countEl = card.querySelector("p");
+
+            if (countEl) {
+                countEl.textContent = "Available: " + (counts[group] || 0) + " Units";
             }
 
         });
 
-    });
+    }
 
-    const statCards = document.querySelectorAll(".card h2");
+    loadInventory();
 
-    statCards.forEach(function (counter) {
-
-        const target = parseInt(counter.textContent.replace(/,/g, ""));
-        const suffix = "+";
-        let current = 0;
-
-        function updateCounter() {
-
-            const increment = Math.ceil(target / 100);
-
-            current += increment;
-
-            if (current < target) {
-
-                counter.textContent =
-                    current.toLocaleString() + suffix;
-
-                requestAnimationFrame(updateCounter);
-
-            } else {
-
-                counter.textContent =
-                    target.toLocaleString() + suffix;
-
-            }
-
-        }
-
-        updateCounter();
-
-    });
+    /* ================= Hover Effects ================= */
 
     const inventoryCards = document.querySelectorAll(".blood-card");
 
     inventoryCards.forEach(function (card) {
-
         card.addEventListener("mouseenter", function () {
             card.style.transform = "translateY(-8px) scale(1.03)";
         });
-
         card.addEventListener("mouseleave", function () {
             card.style.transform = "translateY(0)";
         });
-
-    });
-
-    const activityItems = document.querySelectorAll(".activity li");
-
-    activityItems.forEach(function (item, index) {
-
-        item.style.opacity = "0";
-        item.style.transform = "translateX(-20px)";
-
-        setTimeout(function () {
-
-            item.style.transition = "0.5s";
-            item.style.opacity = "1";
-            item.style.transform = "translateX(0)";
-
-        }, index * 250);
-
     });
 
     const navLinks = document.querySelectorAll("nav a");
 
     navLinks.forEach(function (link) {
-
         link.addEventListener("click", function () {
             console.log("Opening " + link.textContent);
         });
-
     });
 
-    setInterval(function () {
+    /* ================= Refresh when returning to tab ================= */
 
-        const requestCount = document.querySelector(".stats .card:nth-child(2) h2");
-
-        let value = parseInt(requestCount.textContent.replace(/,/g, ""));
-
-        value++;
-
-        requestCount.textContent = value.toLocaleString() + "+";
-
-    }, 10000);
+    window.addEventListener("focus", function () {
+        loadStats();
+        loadInventory();
+    });
 
 });
     </script>

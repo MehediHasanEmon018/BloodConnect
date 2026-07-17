@@ -648,7 +648,7 @@ footer p{
 
     </footer>
 
-    <script src="blood-requests.js">
+    <script>
 
         document.addEventListener("DOMContentLoaded", function () {
 
@@ -658,9 +658,68 @@ footer p{
     const searchInput = document.getElementById("searchInput");
     const tableBody = document.getElementById("requestTable");
 
+    const currentUser = JSON.parse(localStorage.getItem("currentUser")) || {};
+
     dashboardBtn.addEventListener("click", function () {
         window.location.href = "Home.html";
     });
+
+    function loadRequests() {
+
+        const requests = JSON.parse(localStorage.getItem("bloodRequests")) || [];
+
+        tableBody.innerHTML = "";
+
+        if (requests.length === 0) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align:center; color:#888;">
+                        No blood requests yet.
+                    </td>
+                </tr>
+            `;
+            updateStats(requests);
+            return;
+        }
+
+        requests.slice().reverse().forEach(function (r) {
+
+            const row = document.createElement("tr");
+            row.dataset.id = r.id;
+
+            row.innerHTML = `
+                <td>${r.patientName}</td>
+                <td>${r.bloodGroup}</td>
+                <td>${r.units}</td>
+                <td>${r.hospital}</td>
+                <td>${r.location}</td>
+                <td>${r.urgency}</td>
+                <td><span class="${r.status.toLowerCase()}">${r.status}</span></td>
+            `;
+
+            tableBody.appendChild(row);
+
+        });
+
+        updateStats(requests);
+
+    }
+
+    function updateStats(requests) {
+
+        const total = requests.length;
+        const pending = requests.filter(r => r.status === "Pending").length;
+        const matched = requests.filter(r => r.status === "Matched").length;
+        const completed = requests.filter(r => r.status === "Completed").length;
+
+        const cardValues = document.querySelectorAll(".card h3");
+
+        if (cardValues[0]) cardValues[0].textContent = total;
+        if (cardValues[1]) cardValues[1].textContent = pending;
+        if (cardValues[2]) cardValues[2].textContent = matched;
+        if (cardValues[3]) cardValues[3].textContent = completed;
+
+    }
 
     requestForm.addEventListener("submit", function (e) {
 
@@ -689,23 +748,34 @@ footer p{
             return;
         }
 
-        const row = document.createElement("tr");
+        const requests = JSON.parse(localStorage.getItem("bloodRequests")) || [];
 
-        row.innerHTML = `
-            <td>${patientName}</td>
-            <td>${bloodGroup}</td>
-            <td>${units}</td>
-            <td>${hospital}</td>
-            <td>${location}</td>
-            <td>${urgency}</td>
-            <td><span class="pending">Pending</span></td>
-        `;
+        const newRequest = {
+            id: Date.now(),
+            requesterEmail: currentUser.email || "",
+            requesterName: currentUser.name || "Anonymous",
+            patientName: patientName,
+            bloodGroup: bloodGroup,
+            units: units,
+            hospital: hospital,
+            location: location,
+            phone: phone,
+            urgency: urgency,
+            date: date,
+            notes: notes,
+            status: "Pending"
+        };
 
-        tableBody.prepend(row);
+        requests.push(newRequest);
+
+        localStorage.setItem("bloodRequests", JSON.stringify(requests));
 
         alert("Blood request submitted successfully.");
 
         requestForm.reset();
+
+        loadRequests();
+
     });
 
     searchBtn.addEventListener("click", function () {
@@ -731,32 +801,6 @@ footer p{
         searchBtn.click();
     });
 
-    const statCards = document.querySelectorAll(".card h3");
-
-    statCards.forEach(function (counter) {
-
-        const target = parseInt(counter.textContent);
-        let current = 0;
-
-        function animate() {
-
-            const increment = Math.ceil(target / 80);
-
-            current += increment;
-
-            if (current < target) {
-                counter.textContent = current;
-                requestAnimationFrame(animate);
-            } else {
-                counter.textContent = target;
-            }
-
-        }
-
-        animate();
-
-    });
-
     const cards = document.querySelectorAll(".card");
 
     cards.forEach(function (card) {
@@ -771,32 +815,15 @@ footer p{
 
     });
 
-    const rows = tableBody.querySelectorAll("tr");
-
-    rows.forEach(function (row, index) {
-
-        row.style.opacity = "0";
-        row.style.transform = "translateY(20px)";
-
-        setTimeout(function () {
-
-            row.style.transition = "0.4s";
-            row.style.opacity = "1";
-            row.style.transform = "translateY(0)";
-
-        }, index * 120);
-
-    });
-
     const navLinks = document.querySelectorAll("nav a");
 
     navLinks.forEach(function (link) {
-
         link.addEventListener("click", function () {
             console.log("Opening: " + link.textContent);
         });
-
     });
+
+    loadRequests();
 
 });
     </script>
