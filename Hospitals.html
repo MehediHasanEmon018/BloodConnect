@@ -15,16 +15,20 @@
 <style>
 
 :root{
-    --red:#d62828;
-    --red-dark:#b71c1c;
-    --red-light:#ffe9e9;
-    --ink:#20232a;
+    --red:#e0302f;
+    --red-dark:#b91f1f;
+    --red-light:#ffece9;
+    --red-soft:#fff4f2;
+    --ink:#1f2430;
     --muted:#6b7280;
-    --border:#ececec;
-    --bg:#f6f8fb;
+    --border:#eef0f4;
+    --bg:#fbf9f7;
     --surface:#ffffff;
+    --accent-gold:#f4a340;
+    --accent-teal:#0f9b8e;
     --radius:18px;
-    --shadow:0 10px 30px rgba(0,0,0,.07);
+    --shadow:0 10px 30px rgba(31,36,48,.07);
+    --shadow-soft:0 4px 16px rgba(31,36,48,.05);
 }
 
 *{
@@ -37,15 +41,16 @@
 html{ scroll-behavior:smooth; }
 
 body{
-    background: var(--bg);
     color: var(--ink);
     line-height: 1.6;
     overflow-x: hidden;
 
-    background-image: url("samples/search-bg.png");
-    background-repeat: no-repeat;
-    background-position:top;   /* or center center */
-    
+    background:
+        radial-gradient(circle at 10% 0%, rgba(224,48,47,.06) 0%, transparent 45%),
+        radial-gradient(circle at 90% 15%, rgba(15,155,142,.05) 0%, transparent 40%),
+        radial-gradient(circle at 50% 100%, rgba(244,163,64,.05) 0%, transparent 50%),
+        linear-gradient(180deg, #fffaf7 0%, #f8f6f3 40%, #f4f2ef 100%);
+    background-attachment: fixed;
 }
 
 img{ width:100%; display:block; }
