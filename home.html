@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,405 +8,407 @@
     <link rel="stylesheet" href="home.html">
 
     <style>
-        *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
-}
-
-body{
-    background:#f5f6fa;
-    background-image: url("bg.png");
-    color:#333;
-}
-
-/* Header */
-
-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:18px 8%;
-    background:#ffffff;
-    box-shadow:0 2px 10px rgba(0,0,0,.08);
-    position:sticky;
-    top:0;
-    z-index:1000;
-}
-
-.logo h2{
-    color:#d62828;
-    margin-bottom:5px;
-}
-
-.logo p{
-    color:#777;
-    font-size:14px;
-}
-
-nav{
-    display:flex;
-    gap:20px;
-    flex-wrap:wrap;
-}
-
-nav a{
-    text-decoration:none;
-    color:#333;
-    font-weight:600;
-    transition:.3s;
-}
-
-nav a:hover,
-nav a.active{
-    color:#d62828;
-}
-
-#logoutBtn{
-    padding:10px 22px;
-    border:none;
-    border-radius:6px;
-    background:#d62828;
-    color:white;
-    cursor:pointer;
-    transition:.3s;
-}
-
-#logoutBtn:hover{
-    background:#b91d1d;
-}
-
-/* Main */
-
-main{
-    width:84%;
-    margin:40px auto;
-}
-
-/* Welcome */
-
-.welcome{
-    background:#ffffff;
-    border-radius:12px;
-    padding:60px;
-    box-shadow:0 4px 15px rgba(0,0,0,.08);
-    margin-bottom:40px;
-    text-align:center;
-}
-
-.welcome h1{
-    color:#d62828;
-    font-size:48px;
-    margin-bottom:20px;
-}
-
-.welcome p{
-    max-width:700px;
-    margin:0 auto 30px;
-    font-size:18px;
-    line-height:1.8;
-    text-align:center;
-}
-/* Stats */
-
-.stats{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:25px;
-    margin-bottom:50px;
-}
-
-.card{
-    background:white;
-    padding:35px;
-    text-align:center;
-    border-radius:12px;
-    box-shadow:0 4px 12px rgba(0,0,0,.08);
-    transition:.3s;
-}
-
-.card:hover{
-    transform:translateY(-6px);
-}
-
-.card h2{
-    color:#d62828;
-    font-size:38px;
-    margin-bottom:10px;
-}
-
-.card p{
-    color:#666;
-}
-
-/* Search */
-
-.search{
-    background:white;
-    padding:40px;
-    border-radius:12px;
-    box-shadow:0 4px 12px rgba(0,0,0,.08);
-    margin-bottom:50px;
-}
-
-.search h2{
-    color:#d62828;
-    margin-bottom:25px;
-}
-
-.search-box{
-    display:flex;
-    gap:15px;
-    flex-wrap:wrap;
-}
-
-.search-box select,
-.search-box input{
-    flex:1;
-    min-width:220px;
-    padding:14px;
-    border:1px solid #ddd;
-    border-radius:6px;
-    outline:none;
-    font-size:15px;
-}
-
-.search-box button{
-    padding:14px 30px;
-    border:none;
-    border-radius:6px;
-    background:#d62828;
-    color:white;
-    cursor:pointer;
-    transition:.3s;
-}
-
-.search-box button:hover{
-    background:#b91d1d;
-}
-
-/* Quick Access */
-
-.quick-access{
-    margin-bottom:50px;
-}
-
-.quick-access h2{
-    color:#d62828;
-    margin-bottom:25px;
-}
-
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:25px;
-}
-
-.item{
-    background:white;
-    padding:30px;
-    border-radius:12px;
-    box-shadow:0 4px 12px rgba(0,0,0,.08);
-    transition:.3s;
-}
-
-.item:hover{
-    transform:translateY(-6px);
-}
-
-.item h3{
-    color:#d62828;
-    margin-bottom:15px;
-}
-
-.item p{
-    margin-bottom:20px;
-    color:#666;
-    line-height:1.6;
-}
-
-.item button{
-    padding:10px 22px;
-    border:none;
-    border-radius:6px;
-    background:#d62828;
-    color:white;
-    cursor:pointer;
-}
-
-.item button:hover{
-    background:#b91d1d;
-}
-
-/* Table */
-
-.requests{
-    margin-bottom:50px;
-}
-
-.requests h2{
-    color:#d62828;
-    margin-bottom:20px;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    background:white;
-    box-shadow:0 4px 12px rgba(0,0,0,.08);
-    border-radius:12px;
-    overflow:hidden;
-}
-
-thead{
-    background:#d62828;
-    color:white;
-}
-
-th,
-td{
-    padding:18px;
-    text-align:left;
-}
-
-tbody tr:nth-child(even){
-    background:#f8f8f8;
-}
-
-tbody tr:hover{
-    background:#ffecec;
-}
-
-/* Inventory */
-
-.inventory{
-    margin-bottom:50px;
-}
-
-.inventory h2{
-    color:#d62828;
-    margin-bottom:25px;
-}
-
-.inventory-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:20px;
-}
-
-.blood-card{
-    background:white;
-    padding:30px;
-    text-align:center;
-    border-radius:12px;
-    box-shadow:0 4px 12px rgba(0,0,0,.08);
-    transition:.3s;
-}
-
-.blood-card:hover{
-    transform:translateY(-6px);
-}
-
-.blood-card h3{
-    color:#d62828;
-    font-size:32px;
-    margin-bottom:12px;
-}
-
-/* Activity */
-
-.activity{
-    margin-bottom:60px;
-}
-
-.activity h2{
-    color:#d62828;
-    margin-bottom:20px;
-}
-
-.activity ul{
-    background:white;
-    padding:30px;
-    border-radius:12px;
-    box-shadow:0 4px 12px rgba(0,0,0,.08);
-}
-
-.activity li{
-    margin:15px 0;
-    line-height:1.6;
-}
-
-/* Footer */
-
-footer{
-    background:#d62828;
-    color:white;
-    text-align:center;
-    padding:35px;
-}
-
-footer h3{
-    margin-bottom:10px;
-}
-
-footer p{
-    margin-top:8px;
-}
-
-/* Responsive */
-
-@media(max-width:1000px){
-
-    header{
-        flex-direction:column;
-        gap:20px;
-    }
-
-    nav{
-        justify-content:center;
-    }
-
-    main{
-        width:92%;
-    }
-
-    .welcome{
-        padding:40px;
-        text-align:center;
-    }
-
-    .welcome h1{
-        font-size:38px;
-    }
-
-    .actions{
-        justify-content:center;
-    }
-
-    .search-box{
-        flex-direction:column;
-    }
-}
-
-@media(max-width:600px){
-
-    .welcome h1{
-        font-size:30px;
-    }
-
-    .welcome p{
-        font-size:16px;
-    }
-
-    table{
-        display:block;
-        overflow-x:auto;
-        white-space:nowrap;
-    }
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f6fa;
+            background-image: url("bg.png");
+            color: #333;
+        }
+
+        /* Header */
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 8%;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo h2 {
+            color: #d62828;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            transition: .3s;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #d62828;
+        }
+
+        #logoutBtn {
+            padding: 10px 22px;
+            border: none;
+            border-radius: 6px;
+            background: #d62828;
+            color: white;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        #logoutBtn:hover {
+            background: #b91d1d;
+        }
+
+        /* Main */
+
+        main {
+            width: 84%;
+            margin: 40px auto;
+        }
+
+        /* Welcome */
+
+        .welcome {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 60px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, .08);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .welcome h1 {
+            color: #d62828;
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .welcome p {
+            max-width: 700px;
+            margin: 0 auto 30px;
+            font-size: 18px;
+            line-height: 1.8;
+            text-align: center;
+        }
+
+        /* Stats */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            background: white;
+            padding: 35px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+            transition: .3s;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+        }
+
+        .card h2 {
+            color: #d62828;
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #666;
+        }
+
+        /* Search */
+
+        .search {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+            margin-bottom: 50px;
+        }
+
+        .search h2 {
+            color: #d62828;
+            margin-bottom: 25px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .search-box select,
+        .search-box input {
+            flex: 1;
+            min-width: 220px;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .search-box button {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 6px;
+            background: #d62828;
+            color: white;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .search-box button:hover {
+            background: #b91d1d;
+        }
+
+        /* Quick Access */
+
+        .quick-access {
+            margin-bottom: 50px;
+        }
+
+        .quick-access h2 {
+            color: #d62828;
+            margin-bottom: 25px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        .item {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+            transition: .3s;
+        }
+
+        .item:hover {
+            transform: translateY(-6px);
+        }
+
+        .item h3 {
+            color: #d62828;
+            margin-bottom: 15px;
+        }
+
+        .item p {
+            margin-bottom: 20px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .item button {
+            padding: 10px 22px;
+            border: none;
+            border-radius: 6px;
+            background: #d62828;
+            color: white;
+            cursor: pointer;
+        }
+
+        .item button:hover {
+            background: #b91d1d;
+        }
+
+        /* Table */
+
+        .requests {
+            margin-bottom: 50px;
+        }
+
+        .requests h2 {
+            color: #d62828;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: #d62828;
+            color: white;
+        }
+
+        th,
+        td {
+            padding: 18px;
+            text-align: left;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f8f8f8;
+        }
+
+        tbody tr:hover {
+            background: #ffecec;
+        }
+
+        /* Inventory */
+
+        .inventory {
+            margin-bottom: 50px;
+        }
+
+        .inventory h2 {
+            color: #d62828;
+            margin-bottom: 25px;
+        }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .blood-card {
+            background: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+            transition: .3s;
+        }
+
+        .blood-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .blood-card h3 {
+            color: #d62828;
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        /* Activity */
+
+        .activity {
+            margin-bottom: 60px;
+        }
+
+        .activity h2 {
+            color: #d62828;
+            margin-bottom: 20px;
+        }
+
+        .activity ul {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+        }
+
+        .activity li {
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+
+        footer {
+            background: #d62828;
+            color: white;
+            text-align: center;
+            padding: 35px;
+        }
+
+        footer h3 {
+            margin-bottom: 10px;
+        }
+
+        footer p {
+            margin-top: 8px;
+        }
+
+        /* Responsive */
+
+        @media(max-width:1000px) {
+
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            nav {
+                justify-content: center;
+            }
+
+            main {
+                width: 92%;
+            }
+
+            .welcome {
+                padding: 40px;
+                text-align: center;
+            }
+
+            .welcome h1 {
+                font-size: 38px;
+            }
+
+            .actions {
+                justify-content: center;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+        }
+
+        @media(max-width:600px) {
+
+            .welcome h1 {
+                font-size: 30px;
+            }
+
+            .welcome p {
+                font-size: 16px;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
     </style>
 </head>
+
 <body>
 
     <header>
@@ -481,7 +484,7 @@ footer p{
                     <h3>Find Donors</h3>
                     <p>Browse available donors by blood group.</p>
                     <a href="donors.html"><button>Open</button></a>
-                    
+
                 </div>
 
                 <div class="item">
@@ -558,7 +561,7 @@ footer p{
 
         </section>
 
-       
+
     </main>
 
     <footer>
@@ -574,176 +577,181 @@ footer p{
     <script>
         document.addEventListener("DOMContentLoaded", function () {
 
-    const logoutBtn = document.getElementById("logoutBtn");
+            const logoutBtn = document.getElementById("logoutBtn");
 
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", function () {
-            const confirmLogout = confirm("Are you sure you want to logout?");
-            if (confirmLogout) {
-                localStorage.removeItem("currentUser");
-                window.location.href = "index.html";
-            }
-        });
-    }
-
-    /* ================= Search ================= */
-
-    const searchBtn = document.getElementById("searchBtn");
-
-    if (searchBtn) {
-        searchBtn.addEventListener("click", function () {
-
-            const bloodGroup = document.getElementById("bloodGroup").value;
-            const locationInput = document.querySelector(".search-box input");
-            const location = locationInput ? locationInput.value.trim() : "";
-
-            if (!bloodGroup || bloodGroup === "Select Blood Group") {
-                alert("Please select a blood group.");
-                return;
+            if (logoutBtn) {
+                logoutBtn.addEventListener("click", function () {
+                    const confirmLogout = confirm("Are you sure you want to logout?");
+                    if (confirmLogout) {
+                        localStorage.removeItem("currentUser");
+                        window.location.href = "index.html";
+                    }
+                });
             }
 
-            if (location === "") {
-                alert("Please enter a location.");
-                return;
+            /* ================= Search ================= */
+
+            const searchBtn = document.getElementById("searchBtn");
+
+            if (searchBtn) {
+                searchBtn.addEventListener("click", function () {
+
+                    const bloodGroup = document.getElementById("bloodGroup").value;
+                    const locationInput = document.querySelector(".search-box input");
+                    const location = locationInput ? locationInput.value.trim() : "";
+
+                    if (!bloodGroup || bloodGroup === "Select Blood Group") {
+                        alert("Please select a blood group.");
+                        return;
+                    }
+
+                    if (location === "") {
+                        alert("Please enter a location.");
+                        return;
+                    }
+
+                    alert("Searching for " + bloodGroup + " donors in " + location + ".");
+
+                });
             }
 
-            alert("Searching for " + bloodGroup + " donors in " + location + ".");
+            /* ================= Quick Access (mapped to real nav pages) ================= */
 
-        });
-    }
+            const quickButtons = document.querySelectorAll(".item button");
 
-    /* ================= Quick Access (mapped to real nav pages) ================= */
+            const quickLinks = [
+                "donors.html",
+                "blood-requests.html",
+                "emergency-requests.html",
+                "hospitals.html"
+            ];
 
-    const quickButtons = document.querySelectorAll(".item button");
+            quickButtons.forEach(function (button, index) {
+                button.addEventListener("click", function () {
+                    if (quickLinks[index]) {
+                        window.location.href = quickLinks[index];
+                    }
+                });
+            });
 
-    const quickLinks = [
-        "donors.html",
-        "blood-requests.html",
-        "emergency-requests.html",
-        "hospitals.html"
-    ];
+            /* ================= Real Stats ================= */
 
-    quickButtons.forEach(function (button, index) {
-        button.addEventListener("click", function () {
-            if (quickLinks[index]) {
-                window.location.href = quickLinks[index];
-            }
-        });
-    });
+            function animateCounter(el, target, suffix) {
 
-    /* ================= Real Stats ================= */
+                let current = 0;
+                const increment = Math.max(1, Math.ceil(target / 60));
 
-    function animateCounter(el, target, suffix) {
+                function step() {
+                    current += increment;
+                    if (current < target) {
+                        el.textContent = current.toLocaleString() + suffix;
+                        requestAnimationFrame(step);
+                    } else {
+                        el.textContent = target.toLocaleString() + suffix;
+                    }
+                }
 
-        let current = 0;
-        const increment = Math.max(1, Math.ceil(target / 60));
+                step();
 
-        function step() {
-            current += increment;
-            if (current < target) {
-                el.textContent = current.toLocaleString() + suffix;
-                requestAnimationFrame(step);
-            } else {
-                el.textContent = target.toLocaleString() + suffix;
-            }
-        }
-
-        step();
-
-    }
-
-    function loadStats() {
-
-        const users = JSON.parse(localStorage.getItem("users")) || [];
-        const requests = JSON.parse(localStorage.getItem("bloodRequests")) || [];
-        const donations = JSON.parse(localStorage.getItem("bloodDonations")) || [];
-
-        const hospitalSet = new Set();
-
-        requests.forEach(function (r) {
-            if (r.hospital) hospitalSet.add(r.hospital.trim().toLowerCase());
-        });
-
-        donations.forEach(function (d) {
-            if (d.hospital) hospitalSet.add(d.hospital.trim().toLowerCase());
-        });
-
-        const statCards = document.querySelectorAll(".stats .card h2");
-
-        if (statCards[0]) animateCounter(statCards[0], users.length, "");
-        if (statCards[1]) animateCounter(statCards[1], requests.length, "");
-        if (statCards[2]) animateCounter(statCards[2], donations.length, "");
-        if (statCards[3]) animateCounter(statCards[3], hospitalSet.size, "");
-
-    }
-
-    loadStats();
-
-    /* ================= Blood Inventory (from "Blood Available" posts) ================= */
-
-    function loadInventory() {
-
-        const posts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
-        const availablePosts = posts.filter(p => p.postType === "Blood Available");
-
-        const groups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
-        const counts = {};
-
-        groups.forEach(g => counts[g] = 0);
-
-        availablePosts.forEach(function (p) {
-            if (counts[p.bloodGroup] !== undefined) {
-                counts[p.bloodGroup]++;
-            }
-        });
-
-        const bloodCards = document.querySelectorAll(".blood-card");
-
-        bloodCards.forEach(function (card) {
-
-            const group = card.querySelector("h3").textContent.trim();
-            const countEl = card.querySelector("p");
-
-            if (countEl) {
-                countEl.textContent = "Available: " + (counts[group] || 0) + " Units";
             }
 
+            function loadStats() {
+
+                const users = JSON.parse(localStorage.getItem("users")) || [];
+                const requests = JSON.parse(localStorage.getItem("bloodRequests")) || [];
+                const donations = JSON.parse(localStorage.getItem("bloodDonations")) || [];
+
+                const hospitalSet = new Set();
+
+                requests.forEach(function (r) {
+                    if (r.hospital) hospitalSet.add(r.hospital.trim().toLowerCase());
+                });
+
+                donations.forEach(function (d) {
+                    if (d.hospital) hospitalSet.add(d.hospital.trim().toLowerCase());
+                });
+
+                const statCards = document.querySelectorAll(".stats .card h2");
+
+                if (statCards[0]) animateCounter(statCards[0], users.length, "");
+                if (statCards[1]) animateCounter(statCards[1], requests.length, "");
+                if (statCards[2]) animateCounter(statCards[2], donations.length, "");
+                if (statCards[3]) animateCounter(statCards[3], hospitalSet.size, "");
+
+            }
+
+            loadStats();
+
+            /* ================= Blood Inventory (from "Blood Available" posts) ================= */
+
+            function loadInventory() {
+
+                const posts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
+                const availablePosts = posts.filter(p => p.postType === "Blood Available");
+
+                const groups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+                const counts = {};
+
+                groups.forEach(g => counts[g] = 0);
+
+                availablePosts.forEach(function (p) {
+                    if (counts[p.bloodGroup] !== undefined) {
+                        counts[p.bloodGroup]++;
+                    }
+                });
+
+                const bloodCards = document.querySelectorAll(".blood-card");
+
+                bloodCards.forEach(function (card) {
+
+                    const group = card.querySelector("h3").textContent.trim();
+                    const countEl = card.querySelector("p");
+
+                    if (countEl) {
+                        countEl.textContent = "Available: " + (counts[group] || 0) + " Units";
+                    }
+
+                });
+
+            }
+
+            loadInventory();
+
+            /* ================= Hover Effects ================= */
+
+            const inventoryCards = document.querySelectorAll(".blood-card");
+
+            inventoryCards.forEach(function (card) {
+                card.addEventListener("mouseenter", function () {
+                    card.style.transform = "translateY(-8px) scale(1.03)";
+                });
+                card.addEventListener("mouseleave", function () {
+                    card.style.transform = "translateY(0)";
+                });
+            });
+
+            const navLinks = document.querySelectorAll("nav a");
+
+            navLinks.forEach(function (link) {
+                link.addEventListener("click", function () {
+                    console.log("Opening " + link.textContent);
+                });
+            });
+
+            /* ================= Refresh when returning to tab ================= */
+
+            window.addEventListener("focus", function () {
+                loadStats();
+                loadInventory();
+            });
+
         });
-
-    }
-
-    loadInventory();
-
-    /* ================= Hover Effects ================= */
-
-    const inventoryCards = document.querySelectorAll(".blood-card");
-
-    inventoryCards.forEach(function (card) {
-        card.addEventListener("mouseenter", function () {
-            card.style.transform = "translateY(-8px) scale(1.03)";
-        });
-        card.addEventListener("mouseleave", function () {
-            card.style.transform = "translateY(0)";
-        });
-    });
-
-    const navLinks = document.querySelectorAll("nav a");
-
-    navLinks.forEach(function (link) {
-        link.addEventListener("click", function () {
-            console.log("Opening " + link.textContent);
-        });
-    });
-
-    /* ================= Refresh when returning to tab ================= */
-
-    window.addEventListener("focus", function () {
-        loadStats();
-        loadInventory();
-    });
-
-});
     </script>
 
 </body>
+<<<<<<< HEAD:home.html
 </html>
+=======
+
+</html>
+>>>>>>> e36c86b (up):Home.html
