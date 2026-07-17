@@ -13,13 +13,18 @@
             font-family:Arial, Helvetica, sans-serif;
         }
 
-        body{
-            background:#f8f9fa;
-            background-image: url("bg.png");
-            min-height:100vh;
-            display:flex;
-            flex-direction:column;
-        }
+       body{
+    color: var(--ink);
+    line-height: 1.6;
+    overflow-x: hidden;
+
+    background:
+        radial-gradient(circle at 10% 0%, rgba(224,48,47,.06) 0%, transparent 45%),
+        radial-gradient(circle at 90% 15%, rgba(15,155,142,.05) 0%, transparent 40%),
+        radial-gradient(circle at 50% 100%, rgba(244,163,64,.05) 0%, transparent 50%),
+        linear-gradient(180deg, #fffaf7 0%, #f8f6f3 40%, #f4f2ef 100%);
+    background-attachment: fixed;
+}
 
         /* Header */
 
