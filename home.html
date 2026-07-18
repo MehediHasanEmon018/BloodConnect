@@ -93,10 +93,18 @@ body{
         /* Welcome */
 
         .welcome {
-            background: #ffffff;
+            color: var(--ink);
+    line-height: 1.6;
+    overflow-x: hidden;
+
+    background:
+        radial-gradient(circle at 10% 0%, rgba(224,48,47,.06) 0%, transparent 45%),
+        radial-gradient(circle at 90% 15%, rgba(15,155,142,.05) 0%, transparent 40%),
+        radial-gradient(circle at 50% 100%, rgba(244,163,64,.05) 0%, transparent 50%),
+        linear-gradient(180deg, #fffaf7 0%, #f8f6f3 40%, #f4f2ef 100%);
             border-radius: 12px;
             padding: 60px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, .08);
+            
             margin-bottom: 40px;
             text-align: center;
         }
@@ -430,7 +438,6 @@ body{
             <a href="blood-requests.html">Blood Requests</a>
             <a href="emergency-requests.html">Emergency</a>
             <a href="Hospitals.html">Hospitals</a>
-            <a href="analytics.html">Analytics</a>
             <a href="profile.html">Profile</a>
         </nav>
 
