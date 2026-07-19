@@ -46,12 +46,6 @@ body{
 }
 
 
-
-/* ===========================
-   Sidebar
-=========================== */
-
-
 .sidebar{
 
     width:270px;
@@ -202,13 +196,6 @@ body{
 
 
 
-
-
-/* ===========================
-   Main Content
-=========================== */
-
-
 .main-content{
 
     margin-left:270px;
@@ -218,13 +205,6 @@ body{
     padding:30px;
 
 }
-
-
-
-
-/* ===========================
-   Header
-=========================== */
 
 
 header{
@@ -311,11 +291,6 @@ header{
 
 }
 
- 
-/* ===========================
-   Settings Container
-=========================== */
-
 
 .settings-container{
 
@@ -326,14 +301,6 @@ header{
     gap:25px;
 
 }
-
-
-
-
-
-/* ===========================
-   Settings Cards
-=========================== */
 
 
 .settings-card{
@@ -365,14 +332,6 @@ header{
     font-size:22px;
 
 }
-
-
-
-
-
-/* ===========================
-   Profile Settings
-=========================== */
 
 
 .profile-settings{
@@ -423,8 +382,6 @@ header{
 
 
 
-
-
 #editProfileBtn{
 
     padding:12px 25px;
@@ -450,14 +407,6 @@ header{
     background:#b91d1d;
 
 }
-
-
-
-
-
-/* ===========================
-   Setting Rows
-=========================== */
 
 
 .setting-row{
@@ -501,14 +450,6 @@ header{
     font-size:14px;
 
 }
-
-
-
-
-
-/* ===========================
-   Toggle Switch
-=========================== */
 
 
 .switch{
@@ -598,14 +539,6 @@ header{
 }
 
 
-
-
-
-/* ===========================
-   Information Grid
-=========================== */
-
-
 .info-grid{
 
     display:grid;
@@ -650,11 +583,6 @@ header{
 }
 
 
-/* ===========================
-   Password Section
-=========================== */
-
-
 .password-box{
 
     display:grid;
@@ -693,8 +621,6 @@ header{
 
 
 
-
-
 #changePasswordBtn{
 
     padding:13px 25px;
@@ -720,14 +646,6 @@ header{
     background:#b91d1d;
 
 }
-
-
-
-
-
-/* ===========================
-   Danger Zone
-=========================== */
 
 
 .danger-zone{
@@ -793,14 +711,6 @@ header{
 }
 
 
-
-
-
-/* ===========================
-   Save Button
-=========================== */
-
-
 .save-area{
 
     display:flex;
@@ -842,14 +752,6 @@ header{
 }
 
 
-
-
-
-/* ===========================
-   Footer
-=========================== */
-
-
 footer{
 
     background:#d62828;
@@ -883,14 +785,6 @@ footer p{
 }
 
 
-
-
-
-/* ===========================
-   Scrollbar
-=========================== */
-
-
 ::-webkit-scrollbar{
 
     width:8px;
@@ -914,14 +808,6 @@ footer p{
     background:#f1f1f1;
 
 }
-
-
-
-
-
-/* ===========================
-   Responsive
-=========================== */
 
 
 @media(max-width:900px){
@@ -1419,10 +1305,6 @@ checked>
 
 
 
-
-
-
-
 <div class="settings-card">
 
 
@@ -1620,8 +1502,10 @@ Account Information
 Member Since
 </strong>
 
-<p>
+<p id="memberSince">
+
 July 2026
+
 </p>
 
 </div>
@@ -1650,8 +1534,10 @@ Total Posts
 Donations
 </strong>
 
-<p>
-18
+<p id="totalDonationsInfo">
+
+0
+
 </p>
 
 </div>
@@ -1664,8 +1550,10 @@ Donations
 Lives Saved
 </strong>
 
-<p>
-42
+<p id="livesSavedInfo">
+
+0
+
 </p>
 
 </div>
@@ -1817,7 +1705,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     loadUser();
 
-    /* Logout */
     if (logoutBtn) {
         logoutBtn.addEventListener("click", function () {
             if (confirm("Are you sure you want to logout?")) {
@@ -1827,7 +1714,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    /* Edit Profile Redirect */
     const editProfileBtn = document.getElementById("editProfileBtn");
     if (editProfileBtn) {
         editProfileBtn.addEventListener("click", function () {
@@ -1835,7 +1721,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    /* ===== Notification + Privacy Settings (per-account) ===== */
     const emailNotification = document.getElementById("emailNotification");
     const smsNotification = document.getElementById("smsNotification");
     const emergencyAlert = document.getElementById("emergencyAlert");
@@ -1856,7 +1741,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     loadSettings();
 
-    /* ===== Save Settings ===== */
     const saveSettings = document.getElementById("saveSettings");
 
     if (saveSettings) {
@@ -1878,7 +1762,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    /* ===== Total Posts Counter ===== */
     const totalPosts = document.getElementById("totalPosts");
 
     function updatePostCount() {
@@ -1889,7 +1772,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     updatePostCount();
 
-    /* ===== Change Password ===== */
     const changePasswordBtn = document.getElementById("changePasswordBtn");
     const oldPassword = document.getElementById("oldPassword");
     const newPassword = document.getElementById("newPassword");
@@ -1935,7 +1817,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    /* ===== Delete Account ===== */
     const deleteAccountBtn = document.getElementById("deleteAccountBtn");
 
     if (deleteAccountBtn) {
@@ -1969,7 +1850,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    /* ===== Close Sidebar Outside Click ===== */
     document.addEventListener("click", function (e) {
         if (
             sidebar &&
@@ -1981,7 +1861,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    /* ===== Refresh on tab focus ===== */
     window.addEventListener("focus", function () {
         currentUser = JSON.parse(localStorage.getItem("currentUser")) || {};
         loadUser();

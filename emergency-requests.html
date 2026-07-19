@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
     <style>
         :root{
@@ -415,6 +416,18 @@
             cursor:default;
         }
 
+        .ownPostTag{
+            width:100%;
+            padding:11px;
+            border-radius:9px;
+            background:#f2f3f6;
+            color:var(--muted);
+            margin-bottom:10px;
+            font-weight:600;
+            font-size:13.5px;
+            display:block;
+        }
+
         .action p{
             font-weight:600;
             margin-bottom:4px;
@@ -600,17 +613,11 @@
 
         #map{
             width:100%;
-            height:220px;
+            height:260px;
             overflow:hidden;
             border-radius:12px;
             margin-bottom:18px;
             border:1px solid var(--border);
-        }
-
-        #map iframe{
-            width:100%;
-            height:100%;
-            border:none;
         }
 
         .location-info p{
@@ -881,12 +888,7 @@
                         <button id="locationBtn">Get My Location</button>
                     </div>
 
-                    <div id="map">
-                        <iframe
-                            src="https://maps.google.com/maps?q=Sylhet,Bangladesh&t=&z=13&ie=UTF8&iwloc=&output=embed"
-                            loading="lazy">
-                        </iframe>
-                    </div>
+                    <div id="map"></div>
 
                     <div class="location-info">
                         <p><strong>Latitude:</strong> <span id="latitude">--</span></p>
@@ -919,7 +921,6 @@
 
                 <button id="createEmergency">
                     <i class="fa-solid fa-plus"></i>
-                    
                     Create Emergency Request
                 </button>
 
@@ -930,6 +931,8 @@
     </main>
 
 </div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -1021,9 +1024,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
         emergencyPosts.forEach(function (post) {
 
+            const isOwnPost = currentUser.email && post.userEmail === currentUser.email;
+
             const card = document.createElement("div");
             card.className = "request-card " + priorityClass(post.urgency);
             card.dataset.id = post.id;
+
+            const actionHTML = isOwnPost
+                ? `<span class="ownPostTag"><i class="fa-solid fa-circle-user"></i> Your Post</span>`
+                : `<button class="respondBtn" data-id="${post.id}" data-name="${post.userName || 'Anonymous'}">
+                        <i class="fa-solid fa-bolt"></i> Respond Now
+                   </button>`;
 
             card.innerHTML = `
                 <div class="priority">${priorityLabel(post.urgency)}</div>
@@ -1048,9 +1059,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
 
                 <div class="action">
-                    <button class="respondBtn" data-id="${post.id}">
-                        <i class="fa-solid fa-bolt"></i> Respond Now
-                    </button>
+                    ${actionHTML}
                     <p>${post.contact || "No contact"}</p>
                     <span>Blood Group: ${post.bloodGroup || "N/A"}</span>
                 </div>
@@ -1067,13 +1076,15 @@ document.addEventListener("DOMContentLoaded", function () {
         if (e.target.closest(".respondBtn")) {
 
             const btn = e.target.closest(".respondBtn");
-            const postId = btn.dataset.id;
+            const posterName = btn.dataset.name;
 
             if (btn.disabled) return;
 
-            const confirmResponse = confirm("Respond to this emergency request?");
+            const confirmResponse = confirm("Respond to this emergency request from " + posterName + "?");
 
             if (confirmResponse) {
+
+                const postId = btn.dataset.id;
 
                 const responses = JSON.parse(localStorage.getItem("emergencyResponses")) || [];
 
@@ -1088,14 +1099,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 localStorage.setItem("emergencyResponses", JSON.stringify(responses));
 
-                btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Responded';
-                btn.style.background = "#2f9e44";
-                btn.disabled = true;
+                // Send the responder straight into a chat with the person who posted
+                localStorage.setItem("openChatWith", posterName);
 
-                alert("Response submitted successfully.");
-
-                renderResponses();
-                renderSummary();
+                window.location.href = "Chat.html";
 
             }
 
@@ -1271,7 +1278,103 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-    /* ================= Geolocation ================= */
+    /* ================= Live Map (Leaflet) ================= */
+
+    let map;
+    let userMarker;
+    let pulseCircle;
+
+    function initMap(centerLat, centerLng) {
+
+        map = L.map("map", { zoomControl: false }).setView([centerLat, centerLng], 13);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: "&copy; OpenStreetMap contributors"
+        }).addTo(map);
+
+        L.control.zoom({ position: "bottomright" }).addTo(map);
+
+        placeUserMarker(centerLat, centerLng);
+
+        plotEmergencyPosts();
+
+    }
+
+    function placeUserMarker(lat, lng) {
+
+        if (userMarker) map.removeLayer(userMarker);
+        if (pulseCircle) map.removeLayer(pulseCircle);
+
+        const userIcon = L.divIcon({
+            className: "",
+            html: '<div style="background:#1a73e8;width:16px;height:16px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 4px rgba(26,115,232,.3);"></div>',
+            iconSize: [16, 16]
+        });
+
+        userMarker = L.marker([lat, lng], { icon: userIcon })
+            .addTo(map)
+            .bindPopup("You are here");
+
+        pulseCircle = L.circle([lat, lng], {
+            radius: 1200,
+            color: "#1a73e8",
+            fillColor: "#1a73e8",
+            fillOpacity: 0.06,
+            weight: 1
+        }).addTo(map);
+
+    }
+
+    function plotEmergencyPosts() {
+
+        const allPosts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
+        const emergencyPosts = allPosts.filter(p => p.emergency === true);
+
+        // Since posts don't store coordinates, scatter markers gently around
+        // the map center as a visual representation of live emergency activity.
+        const center = map.getCenter();
+
+        emergencyPosts.slice(0, 12).forEach(function (post, index) {
+
+            const angle = (index / emergencyPosts.length) * Math.PI * 2;
+            const distance = 0.01 + (index % 3) * 0.006;
+
+            const lat = center.lat + Math.sin(angle) * distance;
+            const lng = center.lng + Math.cos(angle) * distance;
+
+            const emergencyIcon = L.divIcon({
+                className: "",
+                html: '<div style="background:#c1121f;width:26px;height:26px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(193,18,31,.4);"><i class="fa-solid fa-droplet" style="transform:rotate(45deg);color:#fff;font-size:11px;"></i></div>',
+                iconSize: [26, 26],
+                iconAnchor: [13, 26]
+            });
+
+            L.marker([lat, lng], { icon: emergencyIcon })
+                .addTo(map)
+                .bindPopup(
+                    "<strong>" + (post.bloodGroup || "N/A") + " needed</strong><br>" +
+                    (post.hospital || "Hospital not specified") + "<br>" +
+                    (post.location || "")
+                );
+
+        });
+
+    }
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                initMap(position.coords.latitude, position.coords.longitude);
+            },
+            function () {
+                initMap(24.8949, 91.8687); // fallback: Sylhet center
+            }
+        );
+    } else {
+        initMap(24.8949, 91.8687);
+    }
+
+    /* ================= Geolocation button ================= */
 
     if (locationBtn) {
         locationBtn.addEventListener("click", function () {
@@ -1285,9 +1388,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
             navigator.geolocation.getCurrentPosition(
                 function (position) {
-                    latitude.textContent = position.coords.latitude.toFixed(6);
-                    longitude.textContent = position.coords.longitude.toFixed(6);
+
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+
+                    latitude.textContent = lat.toFixed(6);
+                    longitude.textContent = lng.toFixed(6);
                     statusText.textContent = "Location found successfully.";
+
+                    if (map) {
+                        map.setView([lat, lng], 14);
+                        placeUserMarker(lat, lng);
+                    }
+
                 },
                 function () {
                     statusText.textContent = "Location access denied.";

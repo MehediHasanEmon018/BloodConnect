@@ -654,22 +654,7 @@
 
                 if (stored) return stored;
 
-                const seed = {
-                    "John Doe": [
-                        { type: "received", text: "Hello! I saw your blood donation post." },
-                        { type: "sent", text: "Hi! Yes, I'm O+ and available this week." }
-                    ],
-                    "Sarah Ahmed": [
-                        { type: "received", text: "Do you know any hospitals near Amberkhana with a blood bank?" }
-                    ],
-                    "BloodConnect Support": [
-                        { type: "received", text: "Your account has been verified. Thank you for joining BloodConnect!" }
-                    ]
-                };
-
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(seed));
-
-                return seed;
+                return {};
 
             }
 
@@ -869,12 +854,36 @@
 
             renderChatList();
 
-            const firstChat = Object.keys(chatData)[0];
+            const requestedChat = localStorage.getItem("openChatWith");
 
-            if (firstChat) {
-                loadChat(firstChat);
+            if (requestedChat) {
+
+                if (!chatData[requestedChat]) {
+                    chatData[requestedChat] = [];
+                    saveChatData();
+                    renderChatList();
+                }
+
+                loadChat(requestedChat);
+
+                localStorage.removeItem("openChatWith");
+
             } else {
-                chatHeader.textContent = "No conversations yet";
+
+                const firstChat = Object.keys(chatData)[0];
+
+                if (firstChat) {
+                    loadChat(firstChat);
+                } else {
+                    chatHeader.textContent = "No conversations yet";
+                    messagesEl.innerHTML = `
+                        <div style="text-align:center; color:#999; padding:60px 20px;">
+                            <p>No conversations yet.</p>
+                            <p style="font-size:13.5px; margin-top:8px;">Contact a donor from the Donors page, or start a new chat using the box on the left.</p>
+                        </div>
+                    `;
+                }
+
             }
 
         });

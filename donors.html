@@ -465,7 +465,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             card.querySelector(".contactBtn").addEventListener("click", function () {
 
-                alert("Contact request sent to " + (donor.userName || "the donor") + ".");
+                const donorName = donor.userName || "Unknown Donor";
+
+                // Save which donor to open, so Chat.html can pick it up
+                localStorage.setItem("openChatWith", donorName);
+
+                window.location.href = "Chat.html";
 
             });
 

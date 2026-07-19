@@ -37,10 +37,6 @@
             min-height: 100vh;
         }
 
-        /* ===========================
-   Sidebar
-=========================== */
-
         .sidebar {
             width: 270px;
             background: #ffffff;
@@ -116,19 +112,11 @@
             background: #b91d1d;
         }
 
-        /* ===========================
-   Main Content
-=========================== */
-
         .main-content {
             margin-left: 270px;
             width: calc(100% - 270px);
             padding: 30px;
         }
-
-        /* ===========================
-   Header
-=========================== */
 
         header {
             display: flex;
@@ -173,10 +161,6 @@
             object-fit: cover;
         }
 
-        /* ===========================
-   Cover
-=========================== */
-
         .cover {
             width: 100%;
             height: 260px;
@@ -190,10 +174,6 @@
             height: 100%;
             object-fit: cover;
         }
-
-        /* ===========================
-   Profile Card
-=========================== */
 
         .profile-card {
             background: #fff;
@@ -262,10 +242,6 @@
             background: #b91d1d;
         }
 
-        /* ===========================
-   About Section
-=========================== */
-
         .about-card {
             background: #fff;
             padding: 30px;
@@ -306,10 +282,6 @@
             color: #666;
         }
 
-        /* ===========================
-   Statistics
-=========================== */
-
         .stats-section {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -340,10 +312,6 @@
             color: #666;
             font-size: 15px;
         }
-
-        /* ===========================
-   Create Post
-=========================== */
 
         .create-post-card {
             background: #fff;
@@ -444,10 +412,6 @@
         #clearPost:hover {
             background: #d9d9d9;
         }
-
-        /* ===========================
-   Timeline
-=========================== */
 
         .timeline {
             background: #fff;
@@ -561,10 +525,6 @@
             color: #d62828;
         }
 
-        /* ===========================
-   Suggested Donors
-=========================== */
-
         .suggested-donors {
             background: #fff;
             padding: 30px;
@@ -628,10 +588,6 @@
             background: #b91d1d;
         }
 
-        /* ===========================
-   Recent Activity
-=========================== */
-
         .activity-section {
             background: #fff;
             padding: 30px;
@@ -691,10 +647,6 @@
             font-size: 14px;
         }
 
-        /* ===========================
-   Donation History
-=========================== */
-
         .history-section {
             background: #fff;
             padding: 30px;
@@ -728,10 +680,6 @@
         .history-section tbody tr:hover {
             background: #fafafa;
         }
-
-        /* ===========================
-   Edit Profile Modal
-=========================== */
 
         .modal {
             display: none;
@@ -832,10 +780,6 @@
             background: #b91d1d;
         }
 
-        /* ===========================
-   Footer
-=========================== */
-
         footer {
             background: #d62828;
             color: #fff;
@@ -853,10 +797,6 @@
             margin: 8px 0;
         }
 
-        /* ===========================
-   Scrollbar
-=========================== */
-
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -869,10 +809,6 @@
         ::-webkit-scrollbar-track {
             background: #f1f1f1;
         }
-
-        /* ===========================
-   Responsive Design
-=========================== */
 
         @media(max-width:1100px) {
 
@@ -980,10 +916,6 @@
 
         }
 
-        /* ===========================
-   Fade Animation
-=========================== */
-
         .post-card,
         .stat-card,
         .donor-card,
@@ -1012,8 +944,6 @@
 <body>
 
     <div class="container">
-
-        <!-- Sidebar -->
 
         <aside class="sidebar">
 
@@ -1098,11 +1028,7 @@
 
         </aside>
 
-        <!-- Main Content -->
-
         <main class="main-content">
-
-            <!-- Header -->
 
             <header>
 
@@ -1130,13 +1056,9 @@
 
             </header>
 
-            <!-- Cover -->
-
             <section class="cover">
                 <img src="images/cover.jpg" alt="Cover" id="coverPhoto">
             </section>
-
-            <!-- Profile Card -->
 
             <section class="profile-card">
 
@@ -1192,8 +1114,6 @@
                 </div>
 
             </section>
-
-            <!-- About -->
 
             <section class="about-card">
 
@@ -1281,8 +1201,6 @@
 
             </section>
 
-            <!-- Statistics -->
-
             <section class="stats-section">
 
                 <div class="stat-card">
@@ -1307,9 +1225,6 @@
 
             </section>
 
-
-            <!-- Timeline -->
-
             <section class="timeline">
 
                 <div class="timeline-header">
@@ -1329,8 +1244,6 @@
                     </button>
 
                 </div>
-
-                <!-- Posts created by JavaScript -->
 
                 <div id="timelineContainer">
 
@@ -1358,8 +1271,6 @@
 
             </section>
 
-            <!-- Suggested Donors -->
-
             <section class="suggested-donors">
 
                 <h2>
@@ -1373,16 +1284,12 @@
 
             </section>
 
-            <!-- Recent Activity -->
-
             <section class="activity-section">
 
                 <h2>Recent Activity</h2>
 
                 <div class="activity-list" id="activityList"></div>
 
-
-                <!-- Donation History -->
 
                 <section class="history-section">
 
@@ -1407,15 +1314,12 @@
                         </thead>
 
                         <tbody id="historyBody">
-                            <!-- Rows generated by profile.js -->
                         </tbody>
 
                     </table>
 
                 </section>
 
-
-                <!-- Footer -->
 
                 <footer>
 
@@ -1555,7 +1459,7 @@
             }
 
             function updatePostCount() {
-                postCount.textContent = posts.length;
+                if (postCount) postCount.textContent = posts.length;
             }
 
             function formatDate() {
@@ -1658,66 +1562,71 @@
 
             renderPosts();
 
-            postForm.addEventListener("submit", function (e) {
+            if (postForm) {
 
-                e.preventDefault();
+                postForm.addEventListener("submit", function (e) {
 
-                const text = postText.value.trim();
+                    e.preventDefault();
 
-                if (text === "") {
-                    alert("Write something first.");
-                    return;
-                }
+                    const text = postText.value.trim();
 
-                const allPosts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
-                const file = imageInput.files[0];
+                    if (text === "") {
+                        alert("Write something first.");
+                        return;
+                    }
 
-                function buildPost(imageData) {
-                    return {
-                        id: Date.now(),
-                        userName: savedUser.name || "Anonymous",
-                        userEmail: savedUser.email || "",
-                        userPhoto: savedUser.photo || "images/user.png",
-                        text: text,
-                        image: imageData,
-                        date: formatDate(),
-                        postType: "Blood Available",
-                        bloodGroup: savedUser.bloodGroup || "",
-                        location: savedUser.location || "",
-                        hospital: "",
-                        contact: savedUser.phone || ""
-                    };
-                }
+                    const allPosts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
+                    const file = imageInput.files[0];
 
-                function finishPost(newPost) {
-                    allPosts.push(newPost);
-                    savePosts(allPosts);
-                    refreshUserPosts();
-                    renderPosts();
-                    postForm.reset();
-                    imageName.textContent = "No image selected";
-                }
+                    function buildPost(imageData) {
+                        return {
+                            id: Date.now(),
+                            userName: savedUser.name || "Anonymous",
+                            userEmail: savedUser.email || "",
+                            userPhoto: savedUser.photo || "images/user.png",
+                            text: text,
+                            image: imageData,
+                            date: formatDate(),
+                            postType: "Blood Available",
+                            bloodGroup: savedUser.bloodGroup || "",
+                            location: savedUser.location || "",
+                            hospital: "",
+                            contact: savedUser.phone || ""
+                        };
+                    }
 
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function () {
-                        finishPost(buildPost(reader.result));
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    finishPost(buildPost(""));
-                }
+                    function finishPost(newPost) {
+                        allPosts.push(newPost);
+                        savePosts(allPosts);
+                        refreshUserPosts();
+                        renderPosts();
+                        postForm.reset();
+                        if (imageName) imageName.textContent = "No image selected";
+                    }
 
-            });
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function () {
+                            finishPost(buildPost(reader.result));
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        finishPost(buildPost(""));
+                    }
 
-            document.getElementById("refreshTimeline")
-                .addEventListener("click", function () {
+                });
+
+            }
+
+            const refreshTimelineBtn = document.getElementById("refreshTimeline");
+            if (refreshTimelineBtn) {
+                refreshTimelineBtn.addEventListener("click", function () {
                     renderPosts();
                 });
+            }
 
             timelineContainer.addEventListener("click", function (e) {
 
-                /* Like */
                 if (e.target.closest(".likeBtn")) {
 
                     const btn = e.target.closest(".likeBtn");
@@ -1734,7 +1643,6 @@
 
                 }
 
-                /* Comment */
                 if (e.target.closest(".commentBtn")) {
                     const comment = prompt("Write your comment:");
                     if (comment && comment.trim() !== "") {
@@ -1742,7 +1650,6 @@
                     }
                 }
 
-                /* Share */
                 if (e.target.closest(".shareBtn")) {
 
                     const card = e.target.closest(".post-card");
@@ -1757,7 +1664,6 @@
 
                 }
 
-                /* Delete */
                 if (e.target.closest(".deleteBtn")) {
 
                     const btn = e.target.closest(".deleteBtn");
@@ -1777,8 +1683,6 @@
                 }
 
             });
-
-            /* ================= Donation Tracking ================= */
 
             const donationCountEl = document.getElementById("donationCount");
             const livesSavedCountEl = document.getElementById("livesSavedCount");
@@ -1907,8 +1811,6 @@
 
             }
 
-            /* ================= Suggested Donors ================= */
-
             function renderSuggestedDonors() {
 
                 const grid = document.getElementById("suggestedDonorGrid");
@@ -1957,8 +1859,6 @@
                 });
 
             }
-
-            /* ================= Recent Activity ================= */
 
             function renderActivity() {
 
@@ -2024,8 +1924,6 @@
 
             }
 
-            /* ================= Refresh everything together ================= */
-
             function refreshEverything() {
                 loadProfile();
                 renderPosts();
@@ -2042,7 +1940,6 @@
                 }
             });
 
-            // Initial render of everything, once, in the right order
             updatePostCount();
             renderPosts();
             renderDonations();

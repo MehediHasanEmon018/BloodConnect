@@ -14,7 +14,7 @@
         }
 
        body{
-    color: var(--ink);
+    color: #333;
     line-height: 1.6;
     overflow-x: hidden;
 
@@ -24,9 +24,9 @@
         radial-gradient(circle at 50% 100%, rgba(244,163,64,.05) 0%, transparent 50%),
         linear-gradient(180deg, #fffaf7 0%, #f8f6f3 40%, #f4f2ef 100%);
     background-attachment: fixed;
-}
+        background-image: url("bg.png");
 
-        /* Header */
+}
 
         header{
             display:flex;
@@ -51,8 +51,6 @@
         nav a:hover{
             color:#d62828;
         }
-
-        /* Login Section */
 
         .container{
             flex:1;
@@ -245,59 +243,68 @@
 
 <script>
 
-document.addEventListener("DOMContentLoaded",function(){
+document.addEventListener("DOMContentLoaded", function () {
 
-    const form=document.getElementById("loginForm");
-    const message=document.getElementById("message");
+    const form = document.getElementById("loginForm");
+    const message = document.getElementById("message");
 
-    form.addEventListener("submit",function(e){
+    form.addEventListener("submit", function (e) {
 
         e.preventDefault();
 
-        const email=document.getElementById("email").value.trim();
-        const password=document.getElementById("password").value.trim();
+        const email = document.getElementById("email").value.trim().toLowerCase();
+        const password = document.getElementById("password").value;
 
-        if(email==="" || password===""){
-
-            message.style.color="red";
-            message.innerHTML="Please fill in all fields.";
-
+        if (email === "" || password === "") {
+            message.style.color = "red";
+            message.innerHTML = "Please fill in all fields.";
             return;
         }
 
-        if(password.length<6){
+        const users = JSON.parse(localStorage.getItem("users")) || [];
 
-            message.style.color="red";
-            message.innerHTML="Password must be at least 6 characters.";
+        const matchedUser = users.find(function (u) {
+            return u.email === email && u.password === password;
+        });
+
+        if (!matchedUser) {
+
+            const emailExists = users.some(u => u.email === email);
+
+            message.style.color = "red";
+
+            if (emailExists) {
+                message.innerHTML = "Incorrect password. Please try again.";
+            } else {
+                message.innerHTML = "No account found with this email. Please register first.";
+            }
 
             return;
+
         }
 
-        message.style.color="green";
-        message.innerHTML="Login Successful! Redirecting...";
+        // Real login: set the actual matched account as currentUser
+        localStorage.setItem("currentUser", JSON.stringify(matchedUser));
 
-        setTimeout(function(){
+        message.style.color = "green";
+        message.innerHTML = "Login Successful! Redirecting...";
 
-            window.location.href="home.html";
-
-        },1500);
+        setTimeout(function () {
+            window.location.href = "profile.html";
+        }, 1200);
 
     });
 
-    const inputs=document.querySelectorAll("input");
+    const inputs = document.querySelectorAll("input");
 
-    inputs.forEach(function(input){
+    inputs.forEach(function (input) {
 
-        input.addEventListener("focus",function(){
-
-            input.style.background="#fff7f7";
-
+        input.addEventListener("focus", function () {
+            input.style.background = "#fff7f7";
         });
 
-        input.addEventListener("blur",function(){
-
-            input.style.background="white";
-
+        input.addEventListener("blur", function () {
+            input.style.background = "white";
         });
 
     });

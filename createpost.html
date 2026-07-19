@@ -39,131 +39,84 @@
 
 
 
-        /* ================= Sidebar ================= */
-
-
-        .sidebar {
-
-            width: 250px;
-            height: 100vh;
+       .sidebar {
+            width: 270px;
+            background: #ffffff;
+            border-right: 1px solid #e5e5e5;
             position: fixed;
             top: 0;
             left: 0;
-            background: rgb(14, 3, 77);
-            color: white;
-            padding: 25px 15px;
-
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 25px;
+            overflow-y: auto;
         }
-
 
         .logo {
-
             text-align: center;
-            margin-bottom: 35px;
-
+            margin-bottom: 30px;
         }
-
 
         .logo h2 {
-
-            font-size: 24px;
-
+            color: #d62828;
+            margin-bottom: 8px;
         }
-
-
-        .logo i {
-
-            color: #ff304f;
-            margin-right: 8px;
-
-        }
-
 
         .logo p {
-
-            color: #ddd;
-            margin-top: 8px;
+            color: #777;
             font-size: 14px;
-
         }
-
-
 
         .sidebar ul {
-
             list-style: none;
-
         }
-
 
         .sidebar ul li {
-
-            margin: 12px 0;
-
+            margin-bottom: 8px;
         }
-
 
         .sidebar ul li a {
-
-            color: white;
-            text-decoration: none;
-            padding: 13px 15px;
-            border-radius: 10px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            font-size: 17px;
+            gap: 14px;
+            text-decoration: none;
+            color: #444;
+            padding: 14px;
+            border-radius: 8px;
             transition: .3s;
-
         }
 
+        .sidebar ul li a:hover {
+            background: #ffe5e5;
+            color: #d62828;
+        }
 
-
-        .sidebar ul li a:hover,
         .sidebar ul li.active a {
-
-            background: rgb(60, 45, 131);
-
+            background: #d62828;
+            color: #fff;
         }
-
-
-
-        .sidebar ul li i {
-
-            width: 20px;
-
-        }
-
-
 
         #logoutBtn {
-
-            position: absolute;
-            bottom: 25px;
-            left: 20px;
-            width: 210px;
-            padding: 12px;
+            margin-top: 25px;
+            padding: 14px;
             border: none;
-            border-radius: 10px;
-            background: #ff304f;
-            color: white;
-            font-size: 16px;
+            border-radius: 8px;
+            background: #d62828;
+            color: #fff;
             cursor: pointer;
-
+            font-size: 15px;
+            transition: .3s;
         }
-
 
         #logoutBtn:hover {
-
-            background: #d90429;
-
+            background: #b91d1d;
         }
 
 
 
 
-
-        /* ================= Main Content ================= */
 
 
         .main-content {
@@ -178,7 +131,6 @@
 
 
 
-        /* ================= Header ================= */
 
 
         header {
@@ -259,7 +211,6 @@
 
 
 
-        /* ================= Page Title ================= */
 
 
         .page-title {
@@ -287,7 +238,6 @@
 
         }
 
-        /* ================= Post Container ================= */
 
 
         .post-container {
@@ -302,7 +252,6 @@
 
 
 
-        /* ================= Profile Box ================= */
 
 
         .profile-box {
@@ -350,7 +299,6 @@
 
 
 
-        /* ================= Form ================= */
 
 
         .form-group {
@@ -409,7 +357,6 @@
 
 
 
-        /* ================= Two Column Grid ================= */
 
 
         .form-grid {
@@ -424,7 +371,6 @@
 
 
 
-        /* ================= Image Upload ================= */
 
 
         .image-upload {
@@ -478,11 +424,6 @@
 
 
 
-
-
-        /* ================= Checkbox ================= */
-
-
         .checkbox-box {
 
             background: #fff0f2;
@@ -500,11 +441,6 @@
 
         }
 
-
-
-
-
-        /* ================= Buttons ================= */
 
 
         .button-group {
@@ -565,8 +501,6 @@
 
         }
 
-        /* ================= Preview Section ================= */
-
 
         .preview-section {
 
@@ -587,12 +521,6 @@
             font-size: 25px;
 
         }
-
-
-
-
-
-        /* ================= Preview Card ================= */
 
 
         .post-preview-card {
@@ -665,12 +593,6 @@
         }
 
 
-
-
-
-        /* ================= Preview Information ================= */
-
-
         .preview-info {
 
             display: flex;
@@ -707,12 +629,6 @@
         }
 
 
-
-
-
-        /* ================= Footer ================= */
-
-
         footer {
 
             margin-top: 40px;
@@ -741,13 +657,6 @@
             margin: 8px;
 
         }
-
-
-
-
-
-        /* ================= Responsive ================= */
-
 
         @media(max-width:1100px) {
 
@@ -872,7 +781,6 @@
 
     <div class="container">
 
-        <!-- ================= Sidebar ================= -->
 
         <aside class="sidebar">
 
@@ -947,11 +855,9 @@
 
         </aside>
 
-        <!-- ================= Main Content ================= -->
 
         <main class="main-content">
 
-            <!-- ================= Header ================= -->
 
             <header>
 
@@ -976,7 +882,6 @@
 
             </header>
 
-            <!-- ================= Title ================= -->
 
             <section class="page-title">
 
@@ -988,13 +893,10 @@
 
             </section>
 
-            <!-- ================= Create Form ================= -->
 
             <section class="post-container">
 
                 <form id="postForm">
-
-                    <!-- Profile -->
 
                     <div class="profile-box">
 
@@ -1013,8 +915,6 @@
                         </div>
 
                     </div>
-
-                    <!-- Post Type -->
 
                     <div class="form-group">
 
@@ -1045,8 +945,6 @@
                         </select>
 
                     </div>
-
-                    <!-- Blood Information -->
 
                     <div class="form-grid">
 
@@ -1091,8 +989,6 @@
 
                     </div>
 
-                    <!-- Location -->
-
                     <div class="form-grid">
 
                         <div class="form-group">
@@ -1120,8 +1016,6 @@
                         </div>
 
                     </div>
-
-                    <!-- Contact -->
 
                     <div class="form-grid">
 
@@ -1156,7 +1050,6 @@
                         </div>
 
                     </div>
-                    <!-- ================= Description ================= -->
 
                     <div class="form-group">
 
@@ -1171,8 +1064,6 @@
                             required></textarea>
 
                     </div>
-
-                    <!-- ================= Upload Image ================= -->
 
                     <div class="form-group">
 
@@ -1200,8 +1091,6 @@
 
                     </div>
 
-                    <!-- ================= Emergency Checkbox ================= -->
-
                     <div class="checkbox-box">
 
                         <label>
@@ -1213,8 +1102,6 @@
                         </label>
 
                     </div>
-
-                    <!-- ================= Buttons ================= -->
 
                     <div class="button-group">
 
@@ -1239,8 +1126,6 @@
                 </form>
 
             </section>
-
-            <!-- ================= Live Preview ================= -->
 
             <section class="preview-section">
 
@@ -1323,7 +1208,6 @@
                 </div>
 
             </section>
-            <!-- ================= Footer ================= -->
 
             <footer>
 
@@ -1385,6 +1269,8 @@
 
             let bloodPosts =
                 JSON.parse(localStorage.getItem("bloodPosts")) || [];
+
+            let currentImageData = "";
 
             if (requiredDate) {
 
@@ -1472,37 +1358,92 @@
 
             description.addEventListener("input", updatePreview);
 
+            function compressImage(file, maxWidth, quality, callback) {
+
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+
+                    const img = new Image();
+
+                    img.onload = function () {
+
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > maxWidth) {
+                            height = Math.round(height * (maxWidth / width));
+                            width = maxWidth;
+                        }
+
+                        const canvas = document.createElement("canvas");
+                        canvas.width = width;
+                        canvas.height = height;
+
+                        const ctx = canvas.getContext("2d");
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        callback(canvas.toDataURL("image/jpeg", quality));
+
+                    };
+
+                    img.onerror = function () {
+                        callback("");
+                    };
+
+                    img.src = e.target.result;
+
+                };
+
+                reader.onerror = function () {
+                    callback("");
+                };
+
+                reader.readAsDataURL(file);
+
+            }
+
             postImage.addEventListener("change", function () {
 
                 const file = this.files[0];
 
                 if (!file) {
 
+                    currentImageData = "";
                     imagePreview.style.display = "none";
                     previewPostImage.style.display = "none";
                     return;
 
                 }
 
-                const reader = new FileReader();
+                compressImage(file, 900, 0.7, function (dataUrl) {
 
-                reader.onload = function (e) {
+                    currentImageData = dataUrl;
 
-                    imagePreview.src = e.target.result;
+                    if (!dataUrl) {
+
+                        imagePreview.style.display = "none";
+                        previewPostImage.style.display = "none";
+                        alert("This image could not be processed. Please try a different file.");
+                        return;
+
+                    }
+
+                    imagePreview.src = dataUrl;
                     imagePreview.style.display = "block";
 
-                    previewPostImage.src = e.target.result;
+                    previewPostImage.src = dataUrl;
                     previewPostImage.style.display = "block";
 
-                };
-
-                reader.readAsDataURL(file);
+                });
 
             });
 
             clearBtn.addEventListener("click", function () {
 
                 setTimeout(function () {
+
+                    currentImageData = "";
 
                     imagePreview.style.display = "none";
                     previewPostImage.style.display = "none";
@@ -1599,39 +1540,57 @@
 
                     bloodPosts.unshift(newPost);
 
-                    localStorage.setItem(
-                        "bloodPosts",
-                        JSON.stringify(bloodPosts)
-                    );
-
-                    // If this post is a Blood Request, also add it to the
-                    // Blood Requests page so it shows up there too.
-                    if (postType.value === "Blood Request" || emergency.checked) {
-                        const allRequests =
-                            JSON.parse(localStorage.getItem("bloodRequests")) || [];
-
-                        const newRequest = {
-                            id: newPost.id,
-                            requesterEmail: currentUser.email || "",
-                            requesterName: currentUser.name || "Anonymous",
-                            patientName: currentUser.name || "Not specified",
-                            bloodGroup: bloodGroup.value,
-                            units: 1,
-                            hospital: hospital.value || "Not specified",
-                            location: location.value || "Not specified",
-                            phone: contact.value,
-                            urgency: urgency.value,
-                            date: requiredDate.value,
-                            notes: description.value,
-                            status: "Pending"
-                        };
-
-                        allRequests.push(newRequest);
+                    try {
 
                         localStorage.setItem(
-                            "bloodRequests",
-                            JSON.stringify(allRequests)
+                            "bloodPosts",
+                            JSON.stringify(bloodPosts)
                         );
+
+                    } catch (err) {
+
+                        bloodPosts.shift();
+
+                        alert("Could not publish the post because storage is full. Please try a smaller image, or remove the image and post again.");
+                        return;
+
+                    }
+
+                    if (postType.value === "Blood Request" || emergency.checked) {
+
+                        try {
+
+                            const allRequests =
+                                JSON.parse(localStorage.getItem("bloodRequests")) || [];
+
+                            const newRequest = {
+                                id: newPost.id,
+                                requesterEmail: currentUser.email || "",
+                                requesterName: currentUser.name || "Anonymous",
+                                patientName: currentUser.name || "Not specified",
+                                bloodGroup: bloodGroup.value,
+                                units: 1,
+                                hospital: hospital.value || "Not specified",
+                                location: location.value || "Not specified",
+                                phone: contact.value,
+                                urgency: urgency.value,
+                                date: requiredDate.value,
+                                notes: description.value,
+                                status: "Pending"
+                            };
+
+                            allRequests.push(newRequest);
+
+                            localStorage.setItem(
+                                "bloodRequests",
+                                JSON.stringify(allRequests)
+                            );
+
+                        } catch (err) {
+
+                            alert("Post published, but the blood request list could not be updated because storage is full.");
+
+                        }
 
                     }
 
@@ -1641,29 +1600,10 @@
 
                 }
 
-                const file = postImage.files[0];
-
-                if (file) {
-
-                    const reader = new FileReader();
-
-                    reader.onload = function (e) {
-
-                        savePost(e.target.result);
-
-                    };
-
-                    reader.readAsDataURL(file);
-
-                }
-
-                else {
-
-                    savePost("");
-
-                }
+                savePost(currentImageData);
 
             });
+
             logoutBtn.addEventListener("click", function () {
 
                 if (confirm("Are you sure you want to logout?")) {

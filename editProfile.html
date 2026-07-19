@@ -38,9 +38,6 @@ body{
     min-height:100vh;
 }
 
-
-/* ================= Sidebar ================= */
-
 .sidebar{
     width:250px;
     background:rgb(158, 27, 1);
@@ -127,18 +124,11 @@ body{
     background:#d90429;
 }
 
-
-
-/* ================= Main Content ================= */
-
 .main-content{
     margin-left:250px;
     width:calc(100% - 250px);
     padding:20px 35px;
 }
-
-
-/* ================= Header ================= */
 
 header{
     height:70px;
@@ -194,10 +184,6 @@ header{
     border:2px solid #ff304f;
 }
 
-
-
-/* ================= Cover ================= */
-
 .cover-section{
     margin-top:25px;
     height:260px;
@@ -240,8 +226,6 @@ header{
 #coverImage{
     display:none;
 }
-
-/* ================= Profile Preview ================= */
 
 .profile-preview{
     background:white;
@@ -318,10 +302,6 @@ header{
     font-weight:bold;
 }
 
-
-
-/* ================= Section Title ================= */
-
 .section-title{
     margin:35px 0 20px;
 }
@@ -337,10 +317,6 @@ header{
     margin-top:8px;
     color:#666;
 }
-
-
-
-/* ================= Form Section ================= */
 
 .form-section{
     background:white;
@@ -413,10 +389,6 @@ header{
     padding-left:12px;
 }
 
-
-
-/* ================= Checkbox ================= */
-
 .checkbox-group{
 
     display:flex;
@@ -441,10 +413,6 @@ header{
     margin-right:8px;
 
 }
-
-
-
-/* ================= Buttons ================= */
 
 .button-group{
 
@@ -514,8 +482,6 @@ header{
 
 }
 
-/* ================= Account Information ================= */
-
 .account-info{
 
     background:white;
@@ -572,10 +538,6 @@ header{
 
 }
 
-
-
-/* ================= Danger Zone ================= */
-
 .danger-zone{
 
     margin-top:30px;
@@ -626,10 +588,6 @@ header{
 
 }
 
-
-
-/* ================= Footer ================= */
-
 footer{
 
     margin-top:40px;
@@ -657,10 +615,6 @@ footer p{
     font-size:15px;
 
 }
-
-
-
-/* ================= Responsive Design ================= */
 
 
 @media(max-width:1100px){
@@ -797,8 +751,6 @@ footer p{
 
 <div class="container">
 
-    <!-- ================= Sidebar ================= -->
-
     <aside class="sidebar">
 
         <div class="logo">
@@ -925,11 +877,7 @@ footer p{
 
     </aside>
 
-    <!-- ================= Main Content ================= -->
-
     <main class="main-content">
-
-        <!-- Header -->
 
         <header>
 
@@ -960,8 +908,6 @@ footer p{
 
         </header>
 
-        <!-- Cover -->
-
         <section class="cover-section">
 
             <img
@@ -987,8 +933,6 @@ footer p{
             </div>
 
         </section>
-
-        <!-- Profile Preview -->
 
         <section class="profile-preview">
 
@@ -1052,8 +996,6 @@ footer p{
 
         </section>
 
-        <!-- Page Title -->
-
         <section class="section-title">
 
             <h2>
@@ -1071,8 +1013,6 @@ footer p{
             </p>
 
         </section>
-
-                <!-- Personal Information Form -->
 
         <section class="form-section">
 
@@ -1188,8 +1128,6 @@ footer p{
 
                 </div>
 
-                <!-- Contact Information -->
-
                 <h2 class="sub-heading">
 
                     Contact Information
@@ -1275,8 +1213,6 @@ footer p{
 
                 </div>
 
-                <!-- Medical Information -->
-
                 <h2 class="sub-heading">
 
                     Donation Information
@@ -1351,8 +1287,6 @@ footer p{
 
                 </div>
 
-                                <!-- Bio -->
-
                 <h2 class="sub-heading">
 
                     About You
@@ -1373,8 +1307,6 @@ footer p{
                         placeholder="Write something about yourself..."></textarea>
 
                 </div>
-
-                <!-- Social Links -->
 
                 <h2 class="sub-heading">
 
@@ -1446,8 +1378,6 @@ footer p{
 
                 </div>
 
-                <!-- Notification Settings -->
-
                 <h2 class="sub-heading">
 
                     Notification Settings
@@ -1490,8 +1420,6 @@ footer p{
 
                 </div>
 
-                <!-- Privacy -->
-
                 <h2 class="sub-heading">
 
                     Privacy
@@ -1533,8 +1461,6 @@ footer p{
 
                 </div>
 
-                <!-- Buttons -->
-
                 <div class="button-group">
 
                     <button
@@ -1574,8 +1500,6 @@ footer p{
 
         </section>
 
-        <!-- Account Information -->
-
         <section class="account-info">
 
             <h2>
@@ -1590,7 +1514,7 @@ footer p{
 
                     <strong>Member Since</strong>
 
-                    <p>July 2026</p>
+                    <p id="memberSinceInfo">July 2026</p>
 
                 </div>
 
@@ -1598,7 +1522,7 @@ footer p{
 
                     <strong>Donor Reliability</strong>
 
-                    <p>98%</p>
+                    <p id="reliabilityInfo">98%</p>
 
                 </div>
 
@@ -1606,7 +1530,7 @@ footer p{
 
                     <strong>Total Donations</strong>
 
-                    <p>18</p>
+                    <p id="totalDonationsInfo">18</p>
 
                 </div>
 
@@ -1614,15 +1538,13 @@ footer p{
 
                     <strong>Lives Saved</strong>
 
-                    <p>42</p>
+                    <p id="livesSavedInfo">42</p>
 
                 </div>
 
             </div>
 
         </section>
-
-        <!-- Danger Zone -->
 
         <section class="danger-zone">
 
@@ -1647,8 +1569,6 @@ footer p{
             </button>
 
         </section>
-
-        <!-- Footer -->
 
         <footer>
 
@@ -1695,6 +1615,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const previewEmail = document.getElementById("previewEmail");
     const previewBlood = document.getElementById("previewBlood");
 
+    const memberSinceInfo = document.getElementById("memberSinceInfo");
+    const reliabilityInfo = document.getElementById("reliabilityInfo");
+    const totalDonationsInfo = document.getElementById("totalDonationsInfo");
+    const livesSavedInfo = document.getElementById("livesSavedInfo");
+
     const fields = [
         "fullName", "email", "phone", "bloodGroup", "dob", "gender",
         "city", "district", "postalCode", "country", "address", "weight",
@@ -1703,8 +1628,8 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
     let user = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    const originalEmail = user.email || "";
 
-    // Resizes + compresses an image file into a small JPEG data URL
     function compressImage(file, maxWidth, maxHeight, quality) {
         return new Promise((resolve, reject) => {
 
@@ -1759,13 +1684,30 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        if (user.profileImage) {
-            if (profilePreview) profilePreview.src = user.profileImage;
-            if (headerPhoto) headerPhoto.src = user.profileImage;
+        if (!user.fullName && user.name) {
+            const fullNameEl = document.getElementById("fullName");
+            if (fullNameEl) fullNameEl.value = user.name;
         }
 
-        if (user.coverImage && coverPreview) {
-            coverPreview.src = user.coverImage;
+        if (!user.city && !user.district && user.location) {
+            const parts = user.location.split(",").map(p => p.trim());
+            const cityEl = document.getElementById("city");
+            const districtEl = document.getElementById("district");
+            if (cityEl && parts[0]) cityEl.value = parts[0];
+            if (districtEl && parts[1]) districtEl.value = parts[1];
+        }
+
+        const photo = user.profileImage || user.photo;
+
+        if (photo) {
+            if (profilePreview) profilePreview.src = photo;
+            if (headerPhoto) headerPhoto.src = photo;
+        }
+
+        const cover = user.coverImage;
+
+        if (cover && coverPreview) {
+            coverPreview.src = cover;
         }
 
         const checkboxIds = [
@@ -1779,6 +1721,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 el.checked = user[id];
             }
         });
+
+        if (memberSinceInfo) memberSinceInfo.textContent = user.memberSince || "July 2026";
+        if (reliabilityInfo) reliabilityInfo.textContent = user.reliability || "98%";
+        if (totalDonationsInfo) totalDonationsInfo.textContent = user.totalDonations || "0";
+        if (livesSavedInfo) livesSavedInfo.textContent = user.livesSaved || "0";
 
         updatePreview();
 
@@ -1818,7 +1765,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!file) return;
 
             try {
-                // Profile photo: small square-ish, e.g. max 400x400
                 const compressed = await compressImage(file, 400, 400, 0.7);
 
                 if (profilePreview) profilePreview.src = compressed;
@@ -1828,7 +1774,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             } catch (err) {
                 alert("Could not process that image. Try a different one.");
-                console.error(err);
             }
 
         });
@@ -1841,7 +1786,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!file) return;
 
             try {
-                // Cover photo: wider, e.g. max 1000x400
                 const compressed = await compressImage(file, 1000, 400, 0.6);
 
                 if (coverPreview) coverPreview.src = compressed;
@@ -1850,7 +1794,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             } catch (err) {
                 alert("Could not process that image. Try a different one.");
-                console.error(err);
             }
 
         });
@@ -1868,7 +1811,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
 
-            // keep profile.html in sync (it reads different key names)
             user.name = user.fullName;
             user.photo = user.profileImage || user.photo || "";
             user.location = [user.city, user.district, user.country]
@@ -1887,16 +1829,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
             user.memberSince = user.memberSince || "July 2026";
             user.reliability = user.reliability || "98%";
-            user.totalDonations = user.totalDonations || "18";
-            user.livesSaved = user.livesSaved || "42";
+            user.totalDonations = user.totalDonations || "0";
+            user.livesSaved = user.livesSaved || "0";
 
             try {
+
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+
+                const users = JSON.parse(localStorage.getItem("users")) || [];
+                const idx = users.findIndex(u => u.email === originalEmail);
+
+                if (idx !== -1) {
+                    users[idx] = { ...users[idx], ...user };
+                    localStorage.setItem("users", JSON.stringify(users));
+                } else {
+                    users.push(user);
+                    localStorage.setItem("users", JSON.stringify(users));
+                }
+
                 alert("Profile updated successfully!");
                 window.location.href = "profile.html";
+
             } catch (err) {
                 alert("Save failed: storage quota exceeded. Try a smaller image, or clear old posts.");
-                console.error(err);
             }
 
         });
@@ -1913,6 +1868,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (deleteBtn) {
         deleteBtn.addEventListener("click", () => {
             if (confirm("Delete your account permanently?")) {
+
+                const users = JSON.parse(localStorage.getItem("users")) || [];
+                const filtered = users.filter(u => u.email !== originalEmail);
+                localStorage.setItem("users", JSON.stringify(filtered));
+
                 localStorage.removeItem(STORAGE_KEY);
                 alert("Account deleted.");
                 window.location.href = "Register.html";
@@ -1924,8 +1884,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (logoutBtn) {
         logoutBtn.addEventListener("click", () => {
             if (confirm("Are you sure you want to logout?")) {
-                localStorage.removeItem("isLoggedIn");
-                window.location.href = "login.html";
+                localStorage.removeItem("currentUser");
+                window.location.href = "Login.html";
             }
         });
     }
@@ -1971,11 +1931,6 @@ document.addEventListener("DOMContentLoaded", () => {
     loadProfile();
 
 });
-
-
-                
-
-
 </script>
 
 </body>
