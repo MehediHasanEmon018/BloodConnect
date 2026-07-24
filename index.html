@@ -275,13 +275,11 @@ section:nth-of-type(4) div{ background: var(--surface); }
                 during emergencies.
             </p>
 
-            <button>Become a Donor</button>
-            <button>Request Blood</button>
+            <button> <a href="donors.html"></a> Become a Donor</button>
+            <button> <a href="blood-requests.html"></a>Request Blood</button>
         </div>
 
-        <div>
-            <img src="./samples/logooo.png" alt="Blood Donation">
-        </div>
+        
     </section>
 
     
@@ -319,10 +317,7 @@ section:nth-of-type(4) div{ background: var(--surface); }
                 <p>View urgent blood needs</p>
             </a>
 
-            <a href="smart-matching.html">
-                <h3>Smart Matching</h3>
-                <p>Find suitable donors</p>
-            </a>
+          
 
             <a href="donor-score.html">
                 <h3>Donor Reliability</h3>
@@ -334,10 +329,7 @@ section:nth-of-type(4) div{ background: var(--surface); }
                 <p>Blood bank information</p>
             </a>
 
-            <a href="analytics.html">
-                <h3>Analytics</h3>
-                <p>Donation statistics</p>
-            </a>
+           
 
         </div>
 
@@ -402,30 +394,24 @@ section:nth-of-type(4) div{ background: var(--surface); }
     <script>
     document.addEventListener("DOMContentLoaded", function () {
 
-    
-
     const loginBtn = document.querySelector("header div:last-child button:first-child");
     const registerBtn = document.querySelector("header div:last-child button:last-child");
     const donorBtn = document.querySelector("section:first-of-type button:first-child");
     const requestBtn = document.querySelector("section:first-of-type button:last-child");
 
     loginBtn.addEventListener("click", function () {
-        alert("Login page will open.");
         window.location.href = "Login.html";
     });
 
     registerBtn.addEventListener("click", function () {
-        alert("Register page will open.");
         window.location.href = "Register.html";
     });
 
     donorBtn.addEventListener("click", function () {
-        alert("Thank you for choosing to become a donor!");
-        window.location.href = "Register.html";
+        window.location.href = "donors.html";
     });
 
     requestBtn.addEventListener("click", function () {
-        alert("Blood Request page is opening.");
         window.location.href = "blood-requests.html";
     });
 
