@@ -9,8 +9,6 @@
 
     <title>BloodConnect | Profile</title>
 
-    <link rel="stylesheet" href="profile.css">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
     <style>
@@ -961,56 +959,56 @@
             <ul>
 
                 <li>
-                    <a href="home.html">
+                    <a href="home.php">
                         <i class="fa-solid fa-house"></i>
                         Home
                     </a>
                 </li>
 
                 <li class="active">
-                    <a href="profile.html">
+                    <a href="profile.php">
                         <i class="fa-solid fa-user"></i>
                         Profile
                     </a>
                 </li>
 
                 <li>
-                    <a href="createpost.html">
+                    <a href="createpost.php">
                         <i class="fa-solid fa-square-plus"></i>
                         Create Post
                     </a>
                 </li>
 
                 <li>
-                    <a href="donors.html">
+                    <a href="donors.php">
                         <i class="fa-solid fa-users"></i>
                         Donors
                     </a>
                 </li>
 
                 <li>
-                    <a href="blood-requests.html">
+                    <a href="blood-requests.php">
                         <i class="fa-solid fa-tint"></i>
                         Blood Requests
                     </a>
                 </li>
 
                 <li>
-                    <a href="emergency-requests.html">
+                    <a href="emergency-requests.php">
                         <i class="fa-solid fa-triangle-exclamation"></i>
                         Emergency
                     </a>
                 </li>
 
                 <li>
-                    <a href="Chat.html">
+                    <a href="Chat.php">
                         <i class="fa-solid fa-comments"></i>
                         Messages
                     </a>
                 </li>
 
                 <li>
-                    <a href="Settings.html">
+                    <a href="Settings.php">
                         <i class="fa-solid fa-gear"></i>
                         Settings
                     </a>
@@ -1107,7 +1105,7 @@
                 </div>
 
                 <div class="profile-right">
-                    <a href="editProfile.html" class="edit-profile-btn">
+                    <a href="editProfile.php" class="edit-profile-btn">
                         <i class="fa-solid fa-pen"></i>
                         Edit Profile
                     </a>
@@ -1372,7 +1370,7 @@
                 logoutBtn.addEventListener("click", function () {
                     if (confirm("Are you sure you want to logout?")) {
                         localStorage.removeItem("currentUser");
-                        window.location.replace("index.html");
+                        window.location.replace("index.php");
                     }
                 });
             }

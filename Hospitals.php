@@ -63,8 +63,6 @@ section{
     margin:auto;
 }
 
-/* ===== HEADER ===== */
-
 header{
     position:sticky;
     top:0;
@@ -159,8 +157,6 @@ nav a.active::after{ width:100%; }
     transform:translateY(-3px);
     background:var(--red-dark);
 }
-
-/* ===== HERO ===== */
 
 .hero{
     width:90%;
@@ -271,8 +267,6 @@ nav a.active::after{ width:100%; }
     box-shadow:0 30px 60px rgba(0,0,0,.12);
 }
 
-/* ===== SEARCH ===== */
-
 .search-section{
     background:var(--surface);
     padding:40px;
@@ -329,8 +323,6 @@ nav a.active::after{ width:100%; }
 
 .search-box button:hover{ background:var(--red-dark); }
 
-/* ===== MAP ===== */
-
 .map-section{
     margin:60px auto;
 }
@@ -370,8 +362,6 @@ nav a.active::after{ width:100%; }
     box-shadow:var(--shadow);
     border:1px solid var(--border);
 }
-
-/* ===== HOSPITAL CARDS ===== */
 
 .hospital-grid{
     display:grid;
@@ -514,8 +504,6 @@ nav a.active::after{ width:100%; }
     color:#fff;
 }
 
-/* ===== HOSPITAL BLOOD REQUESTS (real data) ===== */
-
 .requests-section{
     margin:60px auto;
 }
@@ -569,8 +557,6 @@ nav a.active::after{ width:100%; }
     font-size:14.5px;
 }
 
-/* ===== BLOOD BANKS ===== */
-
 .blood-network{
     margin:70px auto;
 }
@@ -620,8 +606,6 @@ nav a.active::after{ width:100%; }
     font-size:13.5px;
 }
 
-/* ===== FOOTER ===== */
-
 footer{
     margin-top:80px;
     background:var(--red);
@@ -669,8 +653,6 @@ footer{
     margin:auto;
 }
 
-/* ===== RESPONSIVE ===== */
-
 @media(max-width:1000px){
 
     header{ flex-direction:column; height:auto; padding:16px 6%; gap:14px; }
@@ -708,12 +690,12 @@ footer{
     </div>
 
     <nav>
-        <a href="home.html">Home</a>
-        <a href="donors.html">Donors</a>
-        <a href="blood-requests.html">Requests</a>
-        <a href="emergency-requests.html">Emergency</a>
-        <a href="hospitals.html" class="active">Hospitals</a>
-        <a href="profile.html">Profile</a>
+        <a href="index.php">Home</a>
+        <a href="donors.php">Donors</a>
+        <a href="blood-requests.php">Requests</a>
+        <a href="emergency-requests.php">Emergency</a>
+        <a href="Hospitals.php" class="active">Hospitals</a>
+        <a href="profile.php">Profile</a>
     </nav>
 
     <button class="profileBtn" id="profileBtn">
@@ -906,10 +888,10 @@ footer{
 
         <div class="footer-box">
             <h3>Quick Links</h3>
-            <a href="home.html">Home</a>
-            <a href="donors.html">Donors</a>
-            <a href="blood-requests.html">Blood Requests</a>
-            <a href="profile.html">Profile</a>
+            <a href="index.php">Home</a>
+            <a href="donors.php">Donors</a>
+            <a href="blood-requests.php">Blood Requests</a>
+            <a href="profile.php">Profile</a>
         </div>
 
         <div class="footer-box">
@@ -938,12 +920,10 @@ footer{
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    /* ================= Profile button ================= */
-
     const profileBtn = document.getElementById("profileBtn");
     if (profileBtn) {
         profileBtn.addEventListener("click", function () {
-            window.location.href = "profile.html";
+            window.location.href = "profile.php";
         });
     }
 
@@ -957,11 +937,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const requestHospitalBtn = document.getElementById("requestHospitalBtn");
     if (requestHospitalBtn) {
         requestHospitalBtn.addEventListener("click", function () {
-            window.location.href = "createpost.html";
+            window.location.href = "createpost.php";
         });
     }
-
-    /* ================= Hospital data (Featured) ================= */
 
     const hospitals = [
         {
@@ -1039,8 +1017,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     ];
 
-    /* ================= Render Featured hospital cards ================= */
-
     const grid = document.getElementById("hospitalGrid");
 
     hospitals.forEach(function (h, index) {
@@ -1085,8 +1061,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("statHospitals").textContent = hospitals.length;
 
-    /* ================= Map ================= */
-
     let map;
     const hospitalMarkers = [];
 
@@ -1108,8 +1082,6 @@ document.addEventListener("DOMContentLoaded", function () {
             .addTo(map)
             .bindPopup("You are here")
             .openPopup();
-
-        /* Featured hospitals — red pins */
 
         hospitals.forEach(function (h) {
 
@@ -1134,15 +1106,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         });
 
-        /* All other real nearby hospitals — gray pins, from live map data */
-
         loadNearbyHospitals(centerLat, centerLng);
 
     }
 
     function loadNearbyHospitals(centerLat, centerLng) {
 
-        const radius = 8000; // 8km search radius
+        const radius = 8000;
 
         const query = `[out:json];(
             node["amenity"="hospital"](around:${radius},${centerLat},${centerLng});
@@ -1165,7 +1135,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     const name = (el.tags && el.tags.name) || "Unnamed Hospital";
 
-                    // Skip if it's essentially one of our Featured hospitals (avoid duplicate pins)
                     const isFeatured = hospitals.some(function (h) {
                         return Math.abs(h.lat - elLat) < 0.003 && Math.abs(h.lng - elLng) < 0.003;
                     });
@@ -1198,14 +1167,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 initMap(position.coords.latitude, position.coords.longitude);
             },
             function () {
-                initMap(24.8949, 91.8687); // fallback: Sylhet center
+                initMap(24.8949, 91.8687);
             }
         );
     } else {
         initMap(24.8949, 91.8687);
     }
-
-    /* ================= Search ================= */
 
     const locationInput = document.getElementById("location");
     const bloodGroupSelect = document.getElementById("bloodGroup");
@@ -1249,8 +1216,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (searchBtn) searchBtn.addEventListener("click", runSearch);
-
-    /* ================= Real hospital blood requests ================= */
 
     function renderHospitalRequests() {
 

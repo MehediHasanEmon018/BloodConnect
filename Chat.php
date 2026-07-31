@@ -1,3 +1,21 @@
+<?php
+session_start();
+require "config/db.php";
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: index.php");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+
+$stmt = mysqli_prepare($conn, "SELECT * FROM users WHERE id=?");
+mysqli_stmt_bind_param($stmt, "i", $user_id);
+mysqli_stmt_execute($stmt);
+
+$result = mysqli_stmt_get_result($stmt);
+$user = mysqli_fetch_assoc($result);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,10 +50,6 @@
             display: flex;
             min-height: 100vh;
         }
-
-        /* ===========================
-   Sidebar
-=========================== */
 
         .sidebar {
             width: 270px;
@@ -112,10 +126,6 @@
             background: #b91d1d;
         }
 
-        /* ===========================
-   Main Content
-=========================== */
-
         .main-content {
             margin-left: 270px;
             width: calc(100% - 270px);
@@ -151,10 +161,6 @@
             color: #666;
             margin-bottom: 25px;
         }
-
-        /* ===========================
-   Chat Container
-=========================== */
 
         .chat-container {
             display: flex;
@@ -275,10 +281,6 @@
             font-size: 14px;
         }
 
-        /* ===========================
-   Right Panel / Chat Area
-=========================== */
-
         #right-panel {
             flex: 1;
             padding: 25px;
@@ -382,10 +384,6 @@
             font-size: 16px;
         }
 
-        /* ===========================
-   Scrollbar
-=========================== */
-
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -398,10 +396,6 @@
         ::-webkit-scrollbar-track {
             background: #f1f1f1;
         }
-
-        /* ===========================
-   Responsive
-=========================== */
 
         @media(max-width:900px) {
 
@@ -458,8 +452,6 @@
 
     <div class="container">
 
-        <!-- Sidebar -->
-
         <aside class="sidebar">
 
             <div class="logo">
@@ -473,56 +465,56 @@
             <ul>
 
                 <li>
-                    <a href="home.html">
+                    <a href="home.php">
                         <i class="fa-solid fa-house"></i>
                         Home
                     </a>
                 </li>
 
                 <li>
-                    <a href="profile.html">
+                    <a href="profile.php">
                         <i class="fa-solid fa-user"></i>
                         Profile
                     </a>
                 </li>
 
                 <li>
-                    <a href="createpost.html">
+                    <a href="createpost.php">
                         <i class="fa-solid fa-square-plus"></i>
                         Create Post
                     </a>
                 </li>
 
                 <li>
-                    <a href="donors.html">
+                    <a href="donors.php">
                         <i class="fa-solid fa-users"></i>
                         Donors
                     </a>
                 </li>
 
                 <li>
-                    <a href="blood-requests.html">
+                    <a href="blood-requests.php">
                         <i class="fa-solid fa-tint"></i>
                         Blood Requests
                     </a>
                 </li>
 
                 <li>
-                    <a href="emergency-requests.html">
+                    <a href="emergency-requests.php">
                         <i class="fa-solid fa-triangle-exclamation"></i>
                         Emergency
                     </a>
                 </li>
 
                 <li class="active">
-                    <a href="Chat.html">
+                    <a href="Chat.php">
                         <i class="fa-solid fa-comments"></i>
                         Messages
                     </a>
                 </li>
 
                 <li>
-                    <a href="Settings.html">
+                    <a href="Settings.php">
                         <i class="fa-solid fa-gear"></i>
                         Settings
                     </a>
@@ -536,8 +528,6 @@
             </button>
 
         </aside>
-
-        <!-- Main Content -->
 
         <main class="main-content">
 
@@ -629,7 +619,7 @@
                 logoutBtn.addEventListener("click", function () {
                     if (confirm("Are you sure you want to logout?")) {
                         localStorage.removeItem("currentUser");
-                        window.location.replace("index.html");
+                        window.location.replace("index.php");
                     }
                 });
             }

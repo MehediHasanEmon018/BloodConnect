@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BloodConnect - Donors</title>
-    <link rel="stylesheet" href="donors.css">
 
     <style>
         *{
@@ -24,7 +23,6 @@ body{
         linear-gradient(135deg, #f7f8fc 0%, #f2f4fa 50%, #eef1f8 100%);
     background-attachment: fixed;
 }
-/* Header */
 
 header{
     display:flex;
@@ -80,14 +78,10 @@ nav a.active{
     background:#b91d1d;
 }
 
-/* Main */
-
 main{
     width:84%;
     margin:40px auto;
 }
-
-/* Page Title */
 
 .page-title{
     text-align:center;
@@ -104,8 +98,6 @@ main{
     color:#666;
     font-size:18px;
 }
-
-/* Search */
 
 .search-section{
     background:#fff;
@@ -155,8 +147,6 @@ main{
 .search-box button:hover{
     background:#b91d1d;
 }
-
-/* Donor List */
 
 .donor-list h2{
     color:#d62828;
@@ -220,8 +210,6 @@ main{
     background:#b91d1d;
 }
 
-/* Footer */
-
 footer{
     margin-top:60px;
     background:#d62828;
@@ -237,8 +225,6 @@ footer h3{
 footer p{
     margin-top:8px;
 }
-
-/* Responsive */
 
 @media(max-width:1000px){
 
@@ -302,12 +288,12 @@ footer p{
         </div>
 
         <nav>
-            <a href="home.html">Home</a>
-            <a href="donors.html" class="active">Donors</a>
-            <a href="blood-requests.html">Blood Requests</a>
-            <a href="emergency-requests.html">Emergency</a>
-            <a href="Hospitals.html">Hospitals</a>
-            <a href="profile.html">Profile</a>
+            <a href="index.php">Home</a>
+            <a href="donors.php" class="active">Donors</a>
+            <a href="blood-requests.php">Blood Requests</a>
+            <a href="emergency-requests.php">Emergency</a>
+            <a href="Hospitals.php">Hospitals</a>
+            <a href="profile.php">Profile</a>
         </nav>
 
         <button id="backBtn">Dashboard</button>
@@ -354,7 +340,6 @@ footer p{
 
             <h2>Available Donors</h2>
 
-            
             <div class="grid" id="donorGrid"></div>
 
         </section>
@@ -382,7 +367,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (backBtn) {
         backBtn.addEventListener("click", function () {
-            window.location.href = "home.html";
+            window.location.href = "index.php";
         });
     }
 
@@ -467,10 +452,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const donorName = donor.userName || "Unknown Donor";
 
-                // Save which donor to open, so Chat.html can pick it up
                 localStorage.setItem("openChatWith", donorName);
 
-                window.location.href = "Chat.html";
+                window.location.href = "Chat.php";
 
             });
 

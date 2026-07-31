@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BloodConnect - Blood Requests</title>
-    <link rel="stylesheet" href="blood-requests.css">
 
     <style>
         *{
@@ -25,8 +24,6 @@ body{
         linear-gradient(135deg, #f7f8fc 0%, #f2f4fa 50%, #eef1f8 100%);
     background-attachment: fixed;
 }
-
-/* Header */
 
 header{
     display:flex;
@@ -82,14 +79,10 @@ nav a.active{
     background:#b91d1d;
 }
 
-/* Main */
-
 main{
     width:84%;
     margin:40px auto;
 }
-
-/* Hero */
 
 .hero{
     text-align:center;
@@ -109,8 +102,6 @@ main{
     margin:auto;
     line-height:1.7;
 }
-
-/* Form */
 
 .request-form{
     background:#fff;
@@ -182,8 +173,6 @@ textarea{
     background:#b91d1d;
 }
 
-/* Search */
-
 .search-section{
     background:#fff;
     padding:30px;
@@ -224,8 +213,6 @@ textarea{
     background:#b91d1d;
 }
 
-/* Table */
-
 .request-list{
     margin-bottom:45px;
 }
@@ -263,8 +250,6 @@ tbody tr:hover{
     background:#ffeaea;
 }
 
-/* Status */
-
 .pending,
 .matched,
 .completed{
@@ -286,8 +271,6 @@ tbody tr:hover{
 .completed{
     background:#27ae60;
 }
-
-/* Statistics */
 
 .statistics{
     margin-bottom:50px;
@@ -327,8 +310,6 @@ tbody tr:hover{
     color:#666;
 }
 
-/* Footer */
-
 footer{
     margin-top:60px;
     background:#d62828;
@@ -344,8 +325,6 @@ footer h3{
 footer p{
     margin-top:8px;
 }
-
-/* Responsive */
 
 @media(max-width:1000px){
 
@@ -409,12 +388,12 @@ footer p{
         </div>
 
         <nav>
-            <a href="home.html">Home</a>
-            <a href="donors.html">Donors</a>
-            <a href="blood-requests.html" class="active">Blood Requests</a>
-            <a href="emergency-requests.html">Emergency</a>
-            <a href="Hospitals.html">Hospitals</a>
-            <a href="profile.html">Profile</a>
+            <a href="index.php">Home</a>
+            <a href="donors.php">Donors</a>
+            <a href="blood-requests.php" class="active">Blood Requests</a>
+            <a href="emergency-requests.php">Emergency</a>
+            <a href="Hospitals.php">Hospitals</a>
+            <a href="profile.php">Profile</a>
         </nav>
 
         <button id="dashboardBtn">Dashboard</button>
@@ -665,7 +644,7 @@ footer p{
     const currentUser = JSON.parse(localStorage.getItem("currentUser")) || {};
 
     dashboardBtn.addEventListener("click", function () {
-        window.location.href = "home.html";
+        window.location.href = "index.php";
     });
 
     function loadRequests() {

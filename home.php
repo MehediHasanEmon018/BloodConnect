@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BloodConnect - Home</title>
-    <link rel="stylesheet" href="home.html">
 
     <style>
         * {
@@ -26,8 +25,6 @@ body{
         linear-gradient(180deg, #fffaf7 0%, #f8f6f3 40%, #f4f2ef 100%);
     background-attachment: fixed;
 }
-
-        /* Header */
 
         header {
             display: flex;
@@ -83,14 +80,10 @@ body{
             background: #b91d1d;
         }
 
-        /* Main */
-
         main {
             width: 84%;
             margin: 40px auto;
         }
-
-        /* Welcome */
 
         .welcome {
             color: var(--ink);
@@ -123,8 +116,6 @@ body{
             text-align: center;
         }
 
-        /* Stats */
-
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -154,8 +145,6 @@ body{
         .card p {
             color: #666;
         }
-
-        /* Search */
 
         .search {
             background: white;
@@ -200,8 +189,6 @@ body{
         .search-box button:hover {
             background: #b91d1d;
         }
-
-        /* Quick Access */
 
         .quick-access {
             margin-bottom: 50px;
@@ -254,8 +241,6 @@ body{
             background: #b91d1d;
         }
 
-        /* Table */
-
         .requests {
             margin-bottom: 50px;
         }
@@ -293,8 +278,6 @@ body{
             background: #ffecec;
         }
 
-        /* Inventory */
-
         .inventory {
             margin-bottom: 50px;
         }
@@ -329,8 +312,6 @@ body{
             margin-bottom: 12px;
         }
 
-        /* Activity */
-
         .activity {
             margin-bottom: 60px;
         }
@@ -352,8 +333,6 @@ body{
             line-height: 1.6;
         }
 
-        /* Footer */
-
         footer {
             background: #d62828;
             color: white;
@@ -368,8 +347,6 @@ body{
         footer p {
             margin-top: 8px;
         }
-
-        /* Responsive */
 
         @media(max-width:1000px) {
 
@@ -433,12 +410,12 @@ body{
         </div>
 
         <nav>
-            <a href="home.html" class="active">Home</a>
-            <a href="donors.html">Donors</a>
-            <a href="blood-requests.html">Blood Requests</a>
-            <a href="emergency-requests.html">Emergency</a>
-            <a href="Hospitals.html">Hospitals</a>
-            <a href="profile.html">Profile</a>
+            <a href="home.php" class="active">Home</a>
+            <a href="donors.php">Donors</a>
+            <a href="blood-requests.php">Blood Requests</a>
+            <a href="emergency-requests.php">Emergency</a>
+            <a href="Hospitals.php">Hospitals</a>
+            <a href="profile.php">Profile</a>
         </nav>
 
         <button id="logoutBtn">Logout</button>
@@ -496,27 +473,27 @@ body{
                 <div class="item">
                     <h3>Find Donors</h3>
                     <p>Browse available donors by blood group.</p>
-                    <a href="donors.html"><button>Open</button></a>
+                    <a href="donors.php"><button>Open</button></a>
 
                 </div>
 
                 <div class="item">
                     <h3>Blood Requests</h3>
                     <p>View and manage all blood requests.</p>
-                    <a href="blood-requests.html"><button>Open</button></a>
+                    <a href="blood-requests.php"><button>Open</button></a>
                 </div>
 
                 <div class="item">
                     <h3>Emergency</h3>
                     <p>Respond to urgent blood requests.</p>
-                    <a href="emergency-requests.html"><button>Open</button></a>
+                    <a href="emergency-requests.php"><button>Open</button></a>
                 </div>
 
 
                 <div class="item">
                     <h3>Hospitals</h3>
                     <p>View nearby hospitals and blood banks.</p>
-                    <a href="Hospitals.html"><button>Open</button></a>
+                    <a href="Hospitals.php"><button>Open</button></a>
                 </div>
 
             </div>
@@ -597,12 +574,10 @@ body{
                     const confirmLogout = confirm("Are you sure you want to logout?");
                     if (confirmLogout) {
                         localStorage.removeItem("currentUser");
-                        window.location.href = "index.html";
+                        window.location.href = "index.php";
                     }
                 });
             }
-
-            /* ================= Search ================= */
 
             const searchBtn = document.getElementById("searchBtn");
 
@@ -628,15 +603,13 @@ body{
                 });
             }
 
-            /* ================= Quick Access (mapped to real nav pages) ================= */
-
             const quickButtons = document.querySelectorAll(".item button");
 
             const quickLinks = [
-                "donors.html",
-                "blood-requests.html",
-                "emergency-requests.html",
-                "hospitals.html"
+                "donors.php",
+                "blood-requests.php",
+                "emergency-requests.php",
+                "Hospitals.php"
             ];
 
             quickButtons.forEach(function (button, index) {
@@ -646,8 +619,6 @@ body{
                     }
                 });
             });
-
-            /* ================= Real Stats ================= */
 
             function animateCounter(el, target, suffix) {
 
@@ -695,8 +666,6 @@ body{
 
             loadStats();
 
-            /* ================= Blood Inventory (from "Blood Available" posts) ================= */
-
             function loadInventory() {
 
                 const posts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
@@ -730,8 +699,6 @@ body{
 
             loadInventory();
 
-            /* ================= Hover Effects ================= */
-
             const inventoryCards = document.querySelectorAll(".blood-card");
 
             inventoryCards.forEach(function (card) {
@@ -750,8 +717,6 @@ body{
                     console.log("Opening " + link.textContent);
                 });
             });
-
-            /* ================= Refresh when returning to tab ================= */
 
             window.addEventListener("focus", function () {
                 loadStats();
