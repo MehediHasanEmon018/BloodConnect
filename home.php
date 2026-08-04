@@ -1,3 +1,13 @@
+<?php
+require_once __DIR__ . '/includes/auth.php';
+requireLogin();
+$me = getCurrentUser($conn);
+
+$totalUsers = $conn->query("SELECT COUNT(*) c FROM users")->fetch_assoc()['c'];
+$totalRequests = $conn->query("SELECT COUNT(*) c FROM blood_requests")->fetch_assoc()['c'];
+$totalDonations = $conn->query("SELECT COUNT(*) c FROM posts WHERE post_type='Blood Available'")->fetch_assoc()['c'];
+$hospitalCount = $conn->query("SELECT COUNT(DISTINCT LOWER(hospital)) c FROM blood_requests WHERE hospital <> ''")->fetch_assoc()['c'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -564,6 +574,15 @@ body{
 
     </footer>
 
+    <script type="application/json" id="homeStats">
+<?php echo json_encode([
+    "users" => (int)$totalUsers,
+    "requests" => (int)$totalRequests,
+    "donations" => (int)$totalDonations,
+    "hospitalCount" => (int)$hospitalCount
+]); ?>
+    </script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
 
@@ -573,8 +592,9 @@ body{
                 logoutBtn.addEventListener("click", function () {
                     const confirmLogout = confirm("Are you sure you want to logout?");
                     if (confirmLogout) {
-                        localStorage.removeItem("currentUser");
-                        window.location.href = "index.php";
+                        fetch("api/logout.php", { credentials: "same-origin" }).then(function () {
+                            window.location.href = "index.php";
+                        });
                     }
                 });
             }
@@ -641,26 +661,19 @@ body{
 
             function loadStats() {
 
-                const users = JSON.parse(localStorage.getItem("users")) || [];
-                const requests = JSON.parse(localStorage.getItem("bloodRequests")) || [];
-                const donations = JSON.parse(localStorage.getItem("bloodDonations")) || [];
+                const stats = JSON.parse(document.getElementById("homeStats").textContent);
 
-                const hospitalSet = new Set();
-
-                requests.forEach(function (r) {
-                    if (r.hospital) hospitalSet.add(r.hospital.trim().toLowerCase());
-                });
-
-                donations.forEach(function (d) {
-                    if (d.hospital) hospitalSet.add(d.hospital.trim().toLowerCase());
-                });
+                const users = stats.users;
+                const requests = stats.requests;
+                const donations = stats.donations;
+                const hospitalCount = stats.hospitalCount;
 
                 const statCards = document.querySelectorAll(".stats .card h2");
 
-                if (statCards[0]) animateCounter(statCards[0], users.length, "");
-                if (statCards[1]) animateCounter(statCards[1], requests.length, "");
-                if (statCards[2]) animateCounter(statCards[2], donations.length, "");
-                if (statCards[3]) animateCounter(statCards[3], hospitalSet.size, "");
+                if (statCards[0]) animateCounter(statCards[0], users, "");
+                if (statCards[1]) animateCounter(statCards[1], requests, "");
+                if (statCards[2]) animateCounter(statCards[2], donations, "");
+                if (statCards[3]) animateCounter(statCards[3], hospitalCount, "");
 
             }
 
@@ -668,32 +681,37 @@ body{
 
             function loadInventory() {
 
-                const posts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
-                const availablePosts = posts.filter(p => p.postType === "Blood Available");
+                fetch("api/posts_list.php?postType=" + encodeURIComponent("Blood Available"), { credentials: "same-origin" })
+                    .then(function (res) { return res.json(); })
+                    .then(function (data) {
 
-                const groups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
-                const counts = {};
+                        const availablePosts = data.success ? data.posts : [];
 
-                groups.forEach(g => counts[g] = 0);
+                        const groups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+                        const counts = {};
 
-                availablePosts.forEach(function (p) {
-                    if (counts[p.bloodGroup] !== undefined) {
-                        counts[p.bloodGroup]++;
-                    }
-                });
+                        groups.forEach(g => counts[g] = 0);
 
-                const bloodCards = document.querySelectorAll(".blood-card");
+                        availablePosts.forEach(function (p) {
+                            if (counts[p.blood_group] !== undefined) {
+                                counts[p.blood_group]++;
+                            }
+                        });
 
-                bloodCards.forEach(function (card) {
+                        const bloodCards = document.querySelectorAll(".blood-card");
 
-                    const group = card.querySelector("h3").textContent.trim();
-                    const countEl = card.querySelector("p");
+                        bloodCards.forEach(function (card) {
 
-                    if (countEl) {
-                        countEl.textContent = "Available: " + (counts[group] || 0) + " Units";
-                    }
+                            const group = card.querySelector("h3").textContent.trim();
+                            const countEl = card.querySelector("p");
 
-                });
+                            if (countEl) {
+                                countEl.textContent = "Available: " + (counts[group] || 0) + " Units";
+                            }
+
+                        });
+
+                    });
 
             }
 

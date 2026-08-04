@@ -1,3 +1,8 @@
+<?php
+require_once __DIR__ . '/includes/auth.php';
+requireLogin();
+$me = getCurrentUser($conn);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -1369,17 +1374,27 @@
             if (logoutBtn) {
                 logoutBtn.addEventListener("click", function () {
                     if (confirm("Are you sure you want to logout?")) {
-                        localStorage.removeItem("currentUser");
-                        window.location.replace("index.php");
+                        fetch("api/logout.php", { credentials: "same-origin" }).then(function () {
+                            window.location.replace("index.php");
+                        });
                     }
                 });
             }
 
-            let savedUser = JSON.parse(localStorage.getItem("currentUser")) || {};
+            function escapeHtml(str) {
+                const div = document.createElement("div");
+                div.textContent = str == null ? "" : String(str);
+                return div.innerHTML;
+            }
+
+            let savedUser = <?php echo json_encode([
+                "id" => $me['id'], "name" => $me['name'], "email" => $me['email'],
+                "phone" => $me['phone'], "bloodGroup" => $me['blood_group'],
+                "location" => trim(($me['division'] ?? '') . ($me['division'] && $me['district'] ? ', ' : '') . ($me['district'] ?? '')),
+                "photo" => $me['photo'] ?: 'images/user.png', "coverImage" => ""
+            ]); ?>;
 
             function loadProfile() {
-
-                savedUser = JSON.parse(localStorage.getItem("currentUser")) || {};
 
                 document.getElementById("profileName").textContent =
                     savedUser.name || "User Name";
@@ -1452,10 +1467,6 @@
 
             let posts = [];
 
-            function savePosts(updatedPosts) {
-                localStorage.setItem("bloodPosts", JSON.stringify(updatedPosts));
-            }
-
             function updatePostCount() {
                 if (postCount) postCount.textContent = posts.length;
             }
@@ -1468,14 +1479,17 @@
             }
 
             function refreshUserPosts() {
-                const allPosts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
-                posts = allPosts.filter(post => post.userEmail === savedUser.email);
-                updatePostCount();
+                return fetch("api/posts_list.php?mine=1", { credentials: "same-origin" })
+                    .then(function (res) { return res.json(); })
+                    .then(function (data) {
+                        posts = data.success ? data.posts : [];
+                        updatePostCount();
+                    });
             }
 
             function renderPosts() {
 
-                refreshUserPosts();
+                refreshUserPosts().then(function () {
 
                 timelineContainer.innerHTML = "";
 
@@ -1501,26 +1515,26 @@
                     let imageHTML = "";
 
                     if (post.image && post.image !== "") {
-                        imageHTML = `<img src="${post.image}" alt="Post Image">`;
+                        imageHTML = `<img src="${escapeHtml(post.image)}" alt="Post Image">`;
                     }
 
-                    const displayText = post.text || post.description || "";
-                    const displayDate = post.date || post.createdAt || "";
+                    const displayText = post.description || "";
+                    const displayDate = post.created_at || "";
                     const displayName = post.userName || savedUser.name || "Anonymous";
                     const displayPhoto = post.userPhoto || savedUser.photo || "images/user.png";
 
                     card.innerHTML = `
 
                 <div class="post-header">
-                    <img src="${displayPhoto}">
+                    <img src="${escapeHtml(displayPhoto)}">
                     <div class="post-user">
-                        <h4>${displayName}</h4>
-                        <span>${displayDate}</span>
+                        <h4>${escapeHtml(displayName)}</h4>
+                        <span>${escapeHtml(displayDate)}</span>
                     </div>
                 </div>
 
                 <div class="post-content">
-                    <p>${displayText}</p>
+                    <p>${escapeHtml(displayText)}</p>
                     ${imageHTML}
                 </div>
 
@@ -1541,7 +1555,7 @@
                         Share
                     </button>
 
-                    <button class="deleteBtn" data-id="${post.id}">
+                    <button class="deleteBtn" data-id="${escapeHtml(post.id)}">
                         <i class="fa-solid fa-trash"></i>
                         Delete
                     </button>
@@ -1555,6 +1569,8 @@
                 });
 
                 updatePostCount();
+
+                });
 
             }
 
@@ -1573,43 +1589,40 @@
                         return;
                     }
 
-                    const allPosts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
                     const file = imageInput.files[0];
 
-                    function buildPost(imageData) {
-                        return {
-                            id: Date.now(),
-                            userName: savedUser.name || "Anonymous",
-                            userEmail: savedUser.email || "",
-                            userPhoto: savedUser.photo || "images/user.png",
-                            text: text,
-                            image: imageData,
-                            date: formatDate(),
-                            postType: "Blood Available",
-                            bloodGroup: savedUser.bloodGroup || "",
-                            location: savedUser.location || "",
-                            hospital: "",
-                            contact: savedUser.phone || ""
-                        };
-                    }
+                    function submitPost(imageData) {
 
-                    function finishPost(newPost) {
-                        allPosts.push(newPost);
-                        savePosts(allPosts);
-                        refreshUserPosts();
-                        renderPosts();
-                        postForm.reset();
-                        if (imageName) imageName.textContent = "No image selected";
+                        const formData = new FormData();
+                        formData.append("postType", "Blood Available");
+                        formData.append("bloodGroup", savedUser.bloodGroup || "");
+                        formData.append("location", savedUser.location || "");
+                        formData.append("contact", savedUser.phone || "");
+                        formData.append("description", text);
+                        if (imageData) formData.append("image", imageData);
+
+                        fetch("api/posts_create.php", { method: "POST", body: formData, credentials: "same-origin" })
+                            .then(function (res) { return res.json(); })
+                            .then(function (data) {
+                                if (data.success) {
+                                    renderPosts();
+                                    postForm.reset();
+                                    if (imageName) imageName.textContent = "No image selected";
+                                } else {
+                                    alert(data.message || "Could not publish the post.");
+                                }
+                            });
+
                     }
 
                     if (file) {
                         const reader = new FileReader();
                         reader.onload = function () {
-                            finishPost(buildPost(reader.result));
+                            submitPost(reader.result);
                         };
                         reader.readAsDataURL(file);
                     } else {
-                        finishPost(buildPost(""));
+                        submitPost(null);
                     }
 
                 });
@@ -1669,12 +1682,12 @@
 
                     if (confirm("Delete this post?")) {
 
-                        let allPosts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
-                        allPosts = allPosts.filter(post => String(post.id) !== String(postId));
+                        const formData = new FormData();
+                        formData.append("postId", postId);
 
-                        savePosts(allPosts);
-                        refreshUserPosts();
-                        renderPosts();
+                        fetch("api/posts_delete.php", { method: "POST", body: formData, credentials: "same-origin" })
+                            .then(function (res) { return res.json(); })
+                            .then(function () { renderPosts(); });
 
                     }
 
@@ -1691,13 +1704,14 @@
             let donations = [];
 
             function refreshDonations() {
-                const allDonations = JSON.parse(localStorage.getItem("bloodDonations")) || [];
-                donations = allDonations.filter(d => d.userEmail === savedUser.email);
+                return fetch("api/donations_list.php", { credentials: "same-origin" })
+                    .then(function (res) { return res.json(); })
+                    .then(function (data) { donations = data.success ? data.donations : []; });
             }
 
             function renderDonations() {
 
-                refreshDonations();
+                refreshDonations().then(function () {
 
                 if (donationCountEl) donationCountEl.textContent = donations.length;
                 if (livesSavedCountEl) livesSavedCountEl.textContent = donations.length * 3;
@@ -1723,12 +1737,12 @@
                             const row = document.createElement("tr");
 
                             row.innerHTML = `
-                        <td>${d.date}</td>
-                        <td>${d.hospital}</td>
-                        <td>${d.bloodGroup}</td>
-                        <td>${d.status}</td>
+                        <td>${escapeHtml(d.donation_date)}</td>
+                        <td>${escapeHtml(d.hospital)}</td>
+                        <td>${escapeHtml(d.blood_group)}</td>
+                        <td>${escapeHtml(d.status)}</td>
                         <td>
-                            <button class="deleteDonationBtn" data-id="${d.id}">
+                            <button class="deleteDonationBtn" data-id="${escapeHtml(d.id)}">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </td>
@@ -1742,11 +1756,10 @@
 
                 }
 
-                if (friendCountEl) {
-                    const friendsList =
-                        JSON.parse(localStorage.getItem("friendsList_" + savedUser.email)) || [];
-                    friendCountEl.textContent = friendsList.length;
-                }
+                // Friends/network feature not implemented yet.
+                if (friendCountEl) friendCountEl.textContent = 0;
+
+                });
 
             }
 
@@ -1758,26 +1771,19 @@
 
                     if (!hospital || hospital.trim() === "") return;
 
-                    const allDonations = JSON.parse(localStorage.getItem("bloodDonations")) || [];
+                    const formData = new FormData();
+                    formData.append("hospital", hospital.trim());
 
-                    const newDonation = {
-                        id: Date.now(),
-                        userEmail: savedUser.email || "",
-                        hospital: hospital.trim(),
-                        bloodGroup: savedUser.bloodGroup || "O+",
-                        date: new Date().toLocaleDateString("en-BD", {
-                            day: "2-digit",
-                            month: "short",
-                            year: "numeric"
-                        }),
-                        status: "Completed"
-                    };
-
-                    allDonations.push(newDonation);
-
-                    localStorage.setItem("bloodDonations", JSON.stringify(allDonations));
-
-                    renderDonations();
+                    fetch("api/donations_create.php", { method: "POST", body: formData, credentials: "same-origin" })
+                        .then(function (res) { return res.json(); })
+                        .then(function (data) {
+                            if (data.success) {
+                                renderDonations();
+                                renderActivity();
+                            } else {
+                                alert(data.message || "Could not log the donation.");
+                            }
+                        });
 
                 });
 
@@ -1794,12 +1800,15 @@
 
                         if (confirm("Delete this donation record?")) {
 
-                            let allDonations = JSON.parse(localStorage.getItem("bloodDonations")) || [];
-                            allDonations = allDonations.filter(d => String(d.id) !== String(donationId));
+                            const formData = new FormData();
+                            formData.append("id", donationId);
 
-                            localStorage.setItem("bloodDonations", JSON.stringify(allDonations));
-
-                            renderDonations();
+                            fetch("api/donations_delete.php", { method: "POST", body: formData, credentials: "same-origin" })
+                                .then(function (res) { return res.json(); })
+                                .then(function () {
+                                    renderDonations();
+                                    renderActivity();
+                                });
 
                         }
 
@@ -1814,47 +1823,43 @@
                 const grid = document.getElementById("suggestedDonorGrid");
                 if (!grid) return;
 
-                const users = JSON.parse(localStorage.getItem("users")) || [];
+                fetch("api/users_suggest.php", { credentials: "same-origin" })
+                    .then(function (res) { return res.json(); })
+                    .then(function (data) {
 
-                const others = users.filter(u => u.email !== savedUser.email);
+                        const suggestions = data.success ? data.donors : [];
 
-                others.sort((a, b) => {
-                    const aMatch = a.bloodGroup === savedUser.bloodGroup ? 0 : 1;
-                    const bMatch = b.bloodGroup === savedUser.bloodGroup ? 0 : 1;
-                    return aMatch - bMatch;
-                });
+                        grid.innerHTML = "";
 
-                const suggestions = others.slice(0, 4);
+                        if (suggestions.length === 0) {
+                            grid.innerHTML = `<p style="color:#888;">No other donors registered yet.</p>`;
+                            return;
+                        }
 
-                grid.innerHTML = "";
+                        suggestions.forEach(function (donor) {
 
-                if (suggestions.length === 0) {
-                    grid.innerHTML = `<p style="color:#888;">No other donors registered yet.</p>`;
-                    return;
-                }
+                            const card = document.createElement("div");
+                            card.className = "donor-card";
 
-                suggestions.forEach(function (donor) {
+                            card.innerHTML = `
+                        <img src="${escapeHtml(donor.photo || "images/user.png")}" alt="">
+                        <h3>${escapeHtml(donor.name || "Unknown")}</h3>
+                        <p>${escapeHtml(donor.blood_group || "N/A")}</p>
+                        <button class="viewDonorBtn">View Profile</button>
+                    `;
 
-                    const card = document.createElement("div");
-                    card.className = "donor-card";
+                            grid.appendChild(card);
 
-                    card.innerHTML = `
-                <img src="${donor.photo || "images/user.png"}" alt="">
-                <h3>${donor.name || "Unknown"}</h3>
-                <p>${donor.bloodGroup || "N/A"}</p>
-                <button class="viewDonorBtn" data-email="${donor.email}">View Profile</button>
-            `;
+                        });
 
-                    grid.appendChild(card);
+                        grid.querySelectorAll(".viewDonorBtn").forEach(function (btn) {
+                            btn.addEventListener("click", function () {
+                                const donorName = btn.parentElement.querySelector("h3").textContent;
+                                alert("Viewing profile of " + donorName);
+                            });
+                        });
 
-                });
-
-                grid.querySelectorAll(".viewDonorBtn").forEach(function (btn) {
-                    btn.addEventListener("click", function () {
-                        const donorName = btn.parentElement.querySelector("h3").textContent;
-                        alert("Viewing profile of " + donorName);
                     });
-                });
 
             }
 
@@ -1863,21 +1868,23 @@
                 const listEl = document.getElementById("activityList");
                 if (!listEl) return;
 
-                const allPosts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
-                const myPosts = allPosts.filter(p => p.userEmail === savedUser.email);
+                Promise.all([
+                    fetch("api/posts_list.php?mine=1", { credentials: "same-origin" }).then(r => r.json()),
+                    fetch("api/donations_list.php", { credentials: "same-origin" }).then(r => r.json())
+                ]).then(function ([postsData, donationsData]) {
 
-                const allDonations = JSON.parse(localStorage.getItem("bloodDonations")) || [];
-                const myDonations = allDonations.filter(d => d.userEmail === savedUser.email);
+                const myPosts = postsData.success ? postsData.posts : [];
+                const myDonations = donationsData.success ? donationsData.donations : [];
 
                 const events = [];
 
                 myPosts.forEach(function (p) {
                     events.push({
                         icon: "fa-square-plus",
-                        title: p.postType ? "Post: " + p.postType : "New Post",
-                        desc: (p.text || p.description || "").slice(0, 80),
+                        title: p.post_type ? "Post: " + p.post_type : "New Post",
+                        desc: (p.description || "").slice(0, 80),
                         time: p.id || Date.now(),
-                        label: p.date || p.createdAt || ""
+                        label: p.created_at || ""
                     });
                 });
 
@@ -1887,7 +1894,7 @@
                         title: "Blood Donation Completed",
                         desc: "You donated blood at " + d.hospital,
                         time: d.id,
-                        label: d.date
+                        label: d.donation_date
                     });
                 });
 
@@ -1908,15 +1915,17 @@
                     item.className = "activity-item";
 
                     item.innerHTML = `
-                <i class="fa-solid ${ev.icon}"></i>
+                <i class="fa-solid ${escapeHtml(ev.icon)}"></i>
                 <div>
-                    <h4>${ev.title}</h4>
-                    <p>${ev.desc || ""}</p>
+                    <h4>${escapeHtml(ev.title)}</h4>
+                    <p>${escapeHtml(ev.desc || "")}</p>
                 </div>
-                <span>${ev.label}</span>
+                <span>${escapeHtml(ev.label)}</span>
             `;
 
                     listEl.appendChild(item);
+
+                });
 
                 });
 

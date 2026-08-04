@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/includes/auth.php'; requireLogin(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -641,50 +642,60 @@ footer p{
     const searchInput = document.getElementById("searchInput");
     const tableBody = document.getElementById("requestTable");
 
-    const currentUser = JSON.parse(localStorage.getItem("currentUser")) || {};
-
     dashboardBtn.addEventListener("click", function () {
         window.location.href = "index.php";
     });
 
+    function escapeHtml(str) {
+        const div = document.createElement("div");
+        div.textContent = str == null ? "" : String(str);
+        return div.innerHTML;
+    }
+
     function loadRequests() {
 
-        const requests = JSON.parse(localStorage.getItem("bloodRequests")) || [];
+        fetch("api/requests_list.php", { credentials: "same-origin" })
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
 
-        tableBody.innerHTML = "";
+                const requests = data.success ? data.requests : [];
 
-        if (requests.length === 0) {
-            tableBody.innerHTML = `
-                <tr>
-                    <td colspan="7" style="text-align:center; color:#888;">
-                        No blood requests yet.
-                    </td>
-                </tr>
-            `;
-            updateStats(requests);
-            return;
-        }
+                tableBody.innerHTML = "";
 
-        requests.slice().reverse().forEach(function (r) {
+                if (requests.length === 0) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="7" style="text-align:center; color:#888;">
+                                No blood requests yet.
+                            </td>
+                        </tr>
+                    `;
+                    updateStats(requests);
+                    return;
+                }
 
-            const row = document.createElement("tr");
-            row.dataset.id = r.id;
+                requests.slice().reverse().forEach(function (r) {
 
-            row.innerHTML = `
-                <td>${r.patientName}</td>
-                <td>${r.bloodGroup}</td>
-                <td>${r.units}</td>
-                <td>${r.hospital}</td>
-                <td>${r.location}</td>
-                <td>${r.urgency}</td>
-                <td><span class="${r.status.toLowerCase()}">${r.status}</span></td>
-            `;
+                    const row = document.createElement("tr");
+                    row.dataset.id = r.id;
 
-            tableBody.appendChild(row);
+                    row.innerHTML = `
+                        <td>${escapeHtml(r.patient_name)}</td>
+                        <td>${escapeHtml(r.blood_group)}</td>
+                        <td>${escapeHtml(r.units)}</td>
+                        <td>${escapeHtml(r.hospital)}</td>
+                        <td>${escapeHtml(r.location)}</td>
+                        <td>${escapeHtml(r.urgency)}</td>
+                        <td><span class="${escapeHtml((r.status || "").toLowerCase())}">${escapeHtml(r.status)}</span></td>
+                    `;
 
-        });
+                    tableBody.appendChild(row);
 
-        updateStats(requests);
+                });
+
+                updateStats(requests);
+
+            });
 
     }
 
@@ -731,33 +742,28 @@ footer p{
             return;
         }
 
-        const requests = JSON.parse(localStorage.getItem("bloodRequests")) || [];
+        const formData = new FormData();
+        formData.append("patientName", patientName);
+        formData.append("bloodGroup", bloodGroup);
+        formData.append("units", units);
+        formData.append("hospital", hospital);
+        formData.append("location", location);
+        formData.append("phone", phone);
+        formData.append("urgency", urgency);
+        formData.append("date", date);
+        formData.append("notes", notes);
 
-        const newRequest = {
-            id: Date.now(),
-            requesterEmail: currentUser.email || "",
-            requesterName: currentUser.name || "Anonymous",
-            patientName: patientName,
-            bloodGroup: bloodGroup,
-            units: units,
-            hospital: hospital,
-            location: location,
-            phone: phone,
-            urgency: urgency,
-            date: date,
-            notes: notes,
-            status: "Pending"
-        };
-
-        requests.push(newRequest);
-
-        localStorage.setItem("bloodRequests", JSON.stringify(requests));
-
-        alert("Blood request submitted successfully.");
-
-        requestForm.reset();
-
-        loadRequests();
+        fetch("api/requests_create.php", { method: "POST", body: formData, credentials: "same-origin" })
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+                if (data.success) {
+                    alert("Blood request submitted successfully.");
+                    requestForm.reset();
+                    loadRequests();
+                } else {
+                    alert(data.message || "Could not submit the request.");
+                }
+            });
 
     });
 

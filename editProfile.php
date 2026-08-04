@@ -1,3 +1,8 @@
+<?php
+require_once __DIR__ . '/includes/auth.php';
+requireLogin();
+$me = getCurrentUser($conn);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,8 +13,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>BloodConnect | Edit Profile</title>
-
-    <link rel="stylesheet" href="edit-profile.css">
 
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -771,7 +774,7 @@ footer p{
 
             <li>
 
-                <a href="Home.html">
+                <a href="home.php">
 
                     <i class="fa-solid fa-house"></i>
 
@@ -783,7 +786,7 @@ footer p{
 
             <li>
 
-                <a href="profile.html">
+                <a href="profile.php">
 
                     <i class="fa-solid fa-user"></i>
 
@@ -795,7 +798,7 @@ footer p{
 
             <li class="active">
 
-                <a href="editProfile.html">
+                <a href="editProfile.php">
 
                     <i class="fa-solid fa-user-pen"></i>
 
@@ -807,7 +810,7 @@ footer p{
 
             <li>
 
-                <a href="createpost.html">
+                <a href="createpost.php">
 
                     <i class="fa-solid fa-square-plus"></i>
 
@@ -819,7 +822,7 @@ footer p{
 
             <li>
 
-                <a href="donors.html">
+                <a href="donors.php">
 
                     <i class="fa-solid fa-users"></i>
 
@@ -831,7 +834,7 @@ footer p{
 
             <li>
 
-                <a href="blood-requests.html">
+                <a href="blood-requests.php">
 
                     <i class="fa-solid fa-droplet"></i>
 
@@ -843,7 +846,7 @@ footer p{
 
             <li>
 
-                <a href="emergency-requests.html">
+                <a href="emergency-requests.php">
 
                     <i class="fa-solid fa-triangle-exclamation"></i>
 
@@ -855,7 +858,7 @@ footer p{
 
             <li>
 
-                <a href="Settings.html">
+                <a href="Settings.php">
 
                     <i class="fa-solid fa-gear"></i>
 
@@ -1486,7 +1489,7 @@ footer p{
                     <button
                         type="button"
                         id="cancelChanges"
-                        onclick="window.location.href='profile.html'">
+                        onclick="window.location.href='profile.php'">
 
                         <i class="fa-solid fa-xmark"></i>
 
@@ -1597,6 +1600,24 @@ footer p{
 
 </div>
 
+<script type="application/json" id="userData">
+<?php echo json_encode([
+    "fullName" => $me['name'], "email" => $me['email'], "phone" => $me['phone'],
+    "bloodGroup" => $me['blood_group'], "dob" => $me['dob'], "gender" => $me['gender'],
+    "city" => $me['division'], "district" => $me['district'], "postalCode" => $me['postal_code'],
+    "country" => $me['country'], "address" => $me['address'], "weight" => $me['weight'],
+    "lastDonation" => $me['last_donation'], "availability" => $me['availability'],
+    "emergencyContact" => $me['emergency_contact'], "bio" => $me['bio'],
+    "facebook" => $me['facebook'], "linkedin" => $me['linkedin'], "instagram" => $me['instagram'],
+    "website" => $me['website'], "profileImage" => $me['photo'], "coverImage" => $me['cover_image'],
+    "emailNotification" => (bool)$me['email_notification'], "smsNotification" => (bool)$me['sms_notification'],
+    "emergencyNotification" => (bool)$me['emergency_notification'], "showEmail" => (bool)$me['show_email'],
+    "showPhone" => (bool)$me['show_phone'], "showLocation" => (bool)$me['show_location'],
+    "memberSince" => date("F Y", strtotime($me['created_at'])), "reliability" => $me['reliability'],
+    "totalDonations" => "0", "livesSaved" => "0"
+]); ?>
+</script>
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -1627,7 +1648,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "facebook", "linkedin", "instagram", "website"
     ];
 
-    let user = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    let user = JSON.parse(document.getElementById("userData").textContent);
     const originalEmail = user.email || "";
 
     function compressImage(file, maxWidth, maxHeight, quality) {
@@ -1832,27 +1853,29 @@ document.addEventListener("DOMContentLoaded", () => {
             user.totalDonations = user.totalDonations || "0";
             user.livesSaved = user.livesSaved || "0";
 
-            try {
+            const formData = new FormData();
+            fields.forEach(id => formData.append(id, user[id] ?? ""));
 
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+            checkboxIds.forEach(id => {
+                if (user[id]) formData.append(id, "1");
+            });
 
-                const users = JSON.parse(localStorage.getItem("users")) || [];
-                const idx = users.findIndex(u => u.email === originalEmail);
+            if (user.profileImage) formData.append("profileImage", user.profileImage);
+            if (user.coverImage) formData.append("coverImage", user.coverImage);
 
-                if (idx !== -1) {
-                    users[idx] = { ...users[idx], ...user };
-                    localStorage.setItem("users", JSON.stringify(users));
-                } else {
-                    users.push(user);
-                    localStorage.setItem("users", JSON.stringify(users));
-                }
-
-                alert("Profile updated successfully!");
-                window.location.href = "profile.html";
-
-            } catch (err) {
-                alert("Save failed: storage quota exceeded. Try a smaller image, or clear old posts.");
-            }
+            fetch("api/profile_full_update.php", { method: "POST", body: formData, credentials: "same-origin" })
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    if (data.success) {
+                        alert("Profile updated successfully!");
+                        window.location.href = "profile.php";
+                    } else {
+                        alert(data.message || "Could not update your profile.");
+                    }
+                })
+                .catch(function () {
+                    alert("Server error. Could not update your profile.");
+                });
 
         });
     }
@@ -1869,13 +1892,16 @@ document.addEventListener("DOMContentLoaded", () => {
         deleteBtn.addEventListener("click", () => {
             if (confirm("Delete your account permanently?")) {
 
-                const users = JSON.parse(localStorage.getItem("users")) || [];
-                const filtered = users.filter(u => u.email !== originalEmail);
-                localStorage.setItem("users", JSON.stringify(filtered));
-
-                localStorage.removeItem(STORAGE_KEY);
-                alert("Account deleted.");
-                window.location.href = "Register.html";
+                fetch("api/account_delete.php", { method: "POST", credentials: "same-origin" })
+                    .then(function (res) { return res.json(); })
+                    .then(function (data) {
+                        if (data.success) {
+                            alert("Account deleted.");
+                            window.location.href = "Register.php";
+                        } else {
+                            alert("Could not delete the account. Please try again.");
+                        }
+                    });
             }
         });
     }
@@ -1884,8 +1910,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (logoutBtn) {
         logoutBtn.addEventListener("click", () => {
             if (confirm("Are you sure you want to logout?")) {
-                localStorage.removeItem("currentUser");
-                window.location.href = "Login.html";
+                fetch("api/logout.php", { credentials: "same-origin" }).then(function () {
+                    window.location.href = "Login.php";
+                });
             }
         });
     }

@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/includes/auth.php'; requireLogin(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -1217,43 +1218,55 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (searchBtn) searchBtn.addEventListener("click", runSearch);
 
+    function escapeHtml(str) {
+        const div = document.createElement("div");
+        div.textContent = str == null ? "" : String(str);
+        return div.innerHTML;
+    }
+
     function renderHospitalRequests() {
 
         const list = document.getElementById("hospitalRequestList");
-        const allRequests = JSON.parse(localStorage.getItem("bloodRequests")) || [];
 
-        const hospitalNames = hospitals.map(h => h.name.toLowerCase());
+        fetch("api/requests_list.php", { credentials: "same-origin" })
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
 
-        const matched = allRequests.filter(function (r) {
-            const h = (r.hospital || "").toLowerCase();
-            return hospitalNames.some(name => h.includes(name.split(" ")[0].toLowerCase())) || r.hospital;
-        }).filter(r => r.status !== "Completed");
+                const allRequests = data.success ? data.requests : [];
+                const hospitalNames = hospitals.map(h => h.name.toLowerCase());
 
-        list.innerHTML = "";
+                const matched = allRequests.filter(function (r) {
+                    const h = (r.hospital || "").toLowerCase();
+                    return hospitalNames.some(name => h.includes(name.split(" ")[0].toLowerCase())) || r.hospital;
+                }).filter(r => r.status !== "Completed");
 
-        document.getElementById("statRequests").textContent = matched.length;
+                list.innerHTML = "";
 
-        if (matched.length === 0) {
-            list.innerHTML = `<div class="empty-state">No active hospital blood requests right now. Create one from Create Post.</div>`;
-            return;
-        }
+                document.getElementById("statRequests").textContent = matched.length;
 
-        matched.slice().reverse().forEach(function (r) {
+                if (matched.length === 0) {
+                    list.innerHTML = `<div class="empty-state">No active hospital blood requests right now. Create one from Create Post.</div>`;
+                    return;
+                }
 
-            const card = document.createElement("div");
-            card.className = "hospital-request-card";
+                matched.slice().reverse().forEach(function (r) {
 
-            card.innerHTML = `
-                <div class="req-info">
-                    <h4>${r.bloodGroup} needed at ${r.hospital}</h4>
-                    <p>${r.patientName || "Patient"} &middot; ${r.location || "Location not specified"} &middot; ${r.units || 1} unit(s)</p>
-                </div>
-                <span class="req-tag">${r.urgency || "Normal"}</span>
-            `;
+                    const card = document.createElement("div");
+                    card.className = "hospital-request-card";
 
-            list.appendChild(card);
+                    card.innerHTML = `
+                        <div class="req-info">
+                            <h4>${escapeHtml(r.blood_group)} needed at ${escapeHtml(r.hospital)}</h4>
+                            <p>${escapeHtml(r.patient_name || "Patient")} &middot; ${escapeHtml(r.location || "Location not specified")} &middot; ${escapeHtml(r.units || 1)} unit(s)</p>
+                        </div>
+                        <span class="req-tag">${escapeHtml(r.urgency || "Normal")}</span>
+                    `;
 
-        });
+                    list.appendChild(card);
+
+                });
+
+            });
 
     }
 

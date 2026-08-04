@@ -1,3 +1,8 @@
+<?php
+require_once __DIR__ . '/includes/auth.php';
+requireLogin();
+$me = getCurrentUser($conn);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,8 +13,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>BloodConnect | Settings</title>
-
-<link rel="stylesheet" href="settings.css">
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -954,7 +957,7 @@ Save Lives Together
 
 <li>
 
-<a href="home.html">
+<a href="home.php">
 
 <i class="fa-solid fa-house"></i>
 
@@ -968,7 +971,7 @@ Home
 
 <li>
 
-<a href="profile.html">
+<a href="profile.php">
 
 <i class="fa-solid fa-user"></i>
 
@@ -982,7 +985,7 @@ Profile
 
 <li>
 
-<a href="editProfile.html">
+<a href="editProfile.php">
 
 <i class="fa-solid fa-user-pen"></i>
 
@@ -996,7 +999,7 @@ Edit Profile
 
 <li>
 
-<a href="Create_Post.html">
+<a href="createpost.php">
 
 <i class="fa-solid fa-square-plus"></i>
 
@@ -1010,7 +1013,7 @@ Create Post
 
 <li>
 
-<a href="donors.html">
+<a href="donors.php">
 
 <i class="fa-solid fa-users"></i>
 
@@ -1024,7 +1027,7 @@ Donors
 
 <li>
 
-<a href="blood-requests.html">
+<a href="blood-requests.php">
 
 <i class="fa-solid fa-droplet"></i>
 
@@ -1038,7 +1041,7 @@ Blood Requests
 
 <li>
 
-<a href="emergency-requests.html">
+<a href="emergency-requests.php">
 
 <i class="fa-solid fa-triangle-exclamation"></i>
 
@@ -1052,7 +1055,7 @@ Emergency
 
 <li class="active">
 
-<a href="Settings.html">
+<a href="Settings.php">
 
 <i class="fa-solid fa-gear"></i>
 
@@ -1659,6 +1662,15 @@ Connect. Donate. Save Lives.
 </div>
 
 
+<script type="application/json" id="currentUserData">
+<?php echo json_encode([
+    "name" => $me['name'], "email" => $me['email'], "photo" => $me['photo'] ?: 'images/user.png',
+    "memberSince" => date("F Y", strtotime($me['created_at'])),
+    "emailNotification" => (bool)$me['email_notification'], "smsNotification" => (bool)$me['sms_notification'],
+    "emergencyAlert" => (bool)$me['emergency_notification'], "showEmail" => (bool)$me['show_email'],
+    "showPhone" => (bool)$me['show_phone'], "showLocation" => (bool)$me['show_location']
+]); ?>
+</script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -1673,11 +1685,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    let currentUser = JSON.parse(localStorage.getItem("currentUser")) || {};
-
-    function settingsKey() {
-        return "userSettings_" + (currentUser.email || "guest");
-    }
+    let currentUser = JSON.parse(document.getElementById("currentUserData").textContent);
 
     const userName = document.getElementById("userName");
     const userEmail = document.getElementById("userEmail");
@@ -1695,11 +1703,13 @@ document.addEventListener("DOMContentLoaded", function () {
         if (headerPhoto) headerPhoto.src = currentUser.photo || "images/user.png";
         if (memberSinceEl) memberSinceEl.textContent = currentUser.memberSince || "July 2026";
 
-        const allDonations = JSON.parse(localStorage.getItem("bloodDonations")) || [];
-        const myDonations = allDonations.filter(d => d.userEmail === currentUser.email);
-
-        if (totalDonationsEl) totalDonationsEl.textContent = myDonations.length;
-        if (livesSavedEl) livesSavedEl.textContent = myDonations.length * 3;
+        fetch("api/donations_list.php", { credentials: "same-origin" })
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+                const myDonations = data.success ? data.donations : [];
+                if (totalDonationsEl) totalDonationsEl.textContent = myDonations.length;
+                if (livesSavedEl) livesSavedEl.textContent = myDonations.length * 3;
+            });
 
     }
 
@@ -1708,8 +1718,9 @@ document.addEventListener("DOMContentLoaded", function () {
     if (logoutBtn) {
         logoutBtn.addEventListener("click", function () {
             if (confirm("Are you sure you want to logout?")) {
-                localStorage.removeItem("currentUser");
-                window.location.href = "index.html";
+                fetch("api/logout.php", { credentials: "same-origin" }).then(function () {
+                    window.location.href = "index.php";
+                });
             }
         });
     }
@@ -1717,7 +1728,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const editProfileBtn = document.getElementById("editProfileBtn");
     if (editProfileBtn) {
         editProfileBtn.addEventListener("click", function () {
-            window.location.href = "editProfile.html";
+            window.location.href = "editProfile.php";
         });
     }
 
@@ -1728,15 +1739,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const showPhone = document.getElementById("showPhone");
     const showLocation = document.getElementById("showLocation");
 
-    let settingsData = JSON.parse(localStorage.getItem(settingsKey())) || {};
-
     function loadSettings() {
-        if (emailNotification) emailNotification.checked = settingsData.emailNotification ?? true;
-        if (smsNotification) smsNotification.checked = settingsData.smsNotification ?? false;
-        if (emergencyAlert) emergencyAlert.checked = settingsData.emergencyAlert ?? true;
-        if (showEmail) showEmail.checked = settingsData.showEmail ?? true;
-        if (showPhone) showPhone.checked = settingsData.showPhone ?? true;
-        if (showLocation) showLocation.checked = settingsData.showLocation ?? true;
+        if (emailNotification) emailNotification.checked = currentUser.emailNotification ?? true;
+        if (smsNotification) smsNotification.checked = currentUser.smsNotification ?? false;
+        if (emergencyAlert) emergencyAlert.checked = currentUser.emergencyAlert ?? true;
+        if (showEmail) showEmail.checked = currentUser.showEmail ?? true;
+        if (showPhone) showPhone.checked = currentUser.showPhone ?? true;
+        if (showLocation) showLocation.checked = currentUser.showLocation ?? true;
     }
 
     loadSettings();
@@ -1746,18 +1755,23 @@ document.addEventListener("DOMContentLoaded", function () {
     if (saveSettings) {
         saveSettings.addEventListener("click", function () {
 
-            settingsData = {
-                emailNotification: emailNotification.checked,
-                smsNotification: smsNotification.checked,
-                emergencyAlert: emergencyAlert.checked,
-                showEmail: showEmail.checked,
-                showPhone: showPhone.checked,
-                showLocation: showLocation.checked
-            };
+            const formData = new FormData();
+            if (emailNotification.checked) formData.append("emailNotification", "1");
+            if (smsNotification.checked) formData.append("smsNotification", "1");
+            if (emergencyAlert.checked) formData.append("emergencyAlert", "1");
+            if (showEmail.checked) formData.append("showEmail", "1");
+            if (showPhone.checked) formData.append("showPhone", "1");
+            if (showLocation.checked) formData.append("showLocation", "1");
 
-            localStorage.setItem(settingsKey(), JSON.stringify(settingsData));
-
-            alert("Settings saved successfully.");
+            fetch("api/settings_update.php", { method: "POST", body: formData, credentials: "same-origin" })
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    if (data.success) {
+                        alert("Settings saved successfully.");
+                    } else {
+                        alert(data.message || "Could not save settings.");
+                    }
+                });
 
         });
     }
@@ -1765,9 +1779,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const totalPosts = document.getElementById("totalPosts");
 
     function updatePostCount() {
-        let posts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
-        posts = posts.filter(p => p.userEmail === currentUser.email);
-        if (totalPosts) totalPosts.textContent = posts.length;
+        fetch("api/posts_list.php?mine=1", { credentials: "same-origin" })
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+                if (totalPosts) totalPosts.textContent = data.success ? data.posts.length : 0;
+            });
     }
 
     updatePostCount();
@@ -1780,10 +1796,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (changePasswordBtn) {
         changePasswordBtn.addEventListener("click", function () {
 
-            const savedPassword = currentUser.password || "";
-
-            if (oldPassword.value !== savedPassword) {
-                alert("Current password is incorrect.");
+            if (oldPassword.value === "") {
+                alert("Enter your current password.");
                 return;
             }
 
@@ -1797,22 +1811,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            currentUser.password = newPassword.value;
+            const formData = new FormData();
+            formData.append("currentPassword", oldPassword.value);
+            formData.append("newPassword", newPassword.value);
+            formData.append("confirmPassword", confirmPassword.value);
 
-            localStorage.setItem("currentUser", JSON.stringify(currentUser));
+            fetch("api/profile_password.php", { method: "POST", body: formData, credentials: "same-origin" })
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
 
-            const users = JSON.parse(localStorage.getItem("users")) || [];
-            const idx = users.findIndex(u => u.email === currentUser.email);
-            if (idx !== -1) {
-                users[idx].password = newPassword.value;
-                localStorage.setItem("users", JSON.stringify(users));
-            }
+                    if (data.success) {
+                        oldPassword.value = "";
+                        newPassword.value = "";
+                        confirmPassword.value = "";
+                        alert("Password updated successfully.");
+                    } else {
+                        alert(data.message || "Could not update the password.");
+                    }
 
-            oldPassword.value = "";
-            newPassword.value = "";
-            confirmPassword.value = "";
-
-            alert("Password updated successfully.");
+                });
 
         });
     }
@@ -1826,26 +1843,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (!confirmDelete) return;
 
-            const email = currentUser.email;
-
-            let users = JSON.parse(localStorage.getItem("users")) || [];
-            users = users.filter(u => u.email !== email);
-            localStorage.setItem("users", JSON.stringify(users));
-
-            let posts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
-            posts = posts.filter(p => p.userEmail !== email);
-            localStorage.setItem("bloodPosts", JSON.stringify(posts));
-
-            let donations = JSON.parse(localStorage.getItem("bloodDonations")) || [];
-            donations = donations.filter(d => d.userEmail !== email);
-            localStorage.setItem("bloodDonations", JSON.stringify(donations));
-
-            localStorage.removeItem("currentUser");
-            localStorage.removeItem(settingsKey());
-
-            alert("Account deleted successfully.");
-
-            window.location.href = "index.html";
+            fetch("api/account_delete.php", { method: "POST", credentials: "same-origin" })
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    if (data.success) {
+                        alert("Account deleted successfully.");
+                        window.location.href = "index.php";
+                    } else {
+                        alert("Could not delete the account. Please try again.");
+                    }
+                });
 
         });
     }
@@ -1862,11 +1869,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     window.addEventListener("focus", function () {
-        currentUser = JSON.parse(localStorage.getItem("currentUser")) || {};
         loadUser();
         updatePostCount();
-        settingsData = JSON.parse(localStorage.getItem(settingsKey())) || {};
-        loadSettings();
     });
 
 });

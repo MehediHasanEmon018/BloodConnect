@@ -1,3 +1,9 @@
+<?php
+require_once __DIR__ . '/includes/auth.php';
+requireLogin();
+$me = getCurrentUser($conn);
+$totalUsers = $conn->query("SELECT COUNT(*) c FROM users")->fetch_assoc()['c'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -806,12 +812,12 @@
         </div>
 
         <ul>
-            <li><a href="home.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
-            <li><a href="blood-requests.html"><i class="fa-solid fa-droplet"></i> Blood Requests</a></li>
-            <li class="active"><a href="emergency-requests.html"><i class="fa-solid fa-bell"></i> Emergency Requests</a></li>
-            <li><a href="donors.html"><i class="fa-solid fa-users"></i> Donor Network</a></li>
-            <li><a href="profile.html"><i class="fa-solid fa-user"></i> Profile</a></li>
-            <li><a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            <li><a href="home.php"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+            <li><a href="blood-requests.php"><i class="fa-solid fa-droplet"></i> Blood Requests</a></li>
+            <li class="active"><a href="emergency-requests.php"><i class="fa-solid fa-bell"></i> Emergency Requests</a></li>
+            <li><a href="donors.php"><i class="fa-solid fa-users"></i> Donor Network</a></li>
+            <li><a href="profile.php"><i class="fa-solid fa-user"></i> Profile</a></li>
+            <li><a href="Settings.php"><i class="fa-solid fa-gear"></i> Settings</a></li>
         </ul>
 
         <button id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
@@ -869,7 +875,7 @@
                 <div id="emergencyContainer"></div>
 
                 <div class="view-all">
-                    <button onclick="window.location.href='blood-requests.html'">View All Blood Requests</button>
+                    <button onclick="window.location.href='blood-requests.php'">View All Blood Requests</button>
                 </div>
 
                 <section class="responses">
@@ -901,7 +907,7 @@
                 <div class="notification-card">
                     <div class="card-header">
                         <h3>Live Feed</h3>
-                        <a href="donors.html">View Donors</a>
+                        <a href="donors.php">View Donors</a>
                     </div>
                     <ul id="notificationList"></ul>
                 </div>
@@ -932,6 +938,13 @@
 
 </div>
 
+<script type="application/json" id="pageData">
+<?php echo json_encode([
+    "currentUser" => ["id" => $me['id'], "name" => $me['name'], "photo" => $me['photo']],
+    "totalUsers" => (int)$totalUsers
+]); ?>
+</script>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
@@ -947,7 +960,28 @@ document.addEventListener("DOMContentLoaded", function () {
     const createEmergency = document.getElementById("createEmergency");
     const viewAllBtn = document.getElementById("viewAllBtn");
 
-    const currentUser = JSON.parse(localStorage.getItem("currentUser")) || {};
+    const pageData = JSON.parse(document.getElementById("pageData").textContent);
+    const currentUser = pageData.currentUser;
+    const totalUsers = pageData.totalUsers;
+
+    function escapeHtml(str) {
+        const div = document.createElement("div");
+        div.textContent = str == null ? "" : String(str);
+        return div.innerHTML;
+    }
+
+    let allPosts = [];
+    let allRequests = [];
+
+    function loadData() {
+        return Promise.all([
+            fetch("api/posts_list.php", { credentials: "same-origin" }).then(r => r.json()),
+            fetch("api/requests_list.php", { credentials: "same-origin" }).then(r => r.json())
+        ]).then(function ([postsData, requestsData]) {
+            allPosts = postsData.success ? postsData.posts : [];
+            allRequests = requestsData.success ? requestsData.requests : [];
+        });
+    }
 
     const profileImg = document.getElementById("profileImg");
     const profileName = document.getElementById("profileName");
@@ -964,21 +998,22 @@ document.addEventListener("DOMContentLoaded", function () {
     if (logoutBtn) {
         logoutBtn.addEventListener("click", function () {
             if (confirm("Are you sure you want to logout?")) {
-                localStorage.removeItem("currentUser");
-                window.location.href = "index.html";
+                fetch("api/logout.php", { credentials: "same-origin" }).then(function () {
+                    window.location.href = "index.php";
+                });
             }
         });
     }
 
     if (viewAllBtn) {
         viewAllBtn.addEventListener("click", function () {
-            window.location.href = "blood-requests.html";
+            window.location.href = "blood-requests.php";
         });
     }
 
     if (createEmergency) {
         createEmergency.addEventListener("click", function () {
-            window.location.href = "createpost.html";
+            window.location.href = "createpost.php";
         });
     }
 
@@ -1003,7 +1038,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const container = document.getElementById("emergencyContainer");
         const countLabel = document.getElementById("emergencyCountLabel");
 
-        const allPosts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
         const emergencyPosts = allPosts
             .filter(p => p.emergency === true)
             .sort((a, b) => (b.id || 0) - (a.id || 0));
@@ -1024,7 +1058,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         emergencyPosts.forEach(function (post) {
 
-            const isOwnPost = currentUser.email && post.userEmail === currentUser.email;
+            const isOwnPost = post.user_id == currentUser.id;
 
             const card = document.createElement("div");
             card.className = "request-card " + priorityClass(post.urgency);
@@ -1032,36 +1066,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const actionHTML = isOwnPost
                 ? `<span class="ownPostTag"><i class="fa-solid fa-circle-user"></i> Your Post</span>`
-                : `<button class="respondBtn" data-id="${post.id}" data-name="${post.userName || 'Anonymous'}">
+                : `<button class="respondBtn" data-id="${escapeHtml(post.id)}" data-poster-id="${escapeHtml(post.user_id)}" data-name="${escapeHtml(post.userName || 'Anonymous')}">
                         <i class="fa-solid fa-bolt"></i> Respond Now
                    </button>`;
 
             card.innerHTML = `
-                <div class="priority">${priorityLabel(post.urgency)}</div>
+                <div class="priority">${escapeHtml(priorityLabel(post.urgency))}</div>
 
                 <div class="request-info">
-                    <h3>${post.bloodGroup || "N/A"} Blood Required</h3>
-                    <p>${(post.description || "").slice(0, 90) || "No additional details provided."}</p>
+                    <h3>${escapeHtml(post.blood_group || "N/A")} Blood Required</h3>
+                    <p>${escapeHtml((post.description || "").slice(0, 90)) || "No additional details provided."}</p>
                     <div class="tags">
-                        <span>Posted by: ${post.userName || "Anonymous"}</span>
-                        ${post.requiredDate ? `<span>Needed by: ${post.requiredDate}</span>` : ""}
+                        <span>Posted by: ${escapeHtml(post.userName || "Anonymous")}</span>
+                        ${post.required_date ? `<span>Needed by: ${escapeHtml(post.required_date)}</span>` : ""}
                     </div>
                 </div>
 
                 <div class="hospital">
-                    <p><i class="fa-solid fa-location-dot"></i> ${post.location || "Not specified"}</p>
-                    <span>${post.hospital || "Hospital not specified"}</span>
+                    <p><i class="fa-solid fa-location-dot"></i> ${escapeHtml(post.location || "Not specified")}</p>
+                    <span>${escapeHtml(post.hospital || "Hospital not specified")}</span>
                 </div>
 
                 <div class="time">
-                    <p><i class="fa-regular fa-clock"></i> ${post.createdAt || ""}</p>
-                    <span>${post.urgency || "Normal"} Condition</span>
+                    <p><i class="fa-regular fa-clock"></i> ${escapeHtml(post.created_at || "")}</p>
+                    <span>${escapeHtml(post.urgency || "Normal")} Condition</span>
                 </div>
 
                 <div class="action">
                     ${actionHTML}
-                    <p>${post.contact || "No contact"}</p>
-                    <span>Blood Group: ${post.bloodGroup || "N/A"}</span>
+                    <p>${escapeHtml(post.contact || "No contact")}</p>
+                    <span>Blood Group: ${escapeHtml(post.blood_group || "N/A")}</span>
                 </div>
             `;
 
@@ -1086,23 +1120,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const postId = btn.dataset.id;
 
-                const responses = JSON.parse(localStorage.getItem("emergencyResponses")) || [];
+                const formData = new FormData();
+                formData.append("postId", postId);
 
-                responses.push({
-                    id: Date.now(),
-                    postId: postId,
-                    responderEmail: currentUser.email || "",
-                    responderName: currentUser.name || "Anonymous",
-                    responderPhoto: currentUser.photo || "images/user.png",
-                    time: new Date().toLocaleString()
-                });
-
-                localStorage.setItem("emergencyResponses", JSON.stringify(responses));
-
-                // Send the responder straight into a chat with the person who posted
-                localStorage.setItem("openChatWith", posterName);
-
-                window.location.href = "Chat.html";
+                fetch("api/emergency_respond.php", { method: "POST", body: formData, credentials: "same-origin" })
+                    .then(function (res) { return res.json(); })
+                    .then(function (data) {
+                        // Send the responder straight into a chat with the person who posted
+                        const posterId = (data.success && data.posterId) ? data.posterId : btn.dataset.posterId;
+                        window.location.href = "Chat.php?with=" + encodeURIComponent(posterId);
+                    });
 
             }
 
@@ -1115,8 +1142,6 @@ document.addEventListener("DOMContentLoaded", function () {
     function renderResponses() {
 
         const container = document.getElementById("responsesContainer");
-
-        const allPosts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
 
         const recent = allPosts
             .slice()
@@ -1134,21 +1159,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const isEmergency = post.emergency === true;
             const badgeClass = isEmergency ? "badge-emergency" : "badge-normal";
-            const badgeText = isEmergency ? "Emergency" : (post.postType || "Post");
-            const desc = post.text || post.description || "";
+            const badgeText = isEmergency ? "Emergency" : (post.post_type || "Post");
+            const desc = post.description || "";
 
             const item = document.createElement("div");
             item.className = "response";
 
             item.innerHTML = `
-                <img src="${post.userPhoto || "images/user.png"}" alt="">
+                <img src="${escapeHtml(post.userPhoto || "images/user.png")}" alt="">
                 <div class="response-info">
-                    <h4>${post.userName || "Anonymous"}</h4>
-                    <p>${desc.slice(0, 70) || "Shared an update"}</p>
+                    <h4>${escapeHtml(post.userName || "Anonymous")}</h4>
+                    <p>${escapeHtml(desc.slice(0, 70)) || "Shared an update"}</p>
                 </div>
-                <span class="badge-type ${badgeClass}">${badgeText}</span>
-                <small>${post.date || post.createdAt || ""}</small>
-                <button class="viewPostBtn" data-id="${post.id}">
+                <span class="badge-type ${badgeClass}">${escapeHtml(badgeText)}</span>
+                <small>${escapeHtml(post.created_at || "")}</small>
+                <button class="viewPostBtn" data-id="${escapeHtml(post.id)}">
                     <i class="fa-regular fa-eye"></i> View
                 </button>
             `;
@@ -1159,7 +1184,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         container.querySelectorAll(".viewPostBtn").forEach(function (btn) {
             btn.addEventListener("click", function () {
-                window.location.href = "profile.html";
+                window.location.href = "profile.php";
             });
         });
 
@@ -1173,17 +1198,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function buildFeedItems() {
 
-        const users = JSON.parse(localStorage.getItem("users")) || [];
-        const requests = JSON.parse(localStorage.getItem("bloodRequests")) || [];
-
         const items = [];
 
-        users.slice(-5).reverse().forEach(function (u) {
-            items.push(`New donor registered: <strong>${u.name || "Unknown"}</strong> (${u.bloodGroup || "N/A"})`);
+        allPosts.filter(p => p.post_type === "Blood Available").slice(0, 5).forEach(function (p) {
+            items.push(`New donor available: <strong>${escapeHtml(p.userName || "Unknown")}</strong> (${escapeHtml(p.blood_group || "N/A")})`);
         });
 
-        requests.slice(-5).reverse().forEach(function (r) {
-            items.push(`New <strong>${r.bloodGroup}</strong> request at ${r.hospital || "a hospital"} in ${r.location || "an unknown area"}`);
+        allRequests.slice(-5).reverse().forEach(function (r) {
+            items.push(`New <strong>${escapeHtml(r.blood_group)}</strong> request at ${escapeHtml(r.hospital || "a hospital")} in ${escapeHtml(r.location || "an unknown area")}`);
         });
 
         return items;
@@ -1239,15 +1261,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function renderSummary() {
 
-        const allPosts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
-        const users = JSON.parse(localStorage.getItem("users")) || [];
-        const requests = JSON.parse(localStorage.getItem("bloodRequests")) || [];
-
         const emergencyCount = allPosts.filter(p => p.emergency === true).length;
-        const completedCount = requests.filter(r => r.status === "Completed").length;
+        const completedCount = allRequests.filter(r => r.status === "Completed").length;
 
         animateCounter(document.getElementById("statActive"), emergencyCount);
-        animateCounter(document.getElementById("statDonors"), users.length);
+        animateCounter(document.getElementById("statDonors"), totalUsers);
         animateCounter(document.getElementById("statActivity"), allPosts.length);
         animateCounter(document.getElementById("statCompleted"), completedCount);
 
@@ -1327,7 +1345,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function plotEmergencyPosts() {
 
-        const allPosts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
         const emergencyPosts = allPosts.filter(p => p.emergency === true);
 
         // Since posts don't store coordinates, scatter markers gently around
@@ -1352,9 +1369,9 @@ document.addEventListener("DOMContentLoaded", function () {
             L.marker([lat, lng], { icon: emergencyIcon })
                 .addTo(map)
                 .bindPopup(
-                    "<strong>" + (post.bloodGroup || "N/A") + " needed</strong><br>" +
-                    (post.hospital || "Hospital not specified") + "<br>" +
-                    (post.location || "")
+                    "<strong>" + escapeHtml(post.blood_group || "N/A") + " needed</strong><br>" +
+                    escapeHtml(post.hospital || "Hospital not specified") + "<br>" +
+                    escapeHtml(post.location || "")
                 );
 
         });
@@ -1419,9 +1436,17 @@ document.addEventListener("DOMContentLoaded", function () {
         renderSummary();
     }
 
-    renderAll();
+    loadData().then(function () {
+        renderAll();
+        if (map) plotEmergencyPosts();
+    });
 
-    window.addEventListener("focus", renderAll);
+    window.addEventListener("focus", function () {
+        loadData().then(function () {
+            renderAll();
+            if (map) plotEmergencyPosts();
+        });
+    });
 
 });
 </script>

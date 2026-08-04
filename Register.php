@@ -1,3 +1,7 @@
+<?php
+require_once __DIR__ . '/includes/auth.php';
+if (isLoggedIn()) { header("Location: profile.php"); exit; }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -185,8 +189,8 @@ footer{
 </div>
 
 <nav>
-<a href="index.html">Home</a>
-<a href="Login.html">Login</a>
+<a href="index.php">Home</a>
+<a href="Login.php">Login</a>
 </nav>
 
 </header>
@@ -297,7 +301,7 @@ Register
 
 Already have an account?
 
-<a href="Login.html">
+<a href="Login.php">
 Login
 </a>
 
@@ -394,48 +398,37 @@ document.getElementById("registerForm").addEventListener("submit", function (e) 
         return;
     }
 
-    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("phone", phone);
+    formData.append("bloodGroup", bloodGroup);
+    formData.append("gender", gender);
+    formData.append("dob", dob);
+    formData.append("division", division);
+    formData.append("district", district);
+    formData.append("password", password);
+    formData.append("confirmPassword", confirmPassword);
+    formData.append("lastDonation", lastDonation);
 
-    // Prevent duplicate accounts
-    const existing = users.find(u => u.email === email);
-
-    if (existing) {
-        message.style.color = "red";
-        message.innerHTML = "An account with this email already exists.";
-        return;
-    }
-
-    const newUser = {
-        name: name,
-        email: email,
-        phone: phone,
-        bloodGroup: bloodGroup,
-        gender: gender,
-        dob: dob,
-        age: age,
-        location: [division, district].filter(Boolean).join(", "),
-        division: division,
-        district: district,
-        password: password, // NOTE: plain text, fine for a local demo only
-        lastDonation: lastDonation,
-        photo: "images/user.png",
-        coverImage: "",
-        memberSince: new Date().toLocaleString("en-US", { month: "long", year: "numeric" }),
-        reliability: "98%",
-        totalDonations: "0",
-        livesSaved: "0"
-    };
-
-    users.push(newUser);
-
-    localStorage.setItem("users", JSON.stringify(users));
-
-    message.style.color = "green";
-    message.innerHTML = "Registration Successful! Redirecting to Login...";
-
-    setTimeout(function () {
-        window.location.href = "Login.html";
-    }, 1800);
+    fetch("api/register.php", { method: "POST", body: formData, credentials: "same-origin" })
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+            if (data.success) {
+                message.style.color = "green";
+                message.innerHTML = "Registration Successful! Redirecting...";
+                setTimeout(function () {
+                    window.location.href = "profile.php";
+                }, 1500);
+            } else {
+                message.style.color = "red";
+                message.innerHTML = data.message || "Registration failed.";
+            }
+        })
+        .catch(function () {
+            message.style.color = "red";
+            message.innerHTML = "Server error. Please try again.";
+        });
 
 });
 

@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/includes/auth.php'; requireLogin(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -371,16 +372,17 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function getDonationPosts() {
+    function escapeHtml(str) {
+        const div = document.createElement("div");
+        div.textContent = str == null ? "" : String(str);
+        return div.innerHTML;
+    }
 
-        const posts = JSON.parse(localStorage.getItem("bloodPosts")) || [];
-
-        return posts.filter(function (post) {
-
-            return post.postType === "Blood Available";
-
-        });
-
+    function getDonationPosts(params) {
+        const query = new URLSearchParams(Object.assign({ postType: "Blood Available" }, params || {}));
+        return fetch("api/posts_list.php?" + query.toString(), { credentials: "same-origin" })
+            .then(function (res) { return res.json(); })
+            .then(function (data) { return data.success ? data.posts : []; });
     }
 
     function renderDonors(donors) {
@@ -403,19 +405,20 @@ document.addEventListener("DOMContentLoaded", function () {
             const card = document.createElement("div");
             card.className = "card";
 
+            // All values escaped before insertion to prevent stored-XSS from post data.
             card.innerHTML = `
 
-                <img src="${donor.userPhoto || "images/user.png"}" alt="Donor">
+                <img src="${escapeHtml(donor.userPhoto || "images/user.png")}" alt="Donor">
 
-                <h3>${donor.userName || "Unknown User"}</h3>
+                <h3>${escapeHtml(donor.userName || "Unknown User")}</h3>
 
-                <p><strong>Blood Group:</strong> ${donor.bloodGroup || "N/A"}</p>
+                <p><strong>Blood Group:</strong> ${escapeHtml(donor.blood_group || "N/A")}</p>
 
-                <p><strong>Location:</strong> ${donor.location || "Unknown"}</p>
+                <p><strong>Location:</strong> ${escapeHtml(donor.location || "Unknown")}</p>
 
-                <p><strong>Hospital:</strong> ${donor.hospital || "Not Provided"}</p>
+                <p><strong>Hospital:</strong> ${escapeHtml(donor.hospital || "Not Provided")}</p>
 
-                <p><strong>Contact:</strong> ${donor.contact || "Not Provided"}</p>
+                <p><strong>Contact:</strong> ${escapeHtml(donor.contact || "Not Provided")}</p>
 
                 <p><strong>Status:</strong> Available</p>
 
@@ -450,11 +453,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             card.querySelector(".contactBtn").addEventListener("click", function () {
 
-                const donorName = donor.userName || "Unknown Donor";
-
-                localStorage.setItem("openChatWith", donorName);
-
-                window.location.href = "Chat.php";
+                window.location.href = "Chat.php?with=" + encodeURIComponent(donor.user_id);
 
             });
 
@@ -464,27 +463,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function searchDonors() {
 
-        const group = bloodGroup.value.trim().toUpperCase();
-        const city = location.value.trim().toUpperCase();
+        const group = bloodGroup.value.trim();
+        const city = location.value.trim();
 
-        let donors = getDonationPosts();
+        const params = {};
+        if (group && group !== "Select Blood Group") params.bloodGroup = group;
+        if (city) params.location = city;
 
-        donors = donors.filter(function (donor) {
-
-            const groupMatch =
-                group === "" ||
-                group === "SELECT BLOOD GROUP" ||
-                (donor.bloodGroup || "").toUpperCase() === group;
-
-            const locationMatch =
-                city === "" ||
-                (donor.location || "").toUpperCase().includes(city);
-
-            return groupMatch && locationMatch;
-
-        });
-
-        renderDonors(donors);
+        getDonationPosts(params).then(renderDonors);
 
     }
 
@@ -506,7 +492,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
-    renderDonors(getDonationPosts());
+    getDonationPosts().then(renderDonors);
 
 });
 </script>

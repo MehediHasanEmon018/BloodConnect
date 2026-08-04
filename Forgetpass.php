@@ -1,3 +1,7 @@
+<?php
+require_once __DIR__ . '/includes/auth.php';
+if (isLoggedIn()) { header("Location: profile.php"); exit; }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -206,8 +210,8 @@
         </div>
 
         <nav>
-            <a href="index.html">Home</a>
-            <a href="Register.html">Register</a>
+            <a href="index.php">Home</a>
+            <a href="Register.php">Register</a>
         </nav>
 
     </header>
@@ -241,7 +245,7 @@
             <div class="message" id="message"></div>
 
             <div class="back">
-                <a href="Login.html">← Back to Login</a>
+                <a href="Login.php">← Back to Login</a>
             </div>
 
         </div>
@@ -276,10 +280,20 @@
                 return;
             }
 
-            message.style.color="green";
-            message.innerHTML="Password reset link has been sent to your email.";
+            const formData = new FormData();
+            formData.append("email", email.value.trim());
 
-            form.reset();
+            fetch("api/forgot_password.php", { method: "POST", body: formData, credentials: "same-origin" })
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    message.style.color = data.success ? "green" : "red";
+                    message.innerHTML = data.message || "Something went wrong. Please try again.";
+                    if (data.success) form.reset();
+                })
+                .catch(function () {
+                    message.style.color = "red";
+                    message.innerHTML = "Server error. Please try again.";
+                });
 
         });
 

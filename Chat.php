@@ -1,20 +1,8 @@
 <?php
-session_start();
-require "config/db.php";
-
-if (!isset($_SESSION['user_id'])) {
-    header("Location: index.php");
-    exit();
-}
-
+require_once __DIR__ . '/includes/auth.php';
+requireLogin();
 $user_id = $_SESSION['user_id'];
-
-$stmt = mysqli_prepare($conn, "SELECT * FROM users WHERE id=?");
-mysqli_stmt_bind_param($stmt, "i", $user_id);
-mysqli_stmt_execute($stmt);
-
-$result = mysqli_stmt_get_result($stmt);
-$user = mysqli_fetch_assoc($result);
+$me = getCurrentUser($conn);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -618,13 +606,20 @@ $user = mysqli_fetch_assoc($result);
             if (logoutBtn) {
                 logoutBtn.addEventListener("click", function () {
                     if (confirm("Are you sure you want to logout?")) {
-                        localStorage.removeItem("currentUser");
-                        window.location.replace("index.php");
+                        fetch("api/logout.php", { credentials: "same-origin" }).then(function () {
+                            window.location.replace("index.php");
+                        });
                     }
                 });
             }
 
-            const STORAGE_KEY = "chatData";
+            const myId = <?php echo (int)$user_id; ?>;
+
+            function escapeHtml(str) {
+                const div = document.createElement("div");
+                div.textContent = str == null ? "" : String(str);
+                return div.innerHTML;
+            }
 
             const chatListEl = document.getElementById("chatList");
             const chatHeader = document.getElementById("chatHeader");
@@ -636,62 +631,46 @@ $user = mysqli_fetch_assoc($result);
             const newChatInput = document.getElementById("newChatInput");
             const newChatBtn = document.getElementById("newChatBtn");
 
-            let currentChat = null;
+            let contacts = [];
+            let currentChat = null; // { id, name, photo }
+            let pollTimer = null;
 
-            function loadChatData() {
-
-                const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
-
-                if (stored) return stored;
-
-                return {};
-
-            }
-
-            let chatData = loadChatData();
-
-            function saveChatData() {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(chatData));
+            function loadContacts() {
+                return fetch("api/messages_list.php?mode=contacts", { credentials: "same-origin" })
+                    .then(function (res) { return res.json(); })
+                    .then(function (data) {
+                        contacts = data.success ? data.contacts : [];
+                        return contacts;
+                    });
             }
 
             function renderChatList(filter) {
 
                 filter = (filter || "").toLowerCase();
 
-                const names = Object.keys(chatData);
-
                 chatListEl.innerHTML = "";
 
-                const visibleNames = names.filter(name => name.toLowerCase().includes(filter));
+                const visible = contacts.filter(c => (c.name || "").toLowerCase().includes(filter));
 
-                if (visibleNames.length === 0) {
+                if (visible.length === 0) {
                     chatListEl.innerHTML = `<div class="empty-list">No conversations found.</div>`;
                     return;
                 }
 
-                visibleNames.forEach(function (name) {
-
-                    const thread = chatData[name];
-                    const lastMsg = thread[thread.length - 1];
+                visible.forEach(function (c) {
 
                     const item = document.createElement("div");
-                    item.className = "chat-item" + (name === currentChat ? " active" : "");
-
-                    let previewText = "No messages yet";
-
-                    if (lastMsg) {
-                        previewText = lastMsg.image ? "📷 Photo" : lastMsg.text;
-                    }
+                    item.className = "chat-item" + (currentChat && c.id == currentChat.id ? " active" : "");
 
                     item.innerHTML = `
                         <div>
-                            <div>${name}</div>
-                            <span class="preview">${previewText}</span>
+                            <div>${escapeHtml(c.name)}</div>
+                            <span class="preview">${c.unread > 0 ? "New message" : "Tap to open"}</span>
                         </div>
                     `;
 
                     item.addEventListener("click", function () {
-                        loadChat(name);
+                        loadChat(c.id, c.name, c.photo);
                     });
 
                     chatListEl.appendChild(item);
@@ -700,35 +679,39 @@ $user = mysqli_fetch_assoc($result);
 
             }
 
-            function loadChat(name) {
+            function loadChat(id, name, photo) {
 
-                currentChat = name;
+                currentChat = { id: id, name: name, photo: photo };
 
-                chatHeader.textContent = name;
-                messagesEl.innerHTML = "";
+                chatHeader.textContent = name || "Chat";
 
-                (chatData[name] || []).forEach(function (msg) {
+                fetch("api/messages_list.php?userId=" + encodeURIComponent(id), { credentials: "same-origin" })
+                    .then(function (res) { return res.json(); })
+                    .then(function (data) {
 
-                    const div = document.createElement("div");
-                    div.className = "message " + msg.type;
+                        const msgs = data.success ? data.messages : [];
+                        messagesEl.innerHTML = "";
 
-                    if (msg.image) {
+                        msgs.forEach(function (msg) {
 
-                        const img = document.createElement("img");
-                        img.src = msg.image;
-                        div.appendChild(img);
+                            const div = document.createElement("div");
+                            div.className = "message " + (msg.senderId == myId ? "sent" : "received");
 
-                    } else {
+                            if (msg.image) {
+                                const img = document.createElement("img");
+                                img.src = msg.image;
+                                div.appendChild(img);
+                            } else {
+                                div.textContent = msg.message;
+                            }
 
-                        div.textContent = msg.text;
+                            messagesEl.appendChild(div);
 
-                    }
+                        });
 
-                    messagesEl.appendChild(div);
+                        messagesEl.scrollTop = messagesEl.scrollHeight;
 
-                });
-
-                messagesEl.scrollTop = messagesEl.scrollHeight;
+                    });
 
                 renderChatList(searchInput.value);
 
@@ -749,55 +732,29 @@ $user = mysqli_fetch_assoc($result);
                     return;
                 }
 
-                if (text !== "") {
+                function post(imageData) {
+                    const formData = new FormData();
+                    formData.append("receiverId", currentChat.id);
+                    formData.append("message", text);
+                    if (imageData) formData.append("image", imageData);
 
-                    chatData[currentChat].push({ type: "sent", text: text });
-
-                    const div = document.createElement("div");
-                    div.className = "message sent";
-                    div.textContent = text;
-
-                    messagesEl.appendChild(div);
-
-                    saveChatData();
-                    renderChatList(searchInput.value);
-
+                    fetch("api/messages_send.php", { method: "POST", body: formData, credentials: "same-origin" })
+                        .then(function (res) { return res.json(); })
+                        .then(function () {
+                            messageInput.value = "";
+                            fileInput.value = "";
+                            loadChat(currentChat.id, currentChat.name, currentChat.photo);
+                            loadContacts().then(function () { renderChatList(searchInput.value); });
+                        });
                 }
 
                 if (file) {
-
                     const reader = new FileReader();
-
-                    reader.onload = function (e) {
-
-                        const imageURL = e.target.result;
-
-                        chatData[currentChat].push({ type: "sent", image: imageURL });
-
-                        const div = document.createElement("div");
-                        div.className = "message sent";
-
-                        const img = document.createElement("img");
-                        img.src = imageURL;
-
-                        div.appendChild(img);
-
-                        messagesEl.appendChild(div);
-                        messagesEl.scrollTop = messagesEl.scrollHeight;
-
-                        saveChatData();
-                        renderChatList(searchInput.value);
-
-                    };
-
+                    reader.onload = function (e) { post(e.target.result); };
                     reader.readAsDataURL(file);
-
+                } else {
+                    post(null);
                 }
-
-                messageInput.value = "";
-                fileInput.value = "";
-
-                messagesEl.scrollTop = messagesEl.scrollHeight;
 
             }
 
@@ -816,22 +773,28 @@ $user = mysqli_fetch_assoc($result);
 
             newChatBtn.addEventListener("click", function () {
 
-                const name = newChatInput.value.trim();
+                const query = newChatInput.value.trim();
 
-                if (name === "") {
-                    alert("Enter a name to start a conversation.");
+                if (query === "") {
+                    alert("Enter a name or email to start a conversation.");
                     return;
                 }
 
-                if (!chatData[name]) {
-                    chatData[name] = [];
-                    saveChatData();
-                }
+                fetch("api/users_lookup.php?q=" + encodeURIComponent(query), { credentials: "same-origin" })
+                    .then(function (res) { return res.json(); })
+                    .then(function (data) {
 
-                newChatInput.value = "";
+                        const match = data.success && data.users.length ? data.users[0] : null;
 
-                renderChatList(searchInput.value);
-                loadChat(name);
+                        if (!match) {
+                            alert("No BloodConnect user found with that name or email.");
+                            return;
+                        }
+
+                        newChatInput.value = "";
+                        loadChat(match.id, match.name, match.photo);
+
+                    });
 
             });
 
@@ -842,39 +805,54 @@ $user = mysqli_fetch_assoc($result);
                 }
             });
 
-            renderChatList();
+            function init() {
 
-            const requestedChat = localStorage.getItem("openChatWith");
+                loadContacts().then(function () {
 
-            if (requestedChat) {
-
-                if (!chatData[requestedChat]) {
-                    chatData[requestedChat] = [];
-                    saveChatData();
                     renderChatList();
-                }
 
-                loadChat(requestedChat);
+                    const params = new URLSearchParams(window.location.search);
+                    const withId = params.get("with");
 
-                localStorage.removeItem("openChatWith");
+                    if (withId) {
 
-            } else {
+                        const known = contacts.find(c => c.id == withId);
 
-                const firstChat = Object.keys(chatData)[0];
+                        if (known) {
+                            loadChat(known.id, known.name, known.photo);
+                        } else {
+                            // Not in the contact list yet (first message to this person) - look up their name.
+                            fetch("api/users_lookup.php?id=" + encodeURIComponent(withId), { credentials: "same-origin" })
+                                .then(function (res) { return res.json(); })
+                                .then(function (data) {
+                                    const u = data.success && data.users.length ? data.users[0] : null;
+                                    loadChat(withId, u ? u.name : "New Contact", u ? u.photo : "images/user.png");
+                                });
+                        }
 
-                if (firstChat) {
-                    loadChat(firstChat);
-                } else {
-                    chatHeader.textContent = "No conversations yet";
-                    messagesEl.innerHTML = `
-                        <div style="text-align:center; color:#999; padding:60px 20px;">
-                            <p>No conversations yet.</p>
-                            <p style="font-size:13.5px; margin-top:8px;">Contact a donor from the Donors page, or start a new chat using the box on the left.</p>
-                        </div>
-                    `;
-                }
+                    } else if (contacts.length > 0) {
+                        loadChat(contacts[0].id, contacts[0].name, contacts[0].photo);
+                    } else {
+                        chatHeader.textContent = "No conversations yet";
+                        messagesEl.innerHTML = `
+                            <div style="text-align:center; color:#999; padding:60px 20px;">
+                                <p>No conversations yet.</p>
+                                <p style="font-size:13.5px; margin-top:8px;">Contact a donor from the Donors page, or start a new chat using the box on the left.</p>
+                            </div>
+                        `;
+                    }
+
+                });
 
             }
+
+            init();
+
+            // Light polling so new messages show up without a manual refresh.
+            pollTimer = setInterval(function () {
+                if (currentChat) loadChat(currentChat.id, currentChat.name, currentChat.photo);
+                loadContacts().then(function () { renderChatList(searchInput.value); });
+            }, 6000);
 
         });
     </script>

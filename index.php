@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/includes/auth.php'; $me = getCurrentUser($conn); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -251,16 +252,21 @@ section:nth-of-type(4) div{ background: var(--surface); }
         </div>
 
         <nav>
-            <a href="home.html" class="active">Home</a>
-            <a href="donors.html">Donors</a>
-            <a href="blood-requests.html">Blood Requests</a>
-            <a href="emergency-requests.html">Emergency</a>
-            <a href="Hospitals.html">Hospitals</a>
+            <a href="home.php" class="active">Home</a>
+            <a href="donors.php">Donors</a>
+            <a href="blood-requests.php">Blood Requests</a>
+            <a href="emergency-requests.php">Emergency</a>
+            <a href="Hospitals.php">Hospitals</a>
         </nav>
 
         <div>
-            <button type="button">Login</button>
-            <button type="button">Register</button>
+            <?php if ($me): ?>
+            <button type="button" id="dashboardBtn">Dashboard</button>
+            <button type="button" id="logoutBtn">Logout</button>
+            <?php else: ?>
+            <button type="button" id="loginBtn">Login</button>
+            <button type="button" id="registerBtn">Register</button>
+            <?php endif; ?>
         </div>
     </header>
 
@@ -275,8 +281,8 @@ section:nth-of-type(4) div{ background: var(--surface); }
                 during emergencies.
             </p>
 
-            <button> <a href="donors.html"></a> Become a Donor</button>
-            <button> <a href="blood-requests.html"></a>Request Blood</button>
+            <button> <a href="donors.php"></a> Become a Donor</button>
+            <button> <a href="blood-requests.php"></a>Request Blood</button>
         </div>
 
         
@@ -302,29 +308,29 @@ section:nth-of-type(4) div{ background: var(--surface); }
 
         <div>
 
-            <a href="donors.html">
+            <a href="donors.php">
                 <h3>Donors</h3>
                 <p>Browse available donors</p>
             </a>
 
-            <a href="blood-requests.html">
+            <a href="blood-requests.php">
                 <h3>Blood Requests</h3>
                 <p>Create and manage requests</p>
             </a>
 
-            <a href="emergency-requests.html">
+            <a href="emergency-requests.php">
                 <h3>Emergency Requests</h3>
                 <p>View urgent blood needs</p>
             </a>
 
           
 
-            <a href="donor-score.html">
+            <a href="donors.php">
                 <h3>Donor Reliability</h3>
                 <p>Check donor score</p>
             </a>
 
-            <a href="Hospitals.html">
+            <a href="Hospitals.php">
                 <h3>Hospitals</h3>
                 <p>Blood bank information</p>
             </a>
@@ -394,25 +400,37 @@ section:nth-of-type(4) div{ background: var(--surface); }
     <script>
     document.addEventListener("DOMContentLoaded", function () {
 
-    const loginBtn = document.querySelector("header div:last-child button:first-child");
-    const registerBtn = document.querySelector("header div:last-child button:last-child");
+    const loginBtn = document.getElementById("loginBtn");
+    const registerBtn = document.getElementById("registerBtn");
+    const dashboardBtn = document.getElementById("dashboardBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
     const donorBtn = document.querySelector("section:first-of-type button:first-child");
     const requestBtn = document.querySelector("section:first-of-type button:last-child");
 
-    loginBtn.addEventListener("click", function () {
-        window.location.href = "Login.html";
+    if (loginBtn) loginBtn.addEventListener("click", function () {
+        window.location.href = "Login.php";
     });
 
-    registerBtn.addEventListener("click", function () {
-        window.location.href = "Register.html";
+    if (registerBtn) registerBtn.addEventListener("click", function () {
+        window.location.href = "Register.php";
+    });
+
+    if (dashboardBtn) dashboardBtn.addEventListener("click", function () {
+        window.location.href = "home.php";
+    });
+
+    if (logoutBtn) logoutBtn.addEventListener("click", function () {
+        fetch("api/logout.php", { credentials: "same-origin" }).then(function () {
+            window.location.href = "index.php";
+        });
     });
 
     donorBtn.addEventListener("click", function () {
-        window.location.href = "donors.html";
+        window.location.href = "donors.php";
     });
 
     requestBtn.addEventListener("click", function () {
-        window.location.href = "blood-requests.html";
+        window.location.href = "blood-requests.php";
     });
 
     const navLinks = document.querySelectorAll("nav a");

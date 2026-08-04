@@ -1,3 +1,8 @@
+<?php
+require_once __DIR__ . '/includes/auth.php';
+requireLogin();
+$me = getCurrentUser($conn);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -798,49 +803,49 @@
             <ul>
 
                 <li>
-                    <a href="Home.html">
+                    <a href="home.php">
                         <i class="fa-solid fa-house"></i>
                         Home
                     </a>
                 </li>
 
                 <li>
-                    <a href="profile.html">
+                    <a href="profile.php">
                         <i class="fa-solid fa-user"></i>
                         Profile
                     </a>
                 </li>
 
                 <li class="active">
-                    <a href="Create_Post.html">
+                    <a href="createpost.php">
                         <i class="fa-solid fa-square-plus"></i>
                         Create Post
                     </a>
                 </li>
 
                 <li>
-                    <a href="donors.html">
+                    <a href="donors.php">
                         <i class="fa-solid fa-users"></i>
                         Donors
                     </a>
                 </li>
 
                 <li>
-                    <a href="blood-requests.html">
+                    <a href="blood-requests.php">
                         <i class="fa-solid fa-droplet"></i>
                         Blood Requests
                     </a>
                 </li>
 
                 <li>
-                    <a href="emergency-requests.html">
+                    <a href="emergency-requests.php">
                         <i class="fa-solid fa-triangle-exclamation"></i>
                         Emergency
                     </a>
                 </li>
 
                 <li>
-                    <a href="Settings.html">
+                    <a href="Settings.php">
                         <i class="fa-solid fa-gear"></i>
                         Settings
                     </a>
@@ -1264,11 +1269,7 @@
             const previewUrgency = document.getElementById("previewUrgency");
             const previewPostImage = document.getElementById("previewPostImage");
 
-            let currentUser =
-                JSON.parse(localStorage.getItem("currentUser")) || {};
-
-            let bloodPosts =
-                JSON.parse(localStorage.getItem("bloodPosts")) || [];
+            let currentUser = <?php echo json_encode(["name" => $me['name'], "photo" => $me['photo']]); ?>;
 
             let currentImageData = "";
 
@@ -1500,103 +1501,31 @@
 
                 function savePost(imageData) {
 
-                    const newPost = {
+                    const formData = new FormData();
+                    formData.append("postType", postType.value);
+                    formData.append("bloodGroup", bloodGroup.value);
+                    formData.append("hospital", hospital.value);
+                    formData.append("location", location.value);
+                    formData.append("contact", contact.value);
+                    formData.append("urgency", urgency.value);
+                    formData.append("requiredDate", requiredDate.value);
+                    formData.append("description", description.value);
+                    formData.append("emergency", emergency.checked ? "1" : "");
+                    if (imageData) formData.append("image", imageData);
 
-                        id: Date.now(),
-
-                        userName: currentUser.name || "User",
-
-                        userEmail: currentUser.email || "",
-
-                        userPhoto: currentUser.photo || "images/user.png",
-
-                        postType: postType.value,
-
-                        bloodGroup: bloodGroup.value,
-
-                        hospital: hospital.value,
-
-                        location: location.value,
-
-                        contact: contact.value,
-
-                        urgency: urgency.value,
-
-                        requiredDate: requiredDate.value,
-
-                        description: description.value,
-
-                        image: imageData,
-
-                        emergency: emergency.checked,
-
-                        createdAt: new Date().toLocaleString(),
-
-                        likes: 0,
-
-                        comments: []
-
-                    };
-
-                    bloodPosts.unshift(newPost);
-
-                    try {
-
-                        localStorage.setItem(
-                            "bloodPosts",
-                            JSON.stringify(bloodPosts)
-                        );
-
-                    } catch (err) {
-
-                        bloodPosts.shift();
-
-                        alert("Could not publish the post because storage is full. Please try a smaller image, or remove the image and post again.");
-                        return;
-
-                    }
-
-                    if (postType.value === "Blood Request" || emergency.checked) {
-
-                        try {
-
-                            const allRequests =
-                                JSON.parse(localStorage.getItem("bloodRequests")) || [];
-
-                            const newRequest = {
-                                id: newPost.id,
-                                requesterEmail: currentUser.email || "",
-                                requesterName: currentUser.name || "Anonymous",
-                                patientName: currentUser.name || "Not specified",
-                                bloodGroup: bloodGroup.value,
-                                units: 1,
-                                hospital: hospital.value || "Not specified",
-                                location: location.value || "Not specified",
-                                phone: contact.value,
-                                urgency: urgency.value,
-                                date: requiredDate.value,
-                                notes: description.value,
-                                status: "Pending"
-                            };
-
-                            allRequests.push(newRequest);
-
-                            localStorage.setItem(
-                                "bloodRequests",
-                                JSON.stringify(allRequests)
-                            );
-
-                        } catch (err) {
-
-                            alert("Post published, but the blood request list could not be updated because storage is full.");
-
-                        }
-
-                    }
-
-                    alert("Post published successfully!");
-
-                    window.location.href = "profile.html";
+                    fetch("api/posts_create.php", { method: "POST", body: formData, credentials: "same-origin" })
+                        .then(function (res) { return res.json(); })
+                        .then(function (data) {
+                            if (data.success) {
+                                alert("Post published successfully!");
+                                window.location.href = "profile.php";
+                            } else {
+                                alert(data.message || "Could not publish the post.");
+                            }
+                        })
+                        .catch(function () {
+                            alert("Server error. Please try again.");
+                        });
 
                 }
 
@@ -1608,56 +1537,18 @@
 
                 if (confirm("Are you sure you want to logout?")) {
 
-                    localStorage.removeItem("currentUser");
-                    window.location.href = "index.html";
+                    fetch("api/logout.php", { credentials: "same-origin" }).then(function () {
+                        window.location.href = "index.php";
+                    });
 
                 }
 
             });
-
-            function refreshCurrentUser() {
-
-                currentUser =
-                    JSON.parse(localStorage.getItem("currentUser")) || {};
-
-                loadUser();
-
-            }
-
-            window.addEventListener("storage", function () {
-
-                bloodPosts =
-                    JSON.parse(localStorage.getItem("bloodPosts")) || [];
-
-                refreshCurrentUser();
-
-            });
-
-            document.addEventListener("visibilitychange", function () {
-
-                if (document.visibilityState === "visible") {
-
-                    bloodPosts =
-                        JSON.parse(localStorage.getItem("bloodPosts")) || [];
-
-                    refreshCurrentUser();
-
-                }
-
-            });
-
-            setInterval(function () {
-
-                bloodPosts =
-                    JSON.parse(localStorage.getItem("bloodPosts")) || [];
-
-            }, 3000);
 
             updatePreview();
 
         });
     </script>
-
 </body>
 
 </html>

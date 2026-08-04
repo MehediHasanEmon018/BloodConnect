@@ -1,3 +1,7 @@
+<?php
+require_once __DIR__ . '/includes/auth.php';
+if (isLoggedIn()) { header("Location: profile.php"); exit; }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -171,8 +175,8 @@
     </div>
 
     <nav>
-        <a href="index.html">Home</a>
-        <a href="Register.html">Register</a>
+        <a href="index.php">Home</a>
+        <a href="Register.php">Register</a>
     </nav>
 
 </header>
@@ -217,13 +221,13 @@
 
             Don't have an account?
 
-            <a href="Register.html">
+            <a href="Register.php">
                 Register
             </a>
 
             <br><br>
 
-            <a href="Forgetpass.html">
+            <a href="Forgetpass.php">
                 Forgot Password?
             </a>
 
@@ -261,37 +265,28 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        const users = JSON.parse(localStorage.getItem("users")) || [];
+        const formData = new FormData();
+        formData.append("email", email);
+        formData.append("password", password);
 
-        const matchedUser = users.find(function (u) {
-            return u.email === email && u.password === password;
-        });
-
-        if (!matchedUser) {
-
-            const emailExists = users.some(u => u.email === email);
-
-            message.style.color = "red";
-
-            if (emailExists) {
-                message.innerHTML = "Incorrect password. Please try again.";
-            } else {
-                message.innerHTML = "No account found with this email. Please register first.";
-            }
-
-            return;
-
-        }
-
-        // Real login: set the actual matched account as currentUser
-        localStorage.setItem("currentUser", JSON.stringify(matchedUser));
-
-        message.style.color = "green";
-        message.innerHTML = "Login Successful! Redirecting...";
-
-        setTimeout(function () {
-            window.location.href = "profile.html";
-        }, 1200);
+        fetch("api/login.php", { method: "POST", body: formData, credentials: "same-origin" })
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+                if (data.success) {
+                    message.style.color = "green";
+                    message.innerHTML = "Login Successful! Redirecting...";
+                    setTimeout(function () {
+                        window.location.href = "profile.php";
+                    }, 1200);
+                } else {
+                    message.style.color = "red";
+                    message.innerHTML = data.message || "Login failed.";
+                }
+            })
+            .catch(function () {
+                message.style.color = "red";
+                message.innerHTML = "Server error. Please try again.";
+            });
 
     });
 
