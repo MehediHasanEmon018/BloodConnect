@@ -408,7 +408,7 @@ document.getElementById("registerForm").addEventListener("submit", function (e) 
     formData.append("division", division);
     formData.append("district", district);
     formData.append("password", password);
-    formData.append("confirmPassword", confirmPassword);
+    formData.append("confirmPassword", confirm);
     formData.append("lastDonation", lastDonation);
 
     fetch("api/register.php", { method: "POST", body: formData, credentials: "same-origin" })
