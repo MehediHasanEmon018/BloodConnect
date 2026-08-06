@@ -19,7 +19,7 @@ if (!$patientName || !$bloodGroup || !$units || !$hospital || !$location || !$ph
 
 $userId = $_SESSION['user_id'];
 $stmt = $conn->prepare("INSERT INTO blood_requests (requester_id, patient_name, blood_group, units, hospital, location, phone, urgency, needed_date, notes, status) VALUES (?,?,?,?,?,?,?,?,?,?,'Pending')");
-$stmt->bind_param("ississsss", $userId, $patientName, $bloodGroup, $units, $hospital, $location, $phone, $urgency, $date, $notes);
+$stmt->bind_param("ississssss", $userId, $patientName, $bloodGroup, $units, $hospital, $location, $phone, $urgency, $date, $notes);
 
 if ($stmt->execute()) {
     echo json_encode(["success" => true, "id" => $stmt->insert_id]);

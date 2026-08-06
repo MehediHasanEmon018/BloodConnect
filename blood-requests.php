@@ -763,6 +763,10 @@ footer p{
                 } else {
                     alert(data.message || "Could not submit the request.");
                 }
+            })
+            .catch(function (err) {
+                console.error(err);
+                alert("Server error. Could not submit the request. Check the browser console for details.");
             });
 
     });
