@@ -114,6 +114,23 @@ $me = getCurrentUser($conn);
         #logoutBtn:hover {
             background: #b91d1d;
         }
+        .pulse-divider {
+            width: 100%;
+            height: 22px;
+            margin-top: 16px;
+            opacity: .55;
+        }
+
+        .pulse-divider path {
+            fill: none;
+            stroke: var(--crimson);
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 220;
+            stroke-dashoffset: 220;
+            animation: draw-pulse 1.6s ease-out forwards .2s;
+        }
 
         .main-content {
             margin-left: 270px;
@@ -243,6 +260,37 @@ $me = getCurrentUser($conn);
 
         .profile-right button:hover {
             background: #b91d1d;
+        }
+
+        .donor-toggle-card {
+            background: #fff;
+            padding: 22px 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+            margin-bottom: 35px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .donor-toggle-card input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: #d62828;
+        }
+
+        .donor-toggle-card label {
+            cursor: pointer;
+            font-weight: bold;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .donor-toggle-card span {
+            color: #888;
+            font-size: 13.5px;
+            margin-left: auto;
         }
 
         .about-card {
@@ -917,6 +965,15 @@ $me = getCurrentUser($conn);
                 display: none;
             }
 
+            .donor-toggle-card {
+                flex-wrap: wrap;
+            }
+
+            .donor-toggle-card span {
+                margin-left: 0;
+                width: 100%;
+            }
+
         }
 
         .post-card,
@@ -1118,6 +1175,16 @@ $me = getCurrentUser($conn);
 
             </section>
 
+            <section class="donor-toggle-card">
+
+                <input type="checkbox" id="donorToggle">
+
+                <label for="donorToggle">Available to Donate</label>
+
+                <span id="donorToggleStatus">Loading...</span>
+
+            </section>
+
             <section class="about-card">
 
                 <h2>
@@ -1225,6 +1292,44 @@ $me = getCurrentUser($conn);
                     <h2 id="livesSavedCount">0</h2>
                     <p>Lives Saved</p>
                 </div>
+
+            </section>
+
+            <section class="create-post-card">
+
+                <h2>Create a Quick Post</h2>
+
+                <form id="postForm">
+
+                    <textarea id="postText" placeholder="Share an update, request, or your availability..."></textarea>
+
+                    <div class="upload-area">
+
+                        <label for="postImage">
+                            <i class="fa-solid fa-image"></i>
+                            Add Photo
+                        </label>
+
+                        <input type="file" id="postImage" accept="image/*">
+
+                        <span id="imageName">No image selected</span>
+
+                    </div>
+
+                    <div class="post-buttons">
+
+                        <button type="submit" id="publishPost">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Publish
+                        </button>
+
+                        <button type="reset" id="clearPost">
+                            Clear
+                        </button>
+
+                    </div>
+
+                </form>
 
             </section>
 
@@ -1391,7 +1496,10 @@ $me = getCurrentUser($conn);
                 "id" => $me['id'], "name" => $me['name'], "email" => $me['email'],
                 "phone" => $me['phone'], "bloodGroup" => $me['blood_group'],
                 "location" => trim(($me['division'] ?? '') . ($me['division'] && $me['district'] ? ', ' : '') . ($me['district'] ?? '')),
-                "photo" => $me['photo'] ?: 'images/user.png', "coverImage" => ""
+                "photo" => $me['photo'] ?: 'images/user.png', "coverImage" => $me['cover_image'] ?: "",
+                "showEmail" => (bool)($me['show_email'] ?? 1),
+                "showPhone" => (bool)($me['show_phone'] ?? 1),
+                "showLocation" => (bool)($me['show_location'] ?? 1)
             ]); ?>;
 
             function loadProfile() {
@@ -1411,21 +1519,18 @@ $me = getCurrentUser($conn);
                 document.getElementById("aboutBlood").textContent =
                     savedUser.bloodGroup || "O+";
 
-                const settings =
-                    JSON.parse(localStorage.getItem("userSettings_" + savedUser.email)) || {};
-
                 document.getElementById("aboutEmail").textContent =
-                    (settings.showEmail ?? true)
+                    (savedUser.showEmail ?? true)
                         ? (savedUser.email || "example@email.com")
                         : "Hidden";
 
                 document.getElementById("aboutPhone").textContent =
-                    (settings.showPhone ?? true)
+                    (savedUser.showPhone ?? true)
                         ? (savedUser.phone || "01XXXXXXXXX")
                         : "Hidden";
 
                 document.getElementById("aboutLocation").textContent =
-                    (settings.showLocation ?? true)
+                    (savedUser.showLocation ?? true)
                         ? (savedUser.location || "Dhaka, Bangladesh")
                         : "Hidden";
 
@@ -1447,6 +1552,56 @@ $me = getCurrentUser($conn);
             }
 
             loadProfile();
+
+            const donorToggle = document.getElementById("donorToggle");
+            const donorToggleStatus = document.getElementById("donorToggleStatus");
+
+            function loadDonorStatus() {
+                fetch("api/donor_status.php", { credentials: "same-origin" })
+                    .then(function (res) { return res.json(); })
+                    .then(function (data) {
+                        if (data.success && donorToggle) {
+                            donorToggle.checked = !!data.available;
+                            if (donorToggleStatus) {
+                                donorToggleStatus.textContent = donorToggle.checked
+                                    ? "You are listed on the Donors page."
+                                    : "You are not currently listed as available.";
+                            }
+                        }
+                    });
+            }
+
+            if (donorToggle) {
+
+                loadDonorStatus();
+
+                donorToggle.addEventListener("change", function () {
+
+                    const formData = new FormData();
+                    formData.append("available", donorToggle.checked ? "1" : "0");
+
+                    if (donorToggleStatus) donorToggleStatus.textContent = "Saving...";
+
+                    fetch("api/toggle_donor.php", { method: "POST", body: formData, credentials: "same-origin" })
+                        .then(function (res) { return res.json(); })
+                        .then(function (data) {
+                            if (data.success) {
+                                donorToggleStatus.textContent = data.available
+                                    ? "You are listed on the Donors page."
+                                    : "You are not currently listed as available.";
+                            } else {
+                                donorToggleStatus.textContent = "Could not save. Try again.";
+                                donorToggle.checked = !donorToggle.checked;
+                            }
+                        })
+                        .catch(function () {
+                            donorToggleStatus.textContent = "Server error.";
+                            donorToggle.checked = !donorToggle.checked;
+                        });
+
+                });
+
+            }
 
             const imageInput = document.getElementById("postImage");
             const imageName = document.getElementById("imageName");
@@ -1522,6 +1677,9 @@ $me = getCurrentUser($conn);
                     const displayDate = post.created_at || "";
                     const displayName = post.userName || savedUser.name || "Anonymous";
                     const displayPhoto = post.userPhoto || savedUser.photo || "images/user.png";
+                    const donateTag = post.post_type === "Blood Available"
+                        ? `<span style="display:inline-block;background:#e6f7ec;color:#27ae60;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;margin-bottom:10px;">Listed as Available Donor</span>`
+                        : "";
 
                     card.innerHTML = `
 
@@ -1534,6 +1692,7 @@ $me = getCurrentUser($conn);
                 </div>
 
                 <div class="post-content">
+                    ${donateTag}
                     <p>${escapeHtml(displayText)}</p>
                     ${imageHTML}
                 </div>
@@ -1594,7 +1753,7 @@ $me = getCurrentUser($conn);
                     function submitPost(imageData) {
 
                         const formData = new FormData();
-                        formData.append("postType", "Blood Available");
+                        formData.append("postType", "Update");
                         formData.append("bloodGroup", savedUser.bloodGroup || "");
                         formData.append("location", savedUser.location || "");
                         formData.append("contact", savedUser.phone || "");
@@ -1933,6 +2092,7 @@ $me = getCurrentUser($conn);
 
             function refreshEverything() {
                 loadProfile();
+                loadDonorStatus();
                 renderPosts();
                 renderDonations();
                 renderSuggestedDonors();

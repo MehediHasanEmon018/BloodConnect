@@ -14,23 +14,53 @@ $me = getCurrentUser($conn);
     <title>BloodConnect | Messages</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
+
+        /* ============================
+           BloodConnect Design Tokens
+           ============================ */
+        :root {
+            --crimson: #c8102e;
+            --crimson-dark: #8f0b21;
+            --crimson-soft: #fdeceb;
+            --ink: #23222a;
+            --ink-soft: #6b6873;
+            --paper: #faf6f3;
+            --panel: #ffffff;
+            --sand: #f3ece7;
+            --mist: #e9e1db;
+            --teal: #0e7c74;
+            --teal-soft: #e6f3f1;
+
+            --font-display: "Fraunces", Georgia, serif;
+            --font-body: "Inter", Arial, Helvetica, sans-serif;
+
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 10px;
+
+            --shadow-panel: 0 10px 30px -12px rgba(35, 34, 42, .12), 0 2px 8px rgba(35, 34, 42, .05);
+            --shadow-soft: 0 4px 14px rgba(35, 34, 42, .06);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: var(--font-body);
         }
 
-        body{
-            color:#333;
+        body {
+            color: var(--ink);
             background:
-                radial-gradient(circle at 15% 10%, rgba(99,102,241,.09) 0%, transparent 40%),
-                radial-gradient(circle at 85% 25%, rgba(20,184,166,.08) 0%, transparent 45%),
-                radial-gradient(circle at 30% 90%, rgba(236,72,153,.06) 0%, transparent 50%),
-                radial-gradient(circle at 90% 85%, rgba(251,191,36,.07) 0%, transparent 45%),
-                linear-gradient(135deg, #f7f8fc 0%, #f2f4fa 50%, #eef1f8 100%);
+                radial-gradient(circle at 12% 8%, rgba(200, 16, 46, .05) 0%, transparent 40%),
+                radial-gradient(circle at 88% 18%, rgba(14, 124, 116, .06) 0%, transparent 45%),
+                radial-gradient(circle at 25% 92%, rgba(200, 16, 46, .04) 0%, transparent 50%),
+                var(--paper);
             background-attachment: fixed;
         }
 
@@ -39,10 +69,13 @@ $me = getCurrentUser($conn);
             min-height: 100vh;
         }
 
+        /* ============================
+           Sidebar
+           ============================ */
         .sidebar {
             width: 270px;
-            background: #ffffff;
-            border-right: 1px solid #e5e5e5;
+            background: var(--panel);
+            border-right: 1px solid var(--mist);
             position: fixed;
             top: 0;
             left: 0;
@@ -50,23 +83,60 @@ $me = getCurrentUser($conn);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 25px;
+            padding: 26px 22px;
             overflow-y: auto;
         }
 
         .logo {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 22px;
         }
 
         .logo h2 {
-            color: #d62828;
-            margin-bottom: 8px;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 24px;
+            letter-spacing: .2px;
+            color: var(--crimson);
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 4px;
+        }
+
+        .logo h2 i {
+            font-size: 19px;
         }
 
         .logo p {
-            color: #777;
-            font-size: 14px;
+            color: var(--ink-soft);
+            font-size: 12.5px;
+            letter-spacing: .4px;
+            text-transform: uppercase;
+        }
+
+        /* signature element: a quiet pulse line beneath the wordmark,
+           standing in for BloodConnect's vitals / life-signal theme */
+        .pulse-divider {
+            width: 100%;
+            height: 22px;
+            margin-top: 16px;
+            opacity: .55;
+        }
+
+        .pulse-divider path {
+            fill: none;
+            stroke: var(--crimson);
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 220;
+            stroke-dashoffset: 220;
+            animation: draw-pulse 1.6s ease-out forwards .2s;
+        }
+
+        @keyframes draw-pulse {
+            to { stroke-dashoffset: 0; }
         }
 
         .sidebar ul {
@@ -74,7 +144,7 @@ $me = getCurrentUser($conn);
         }
 
         .sidebar ul li {
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .sidebar ul li a {
@@ -82,118 +152,170 @@ $me = getCurrentUser($conn);
             align-items: center;
             gap: 14px;
             text-decoration: none;
-            color: #444;
-            padding: 14px;
-            border-radius: 8px;
-            transition: .3s;
+            color: var(--ink-soft);
+            font-size: 14.5px;
+            font-weight: 500;
+            padding: 13px 14px;
+            border-radius: var(--radius-sm);
+            transition: background .2s ease, color .2s ease;
+        }
+
+        .sidebar ul li a i {
+            width: 18px;
+            text-align: center;
+            color: #c9c5c0;
+            transition: color .2s ease;
         }
 
         .sidebar ul li a:hover {
-            background: #ffe5e5;
-            color: #d62828;
+            background: var(--crimson-soft);
+            color: var(--crimson-dark);
+        }
+
+        .sidebar ul li a:hover i {
+            color: var(--crimson);
         }
 
         .sidebar ul li.active a {
-            background: #d62828;
+            background: var(--crimson);
+            color: #fff;
+            box-shadow: 0 6px 14px -6px rgba(200, 16, 46, .55);
+        }
+
+        .sidebar ul li.active a i {
             color: #fff;
         }
 
         #logoutBtn {
-            margin-top: 25px;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            background: #d62828;
-            color: #fff;
+            margin-top: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 13px;
+            border: 1px solid var(--mist);
+            border-radius: var(--radius-sm);
+            background: var(--panel);
+            color: var(--ink);
+            font-weight: 600;
+            font-size: 14px;
             cursor: pointer;
-            font-size: 15px;
-            transition: .3s;
+            transition: all .2s ease;
         }
 
         #logoutBtn:hover {
-            background: #b91d1d;
+            background: var(--crimson);
+            border-color: var(--crimson);
+            color: #fff;
         }
 
+        /* ============================
+           Main content
+           ============================ */
         .main-content {
             margin-left: 270px;
             width: calc(100% - 270px);
-            padding: 30px;
+            padding: 34px 38px;
         }
 
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 6px;
         }
 
         .header-left {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 18px;
         }
 
         #menuBtn {
             display: none;
             border: none;
-            background: none;
-            font-size: 24px;
+            background: var(--panel);
+            border: 1px solid var(--mist);
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            font-size: 17px;
+            color: var(--ink);
             cursor: pointer;
         }
 
         .header-left h1 {
-            font-size: 30px;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 32px;
+            letter-spacing: .2px;
         }
 
         .subtitle {
-            color: #666;
-            margin-bottom: 25px;
+            color: var(--ink-soft);
+            margin-bottom: 26px;
+            font-size: 14.5px;
         }
 
+        /* ============================
+           Chat layout
+           ============================ */
         .chat-container {
             display: flex;
-            gap: 25px;
+            gap: 22px;
             height: 75vh;
         }
 
         #left-panel,
         #right-panel {
-            background: #fff;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+            background: var(--panel);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-panel);
+            border: 1px solid var(--mist);
         }
 
         #left-panel {
             width: 320px;
-            padding: 25px;
+            padding: 24px;
             display: flex;
             flex-direction: column;
+            min-height: 0;
         }
 
         #left-panel h3 {
-            color: #d62828;
-            margin-bottom: 15px;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 19px;
+            color: var(--ink);
+            margin-bottom: 16px;
         }
 
         #left-panel input {
             width: 100%;
-            padding: 14px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            padding: 13px 14px;
+            border: 1px solid var(--mist);
+            background: var(--paper);
+            border-radius: var(--radius-sm);
             outline: none;
-            font-size: 15px;
-            margin-bottom: 15px;
-            transition: .3s;
+            font-size: 14.5px;
+            color: var(--ink);
+            margin-bottom: 14px;
+            transition: border-color .2s ease, background .2s ease;
+        }
+
+        #left-panel input::placeholder {
+            color: #a9a5a0;
         }
 
         #left-panel input:focus {
-            border-color: #d62828;
+            border-color: var(--crimson);
+            background: #fff;
         }
 
         .new-chat-row {
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
 
         .new-chat-row input {
@@ -203,59 +325,69 @@ $me = getCurrentUser($conn);
         .new-chat-row button {
             padding: 0 18px;
             border: none;
-            border-radius: 8px;
-            background: #d62828;
+            border-radius: var(--radius-sm);
+            background: var(--ink);
             color: #fff;
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 14px;
             cursor: pointer;
-            transition: .3s;
+            transition: background .2s ease;
             white-space: nowrap;
         }
 
         .new-chat-row button:hover {
-            background: #b91d1d;
+            background: var(--crimson);
         }
 
         #left-panel h4 {
-            color: #d62828;
-            margin-bottom: 15px;
-            font-size: 15px;
+            color: var(--ink-soft);
+            font-weight: 600;
+            margin-bottom: 13px;
+            font-size: 12.5px;
+            letter-spacing: .5px;
+            text-transform: uppercase;
         }
 
         .chat-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             overflow-y: auto;
+            min-height: 0;
         }
 
         .chat-item {
-            padding: 14px;
-            background: #fafafa;
-            border-radius: 10px;
+            padding: 13px 14px;
+            background: var(--paper);
+            border-radius: var(--radius-sm);
             cursor: pointer;
-            transition: .3s;
+            transition: background .18s ease, border-color .18s ease, color .18s ease;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid #eee;
+            border: 1px solid transparent;
+            font-size: 14.5px;
+            font-weight: 500;
         }
 
         .chat-item:hover {
-            background: #ffe5e5;
+            background: var(--crimson-soft);
+            border-color: #f6d9d6;
         }
 
         .chat-item.active {
-            background: #d62828;
+            background: var(--crimson);
             color: #fff;
-            border-color: #d62828;
+            border-color: var(--crimson);
+            box-shadow: 0 8px 16px -8px rgba(200, 16, 46, .5);
         }
 
         .chat-item .preview {
             display: block;
-            font-size: 12.5px;
-            opacity: .75;
+            font-size: 12px;
+            opacity: .7;
             margin-top: 3px;
+            font-weight: 400;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -263,51 +395,72 @@ $me = getCurrentUser($conn);
         }
 
         .empty-list {
-            color: #999;
+            color: #a9a5a0;
             text-align: center;
-            padding: 20px;
-            font-size: 14px;
+            padding: 22px;
+            font-size: 13.5px;
         }
 
+        /* ============================
+           Conversation panel
+           ============================ */
         #right-panel {
             flex: 1;
-            padding: 25px;
+            padding: 24px 26px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            min-width: 0;
         }
 
         .chat-header {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 15px;
-            color: #d62828;
-            font-weight: bold;
+            border-bottom: 1px solid var(--mist);
+            padding-bottom: 16px;
+            color: var(--ink);
+            font-family: var(--font-display);
+            font-weight: 600;
             font-size: 20px;
         }
 
         .messages {
             flex: 1;
-            padding: 20px 0;
+            padding: 20px 4px;
             overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
         }
 
         .message {
-            max-width: 70%;
-            padding: 14px 16px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            line-height: 1.5;
+            max-width: 68%;
+            width: fit-content;
+            padding: 13px 16px;
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
+            line-height: 1.55;
+            font-size: 14.5px;
+
+            /* keep every message strictly inside the bubble / chat column,
+               regardless of long words, links, or filenames */
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            white-space: pre-wrap;
         }
 
         .received {
-            background: #fafafa;
-            color: #333;
-            border: 1px solid #eee;
+            background: var(--paper);
+            color: var(--ink);
+            border: 1px solid var(--mist);
+            border-bottom-left-radius: 4px;
+            align-self: flex-start;
         }
 
         .sent {
-            background: #d62828;
+            background: var(--crimson);
             color: #fff;
+            border-bottom-right-radius: 4px;
+            align-self: flex-end;
             margin-left: auto;
         }
 
@@ -315,52 +468,70 @@ $me = getCurrentUser($conn);
             display: flex;
             gap: 12px;
             align-items: center;
-            border-top: 1px solid #eee;
+            border-top: 1px solid var(--mist);
             padding-top: 20px;
         }
 
         .message-box input[type="text"] {
             flex: 1;
-            padding: 14px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            min-width: 0;
+            padding: 13px 15px;
+            border: 1px solid var(--mist);
+            background: var(--paper);
+            border-radius: var(--radius-sm);
             outline: none;
-            font-size: 15px;
-            transition: .3s;
+            font-size: 14.5px;
+            color: var(--ink);
+            transition: border-color .2s ease, background .2s ease;
+        }
+
+        .message-box input[type="text"]::placeholder {
+            color: #a9a5a0;
         }
 
         .message-box input[type="text"]:focus {
-            border-color: #d62828;
+            border-color: var(--crimson);
+            background: #fff;
         }
 
         .message-box input[type="file"] {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            padding: 9px;
+            border: 1px solid var(--mist);
+            border-radius: var(--radius-sm);
+            background: var(--paper);
             max-width: 160px;
+            font-size: 13px;
+            color: var(--ink-soft);
         }
 
         .message-box button {
-            padding: 14px 26px;
+            padding: 13px 26px;
             border: none;
-            border-radius: 8px;
-            background: #d62828;
+            border-radius: var(--radius-sm);
+            background: var(--crimson);
             color: #fff;
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 14.5px;
             cursor: pointer;
-            transition: .3s;
+            transition: background .2s ease, transform .15s ease;
+            white-space: nowrap;
         }
 
         .message-box button:hover {
-            background: #b91d1d;
+            background: var(--crimson-dark);
+        }
+
+        .message-box button:active {
+            transform: scale(.97);
         }
 
         .message img {
+            display: block;
             max-width: 220px;
             max-height: 220px;
-            border-radius: 10px;
+            width: 100%;
+            border-radius: var(--radius-sm);
             object-fit: cover;
-            display: block;
         }
 
         .empty-chat {
@@ -368,29 +539,40 @@ $me = getCurrentUser($conn);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #999;
-            font-size: 16px;
+            color: #a9a5a0;
+            font-size: 15px;
         }
 
+        /* ============================
+           Scrollbars
+           ============================ */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 7px;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #d62828;
+            background: #d9b9bd;
             border-radius: 20px;
         }
 
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--crimson);
         }
 
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        /* ============================
+           Responsive
+           ============================ */
         @media(max-width:900px) {
 
             .sidebar {
                 left: -270px;
-                transition: .3s;
+                transition: left .3s ease;
                 z-index: 999;
+                box-shadow: var(--shadow-panel);
             }
 
             .sidebar.show {
@@ -400,6 +582,7 @@ $me = getCurrentUser($conn);
             .main-content {
                 width: 100%;
                 margin-left: 0;
+                padding: 26px 20px;
             }
 
             #menuBtn {
@@ -408,7 +591,7 @@ $me = getCurrentUser($conn);
 
             header {
                 flex-direction: column;
-                gap: 20px;
+                gap: 18px;
                 align-items: flex-start;
             }
 
@@ -423,11 +606,24 @@ $me = getCurrentUser($conn);
 
             #left-panel {
                 width: 100%;
+                max-height: 320px;
+            }
+
+            #right-panel {
+                height: 65vh;
+            }
+
+            .message {
+                max-width: 82%;
             }
 
             .message-box {
                 flex-direction: column;
                 align-items: stretch;
+            }
+
+            .message-box input[type="file"] {
+                max-width: 100%;
             }
 
         }
@@ -442,73 +638,82 @@ $me = getCurrentUser($conn);
 
         <aside class="sidebar">
 
-            <div class="logo">
-                <h2>
-                    <i class="fa-solid fa-droplet"></i>
-                    BloodConnect
-                </h2>
-                <p>Save Lives Together</p>
+            <div>
+
+                <div class="logo">
+                    <h2>
+                        <i class="fa-solid fa-droplet"></i>
+                        BloodConnect
+                    </h2>
+                    <p>Save Lives Together</p>
+
+                    <svg class="pulse-divider" viewBox="0 0 260 22" preserveAspectRatio="none" aria-hidden="true">
+                        <path d="M0 11 H90 L102 2 L114 20 L126 6 L136 11 H260" />
+                    </svg>
+
+                </div>
+
+                <ul>
+
+                    <li>
+                        <a href="home.php">
+                            <i class="fa-solid fa-house"></i>
+                            Home
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="profile.php">
+                            <i class="fa-solid fa-user"></i>
+                            Profile
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="createpost.php">
+                            <i class="fa-solid fa-square-plus"></i>
+                            Create Post
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="donors.php">
+                            <i class="fa-solid fa-users"></i>
+                            Donors
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="blood-requests.php">
+                            <i class="fa-solid fa-tint"></i>
+                            Blood Requests
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="emergency-requests.php">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            Emergency
+                        </a>
+                    </li>
+
+                    <li class="active">
+                        <a href="Chat.php">
+                            <i class="fa-solid fa-comments"></i>
+                            Messages
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="Settings.php">
+                            <i class="fa-solid fa-gear"></i>
+                            Settings
+                        </a>
+                    </li>
+
+                </ul>
+
             </div>
-
-            <ul>
-
-                <li>
-                    <a href="home.php">
-                        <i class="fa-solid fa-house"></i>
-                        Home
-                    </a>
-                </li>
-
-                <li>
-                    <a href="profile.php">
-                        <i class="fa-solid fa-user"></i>
-                        Profile
-                    </a>
-                </li>
-
-                <li>
-                    <a href="createpost.php">
-                        <i class="fa-solid fa-square-plus"></i>
-                        Create Post
-                    </a>
-                </li>
-
-                <li>
-                    <a href="donors.php">
-                        <i class="fa-solid fa-users"></i>
-                        Donors
-                    </a>
-                </li>
-
-                <li>
-                    <a href="blood-requests.php">
-                        <i class="fa-solid fa-tint"></i>
-                        Blood Requests
-                    </a>
-                </li>
-
-                <li>
-                    <a href="emergency-requests.php">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
-                        Emergency
-                    </a>
-                </li>
-
-                <li class="active">
-                    <a href="Chat.php">
-                        <i class="fa-solid fa-comments"></i>
-                        Messages
-                    </a>
-                </li>
-
-                <li>
-                    <a href="Settings.php">
-                        <i class="fa-solid fa-gear"></i>
-                        Settings
-                    </a>
-                </li>
-
-            </ul>
 
             <button id="logoutBtn">
                 <i class="fa-solid fa-right-from-bracket"></i>
@@ -558,7 +763,7 @@ $me = getCurrentUser($conn);
 
                 <div id="right-panel">
 
-                    <div id="chatArea" style="display:flex; flex-direction:column; flex:1;">
+                    <div id="chatArea" style="display:flex; flex-direction:column; flex:1; min-height:0;">
 
                         <div class="chat-header" id="chatHeader">Select a conversation</div>
 

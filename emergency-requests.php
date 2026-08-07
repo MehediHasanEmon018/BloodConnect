@@ -813,11 +813,13 @@ $totalUsers = $conn->query("SELECT COUNT(*) c FROM users")->fetch_assoc()['c'];
 
         <ul>
             <li><a href="home.php"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                        <li><a href="donors.php"><i class="fa-solid fa-users"></i> Donor Network</a></li>
+
             <li><a href="blood-requests.php"><i class="fa-solid fa-droplet"></i> Blood Requests</a></li>
             <li class="active"><a href="emergency-requests.php"><i class="fa-solid fa-bell"></i> Emergency Requests</a></li>
-            <li><a href="donors.php"><i class="fa-solid fa-users"></i> Donor Network</a></li>
+<li><a href="Hospitals.php"><i class="fa-solid fa-hospital"></i> Hospitals</a></li>
+
             <li><a href="profile.php"><i class="fa-solid fa-user"></i> Profile</a></li>
-            <li><a href="Settings.php"><i class="fa-solid fa-gear"></i> Settings</a></li>
         </ul>
 
         <button id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>

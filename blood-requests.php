@@ -1,4 +1,8 @@
-<?php require_once __DIR__ . '/includes/auth.php'; requireLogin(); ?>
+<?php
+require_once __DIR__ . '/includes/auth.php';
+requireLogin();
+$me = getCurrentUser($conn);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -449,7 +453,15 @@ footer p{
 
                     <div class="input-box">
                         <label>Hospital</label>
-                        <input type="text" id="hospital" placeholder="Hospital name">
+                        <select id="hospital">
+                            <option value="">Select Hospital</option>
+                            <option value="other">Other (not listed)</option>
+                        </select>
+                    </div>
+
+                    <div class="input-box" id="hospitalOtherBox" style="display:none;">
+                        <label>Hospital Name</label>
+                        <input type="text" id="hospitalOther" placeholder="Enter hospital name">
                     </div>
 
                     <div class="input-box">
@@ -528,6 +540,7 @@ footer p{
                         <th>Location</th>
                         <th>Urgency</th>
                         <th>Status</th>
+                        <th>Action</th>
                     </tr>
 
                 </thead>
@@ -632,6 +645,20 @@ footer p{
 
     </footer>
 
+    <div id="offersModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;align-items:center;justify-content:center;">
+        <div style="background:#fff;border-radius:10px;padding:25px;width:90%;max-width:480px;max-height:80vh;overflow-y:auto;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
+                <h3 style="color:#d62828;">Donor Offers</h3>
+                <button id="closeOffersModal" style="border:none;background:none;font-size:22px;cursor:pointer;">&times;</button>
+            </div>
+            <div id="offersListContainer"></div>
+        </div>
+    </div>
+
+    <script type="application/json" id="pageData">
+<?php echo json_encode(["myId" => $me['id']]); ?>
+    </script>
+
     <script>
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -641,6 +668,15 @@ footer p{
     const searchBtn = document.getElementById("searchBtn");
     const searchInput = document.getElementById("searchInput");
     const tableBody = document.getElementById("requestTable");
+    const hospitalSelect = document.getElementById("hospital");
+    const hospitalOtherBox = document.getElementById("hospitalOtherBox");
+    const hospitalOtherInput = document.getElementById("hospitalOther");
+    const offersModal = document.getElementById("offersModal");
+    const offersListContainer = document.getElementById("offersListContainer");
+    const closeOffersModal = document.getElementById("closeOffersModal");
+
+    const pageData = JSON.parse(document.getElementById("pageData").textContent);
+    const myId = pageData.myId;
 
     dashboardBtn.addEventListener("click", function () {
         window.location.href = "index.php";
@@ -650,6 +686,62 @@ footer p{
         const div = document.createElement("div");
         div.textContent = str == null ? "" : String(str);
         return div.innerHTML;
+    }
+
+    function loadHospitals() {
+        fetch("api/hospitals_list.php", { credentials: "same-origin" })
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+                if (!data.success) return;
+                data.hospitals.forEach(function (h) {
+                    const opt = document.createElement("option");
+                    opt.value = h.id;
+                    opt.textContent = h.name + (h.location ? " (" + h.location + ")" : "");
+                    hospitalSelect.insertBefore(opt, hospitalSelect.querySelector('option[value="other"]'));
+                });
+            });
+    }
+
+    loadHospitals();
+
+    if (hospitalSelect) {
+        hospitalSelect.addEventListener("change", function () {
+            hospitalOtherBox.style.display = hospitalSelect.value === "other" ? "flex" : "none";
+        });
+    }
+
+    if (closeOffersModal) {
+        closeOffersModal.addEventListener("click", function () {
+            offersModal.style.display = "none";
+        });
+    }
+
+    function actionCellHTML(r) {
+
+        const isOwner = String(r.requester_id) === String(myId);
+
+        if (r.status === "Completed") {
+            return `<span style="color:#27ae60;font-weight:bold;">✓ Fulfilled</span>`;
+        }
+
+        if (isOwner) {
+            return `<button class="viewOffersBtn" data-id="${escapeHtml(r.id)}" style="padding:8px 14px;border:none;border-radius:6px;background:#d62828;color:#fff;cursor:pointer;">
+                        View Offers (${escapeHtml(r.responseCount)})
+                    </button>`;
+        }
+
+        if (r.myResponseStatus === "Confirmed") {
+            return `<span style="color:#27ae60;font-weight:bold;">You're Confirmed</span>`;
+        }
+
+        if (r.myResponseStatus === "Pending") {
+            return `<span style="color:#888;">Offer Sent</span>`;
+        }
+
+        return `<button class="offerDonateBtn" data-id="${escapeHtml(r.id)}" style="padding:8px 14px;border:none;border-radius:6px;background:#27ae60;color:#fff;cursor:pointer;">
+                    I Can Donate
+                </button>`;
+
     }
 
     function loadRequests() {
@@ -665,7 +757,7 @@ footer p{
                 if (requests.length === 0) {
                     tableBody.innerHTML = `
                         <tr>
-                            <td colspan="7" style="text-align:center; color:#888;">
+                            <td colspan="8" style="text-align:center; color:#888;">
                                 No blood requests yet.
                             </td>
                         </tr>
@@ -687,6 +779,7 @@ footer p{
                         <td>${escapeHtml(r.location)}</td>
                         <td>${escapeHtml(r.urgency)}</td>
                         <td><span class="${escapeHtml((r.status || "").toLowerCase())}">${escapeHtml(r.status)}</span></td>
+                        <td>${actionCellHTML(r)}</td>
                     `;
 
                     tableBody.appendChild(row);
@@ -698,6 +791,106 @@ footer p{
             });
 
     }
+
+    tableBody.addEventListener("click", function (e) {
+
+        if (e.target.closest(".offerDonateBtn")) {
+
+            const btn = e.target.closest(".offerDonateBtn");
+            const requestId = btn.dataset.id;
+
+            if (!confirm("Offer to donate for this request? The requester will be able to see your name, phone and blood group.")) return;
+
+            const formData = new FormData();
+            formData.append("requestId", requestId);
+
+            fetch("api/request_respond.php", { method: "POST", body: formData, credentials: "same-origin" })
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    if (data.success) {
+                        alert("Your offer has been sent to the requester.");
+                        loadRequests();
+                    } else {
+                        alert(data.message || "Could not send your offer.");
+                    }
+                });
+
+        }
+
+        if (e.target.closest(".viewOffersBtn")) {
+
+            const btn = e.target.closest(".viewOffersBtn");
+            const requestId = btn.dataset.id;
+
+            fetch("api/request_responses_list.php?requestId=" + encodeURIComponent(requestId), { credentials: "same-origin" })
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+
+                    const responses = data.success ? data.responses : [];
+
+                    offersListContainer.innerHTML = "";
+
+                    if (responses.length === 0) {
+                        offersListContainer.innerHTML = `<p style="color:#888;">No one has offered to donate for this request yet.</p>`;
+                    } else {
+                        responses.forEach(function (r) {
+
+                            const item = document.createElement("div");
+                            item.style.cssText = "display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid #eee;";
+
+                            item.innerHTML = `
+                                <div>
+                                    <strong>${escapeHtml(r.name)}</strong><br>
+                                    <span style="color:#666;font-size:13.5px;">${escapeHtml(r.blood_group)} &middot; ${escapeHtml(r.phone)}</span>
+                                </div>
+                                <button class="confirmDonorBtn" data-request-id="${escapeHtml(requestId)}" data-donor-id="${escapeHtml(r.donor_id)}"
+                                    style="padding:8px 14px;border:none;border-radius:6px;background:#d62828;color:#fff;cursor:pointer;">
+                                    Confirm
+                                </button>
+                            `;
+
+                            offersListContainer.appendChild(item);
+
+                        });
+                    }
+
+                    offersModal.style.display = "flex";
+
+                });
+
+        }
+
+    });
+
+    offersListContainer.addEventListener("click", function (e) {
+
+        if (e.target.closest(".confirmDonorBtn")) {
+
+            const btn = e.target.closest(".confirmDonorBtn");
+            const requestId = btn.dataset.requestId;
+            const donorId = btn.dataset.donorId;
+
+            if (!confirm("Confirm this donor as the one fulfilling the request? This will mark the request as Completed and log a successful donation.")) return;
+
+            const formData = new FormData();
+            formData.append("requestId", requestId);
+            formData.append("donorId", donorId);
+
+            fetch("api/request_complete.php", { method: "POST", body: formData, credentials: "same-origin" })
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    if (data.success) {
+                        alert("Request marked as completed. Thank you!");
+                        offersModal.style.display = "none";
+                        loadRequests();
+                    } else {
+                        alert(data.message || "Could not confirm this donor.");
+                    }
+                });
+
+        }
+
+    });
 
     function updateStats(requests) {
 
@@ -722,23 +915,27 @@ footer p{
         const patientName = document.getElementById("patientName").value.trim();
         const bloodGroup = document.getElementById("bloodGroup").value;
         const units = document.getElementById("units").value;
-        const hospital = document.getElementById("hospital").value.trim();
+        const hospitalValue = hospitalSelect.value;
+        const hospitalOther = hospitalOtherInput.value.trim();
         const location = document.getElementById("location").value.trim();
         const phone = document.getElementById("phone").value.trim();
         const urgency = document.getElementById("urgency").value;
         const date = document.getElementById("date").value;
         const notes = document.getElementById("notes").value.trim();
 
+        const hospitalChosen = hospitalValue === "other" ? hospitalOther : hospitalValue;
+
         if (
             patientName === "" ||
             bloodGroup === "Select Blood Group" ||
             units === "" ||
-            hospital === "" ||
+            hospitalValue === "" ||
+            hospitalChosen === "" ||
             location === "" ||
             phone === "" ||
             date === ""
         ) {
-            alert("Please fill in all required fields.");
+            alert("Please fill in all required fields, including a hospital.");
             return;
         }
 
@@ -746,7 +943,8 @@ footer p{
         formData.append("patientName", patientName);
         formData.append("bloodGroup", bloodGroup);
         formData.append("units", units);
-        formData.append("hospital", hospital);
+        formData.append("hospitalId", hospitalValue === "other" ? "" : hospitalValue);
+        formData.append("hospitalOther", hospitalValue === "other" ? hospitalOther : "");
         formData.append("location", location);
         formData.append("phone", phone);
         formData.append("urgency", urgency);
@@ -759,6 +957,7 @@ footer p{
                 if (data.success) {
                     alert("Blood request submitted successfully.");
                     requestForm.reset();
+                    hospitalOtherBox.style.display = "none";
                     loadRequests();
                 } else {
                     alert(data.message || "Could not submit the request.");

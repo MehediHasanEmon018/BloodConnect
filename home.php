@@ -5,8 +5,8 @@ $me = getCurrentUser($conn);
 
 $totalUsers = $conn->query("SELECT COUNT(*) c FROM users")->fetch_assoc()['c'];
 $totalRequests = $conn->query("SELECT COUNT(*) c FROM blood_requests")->fetch_assoc()['c'];
-$totalDonations = $conn->query("SELECT COUNT(*) c FROM posts WHERE post_type='Blood Available'")->fetch_assoc()['c'];
-$hospitalCount = $conn->query("SELECT COUNT(DISTINCT LOWER(hospital)) c FROM blood_requests WHERE hospital <> ''")->fetch_assoc()['c'];
+$totalDonations = $conn->query("SELECT COUNT(*) c FROM donations WHERE status='Completed'")->fetch_assoc()['c'];
+$hospitalCount = $conn->query("SELECT COUNT(*) c FROM hospitals")->fetch_assoc()['c'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -453,22 +453,22 @@ body{
         <section class="stats">
 
             <div class="card">
-                <h2>1,250+</h2>
+                <h2><?php echo (int)$totalUsers; ?>+</h2>
                 <p>Registered Donors</p>
             </div>
 
             <div class="card">
-                <h2>320+</h2>
+                <h2><?php echo (int)$totalRequests; ?>+</h2>
                 <p>Blood Requests</p>
             </div>
 
             <div class="card">
-                <h2>480+</h2>
+                <h2><?php echo (int)$totalDonations; ?>+</h2>
                 <p>Successful Donations</p>
             </div>
 
             <div class="card">
-                <h2>65+</h2>
+                <h2><?php echo (int)$hospitalCount; ?>+</h2>
                 <p>Partner Hospitals</p>
             </div>
 
@@ -519,42 +519,42 @@ body{
 
                 <div class="blood-card">
                     <h3>A+</h3>
-                    <p>Available: 45 Units</p>
+                    <p>Available: 0 Units</p>
                 </div>
 
                 <div class="blood-card">
                     <h3>B+</h3>
-                    <p>Available: 30 Units</p>
+                    <p>Available: 0 Units</p>
                 </div>
 
                 <div class="blood-card">
                     <h3>AB+</h3>
-                    <p>Available: 15 Units</p>
+                    <p>Available: 0 Units</p>
                 </div>
 
                 <div class="blood-card">
                     <h3>O+</h3>
-                    <p>Available: 62 Units</p>
+                    <p>Available: 0 Units</p>
                 </div>
 
                 <div class="blood-card">
                     <h3>O-</h3>
-                    <p>Available: 12 Units</p>
+                    <p>Available: 0 Units</p>
                 </div>
 
                 <div class="blood-card">
                     <h3>A-</h3>
-                    <p>Available: 18 Units</p>
+                    <p>Available: 0 Units</p>
                 </div>
 
                 <div class="blood-card">
                     <h3>B-</h3>
-                    <p>Available: 10 Units</p>
+                    <p>Available: 0 Units</p>
                 </div>
 
                 <div class="blood-card">
                     <h3>AB-</h3>
-                    <p>Available: 6 Units</p>
+                    <p>Available: 0 Units</p>
                 </div>
 
             </div>
@@ -640,6 +640,11 @@ body{
                 });
             });
 
+            // Animates from 0 up to the real, server-computed count for each
+            // stat card. The card already shows the correct final number
+            // (rendered by PHP) before JS even runs, so there is no flash of
+            // fake placeholder data — this animation is purely a visual effect
+            // layered on top of real numbers, not the source of truth for them.
             function animateCounter(el, target, suffix) {
 
                 let current = 0;
@@ -655,7 +660,11 @@ body{
                     }
                 }
 
-                step();
+                if (target === 0) {
+                    el.textContent = "0" + suffix;
+                } else {
+                    step();
+                }
 
             }
 
@@ -670,10 +679,10 @@ body{
 
                 const statCards = document.querySelectorAll(".stats .card h2");
 
-                if (statCards[0]) animateCounter(statCards[0], users, "");
-                if (statCards[1]) animateCounter(statCards[1], requests, "");
-                if (statCards[2]) animateCounter(statCards[2], donations, "");
-                if (statCards[3]) animateCounter(statCards[3], hospitalCount, "");
+                if (statCards[0]) animateCounter(statCards[0], users, "+");
+                if (statCards[1]) animateCounter(statCards[1], requests, "+");
+                if (statCards[2]) animateCounter(statCards[2], donations, "+");
+                if (statCards[3]) animateCounter(statCards[3], hospitalCount, "+");
 
             }
 

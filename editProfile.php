@@ -417,6 +417,44 @@ header{
 
 }
 
+.donate-toggle-box{
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-top:20px;
+    padding:16px 20px;
+    background:#fff0f2;
+    border:1px solid #ffccd5;
+    border-radius:10px;
+
+}
+
+.donate-toggle-box input{
+
+    width:20px;
+    height:20px;
+    cursor:pointer;
+
+}
+
+.donate-toggle-box label{
+
+    cursor:pointer;
+    font-weight:bold;
+    color:#333;
+
+}
+
+.donate-toggle-box p{
+
+    color:#777;
+    font-size:13.5px;
+    font-weight:normal;
+    margin-top:4px;
+
+}
+
 .button-group{
 
     margin-top:40px;
@@ -1311,6 +1349,19 @@ footer p{
 
                 </div>
 
+                <div class="donate-toggle-box">
+
+                    <input
+                        type="checkbox"
+                        id="availableToDonate">
+
+                    <div>
+                        <label for="availableToDonate">Available to Donate</label>
+                        <p>Tick this to list yourself on the Donors page so others can find and contact you.</p>
+                    </div>
+
+                </div>
+
                 <h2 class="sub-heading">
 
                     Social Links
@@ -1613,6 +1664,7 @@ footer p{
     "emailNotification" => (bool)$me['email_notification'], "smsNotification" => (bool)$me['sms_notification'],
     "emergencyNotification" => (bool)$me['emergency_notification'], "showEmail" => (bool)$me['show_email'],
     "showPhone" => (bool)$me['show_phone'], "showLocation" => (bool)$me['show_location'],
+    "availableToDonate" => (bool)($me['available_to_donate'] ?? false),
     "memberSince" => date("F Y", strtotime($me['created_at'])), "reliability" => $me['reliability'],
     "totalDonations" => "0", "livesSaved" => "0"
 ]); ?>
@@ -1743,6 +1795,11 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
+        const availableToDonateEl = document.getElementById("availableToDonate");
+        if (availableToDonateEl) {
+            availableToDonateEl.checked = !!user.availableToDonate;
+        }
+
         if (memberSinceInfo) memberSinceInfo.textContent = user.memberSince || "July 2026";
         if (reliabilityInfo) reliabilityInfo.textContent = user.reliability || "98%";
         if (totalDonationsInfo) totalDonationsInfo.textContent = user.totalDonations || "0";
@@ -1848,6 +1905,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (el) user[id] = el.checked;
             });
 
+            const availableToDonateEl = document.getElementById("availableToDonate");
+            user.availableToDonate = availableToDonateEl ? availableToDonateEl.checked : false;
+
             user.memberSince = user.memberSince || "July 2026";
             user.reliability = user.reliability || "98%";
             user.totalDonations = user.totalDonations || "0";
@@ -1859,6 +1919,8 @@ document.addEventListener("DOMContentLoaded", () => {
             checkboxIds.forEach(id => {
                 if (user[id]) formData.append(id, "1");
             });
+
+            if (user.availableToDonate) formData.append("availableToDonate", "1");
 
             if (user.profileImage) formData.append("profileImage", user.profileImage);
             if (user.coverImage) formData.append("coverImage", user.coverImage);
