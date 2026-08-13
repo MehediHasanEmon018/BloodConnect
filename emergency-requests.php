@@ -234,6 +234,12 @@ $totalUsers = $conn->query("SELECT COUNT(*) c FROM users")->fetch_assoc()['c'];
             display:flex;
             align-items:center;
             gap:10px;
+            cursor:pointer;
+            transition:.2s;
+        }
+
+        .profile:hover{
+            opacity:.75;
         }
 
         .profile img{
@@ -838,7 +844,7 @@ $totalUsers = $conn->query("SELECT COUNT(*) c FROM users")->fetch_assoc()['c'];
 
             <div class="header-right">
                 <i class="fa-regular fa-bell"></i>
-                <div class="profile">
+                <div class="profile" id="profileLink">
                     <img id="profileImg" src="images/user.png" alt="Profile">
                     <div>
                         <h4 id="profileName">User Name</h4>
@@ -961,6 +967,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const statusText = document.getElementById("status");
     const createEmergency = document.getElementById("createEmergency");
     const viewAllBtn = document.getElementById("viewAllBtn");
+    const profileLink = document.getElementById("profileLink");
 
     const pageData = JSON.parse(document.getElementById("pageData").textContent);
     const currentUser = pageData.currentUser;
@@ -1004,6 +1011,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     window.location.href = "index.php";
                 });
             }
+        });
+    }
+
+    if (profileLink) {
+        profileLink.addEventListener("click", function () {
+            window.location.href = "profile.php";
         });
     }
 

@@ -1150,17 +1150,7 @@ $me = getCurrentUser($conn);
 
                         </span>
 
-                        <span>
-
-                            Verified Donor
-
-                        </span>
-
-                        <span>
-
-                            Reliability 98%
-
-                        </span>
+                       
 
                     </div>
 
@@ -1450,6 +1440,20 @@ $me = getCurrentUser($conn);
                 </footer>
 
         </main>
+
+        <div class="modal" id="viewProfileModal">
+            <div class="modal-content" style="text-align:center;">
+                <span class="closeModal" id="closeViewProfileModal">&times;</span>
+                <img id="vpPhoto" src="images/user.png" alt="" style="width:110px;height:110px;border-radius:50%;object-fit:cover;margin-bottom:15px;">
+                <h2 id="vpName">Loading...</h2>
+                <p id="vpBlood" style="color:#d62828;font-weight:bold;margin-bottom:10px;"></p>
+                <div style="text-align:left;margin-top:10px;">
+                    <p><strong>Email:</strong> <span id="vpEmail">-</span></p>
+                    <p><strong>Phone:</strong> <span id="vpPhone">-</span></p>
+                    <p><strong>Location:</strong> <span id="vpLocation">-</span></p>
+                </div>
+            </div>
+        </div>
 
     </div>
 
@@ -2004,21 +2008,74 @@ $me = getCurrentUser($conn);
                         <img src="${escapeHtml(donor.photo || "images/user.png")}" alt="">
                         <h3>${escapeHtml(donor.name || "Unknown")}</h3>
                         <p>${escapeHtml(donor.blood_group || "N/A")}</p>
-                        <button class="viewDonorBtn">View Profile</button>
+                        <button class="viewDonorBtn" data-id="${escapeHtml(donor.id)}">View Profile</button>
                     `;
 
                             grid.appendChild(card);
 
                         });
 
-                        grid.querySelectorAll(".viewDonorBtn").forEach(function (btn) {
-                            btn.addEventListener("click", function () {
-                                const donorName = btn.parentElement.querySelector("h3").textContent;
-                                alert("Viewing profile of " + donorName);
-                            });
+                    });
+
+            }
+
+            // ---- View Profile modal (Suggested Donors) ----
+
+            const viewProfileModal = document.getElementById("viewProfileModal");
+            const closeViewProfileModal = document.getElementById("closeViewProfileModal");
+            const suggestedDonorGrid = document.getElementById("suggestedDonorGrid");
+
+            if (closeViewProfileModal) {
+                closeViewProfileModal.addEventListener("click", function () {
+                    viewProfileModal.style.display = "none";
+                });
+            }
+
+            if (viewProfileModal) {
+                viewProfileModal.addEventListener("click", function (e) {
+                    if (e.target === viewProfileModal) viewProfileModal.style.display = "none";
+                });
+            }
+
+            if (suggestedDonorGrid) {
+
+                // Event delegation: donor-grid dynamically re-renders,
+                // so a single listener on the parent avoids stacking
+                // duplicate handlers on every renderSuggestedDonors() call.
+                suggestedDonorGrid.addEventListener("click", function (e) {
+
+                    const btn = e.target.closest(".viewDonorBtn");
+                    if (!btn) return;
+
+                    const userId = btn.dataset.id;
+                    if (!userId) return;
+
+                    fetch("api/user_profile.php?id=" + encodeURIComponent(userId), { credentials: "same-origin" })
+                        .then(function (res) { return res.json(); })
+                        .then(function (data) {
+
+                            if (!data.success) {
+                                alert(data.message || "Could not load profile.");
+                                return;
+                            }
+
+                            const u = data.user;
+
+                            document.getElementById("vpPhoto").src = u.photo || "images/user.png";
+                            document.getElementById("vpName").textContent = u.name || "Unknown";
+                            document.getElementById("vpBlood").textContent = u.bloodGroup || "N/A";
+                            document.getElementById("vpEmail").textContent = u.email || "Hidden";
+                            document.getElementById("vpPhone").textContent = u.phone || "Hidden";
+                            document.getElementById("vpLocation").textContent = u.location || "Hidden";
+
+                            viewProfileModal.style.display = "flex";
+
+                        })
+                        .catch(function () {
+                            alert("Server error while loading profile.");
                         });
 
-                    });
+                });
 
             }
 
