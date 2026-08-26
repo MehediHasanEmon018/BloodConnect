@@ -52,118 +52,72 @@ $totalUsers = $conn->query("SELECT COUNT(*) c FROM users")->fetch_assoc()['c'];
         linear-gradient(180deg, #fffaf7 0%, #f8f6f3 40%, #f4f2ef 100%);
     background-attachment: fixed;
 }
-        .container{
-            display:flex;
-            min-height:100vh;
-        }
+        /* ============ NAV (matches home.php) ============ */
 
-        aside.sidebar{
-            width:264px;
-            background:var(--surface);
-            border-right:1px solid var(--border);
+        header{
             display:flex;
-            flex-direction:column;
             justify-content:space-between;
-            position:fixed;
-            left:0;
+            align-items:center;
+            padding:18px 8%;
+            background:#ffffff;
+            box-shadow:0 2px 10px rgba(0,0,0,.08);
+            position:sticky;
             top:0;
-            height:100vh;
-            padding:28px 18px;
             z-index:1000;
         }
 
-        .logo{
-            margin-bottom:30px;
-            padding:0 8px;
-        }
-
         .logo h2{
-            color:var(--red);
-            font-size:22px;
-            font-weight:800;
-            display:flex;
-            align-items:center;
-            gap:10px;
-            letter-spacing:-.3px;
+            color:#d62828;
+            margin-bottom:5px;
         }
 
         .logo p{
-            color:var(--muted);
-            font-size:13px;
-            margin-top:4px;
+            color:#777;
+            font-size:14px;
         }
 
-        aside ul{
-            list-style:none;
-        }
-
-        aside ul li{
-            margin:3px 0;
-        }
-
-        aside ul li a{
+        nav{
             display:flex;
-            align-items:center;
-            gap:12px;
-            padding:12px 16px;
+            gap:20px;
+            flex-wrap:wrap;
+        }
+
+        nav a{
             text-decoration:none;
-            color:#4b5160;
-            border-radius:10px;
-            transition:.2s;
-            font-size:14.5px;
-            font-weight:500;
+            color:#333;
+            font-weight:600;
+            transition:.3s;
         }
 
-        aside ul li a i{
-            width:18px;
-            text-align:center;
-            color:#9aa0ab;
-            transition:.2s;
-        }
-
-        aside ul li a:hover{
-            background:var(--red-light);
-            color:var(--red);
-        }
-
-        aside ul li a:hover i{
-            color:var(--red);
-        }
-
-        aside ul li.active a{
-            background:var(--red);
-            color:#fff;
-            box-shadow:0 4px 12px rgba(193,18,31,.28);
-        }
-
-        aside ul li.active a i{
-            color:#fff;
+        nav a:hover,
+        nav a.active{
+            color:#d62828;
         }
 
         #logoutBtn{
-            width:100%;
-            padding:13px;
+            padding:10px 22px;
             border:none;
-            border-radius:10px;
-            background:var(--ink);
-            color:#fff;
+            border-radius:6px;
+            background:#d62828;
+            color:white;
             cursor:pointer;
-            font-size:14.5px;
-            font-weight:600;
-            transition:.2s;
+            transition:.3s;
         }
 
         #logoutBtn:hover{
-            background:#000;
+            background:#b91d1d;
         }
+
+        /* ============ PAGE CONTENT LAYOUT ============ */
 
         main{
-            margin-left:264px;
-            width:calc(100% - 264px);
-            padding:28px 34px 50px;
+            width:92%;
+            max-width:1400px;
+            margin:0 auto;
+            padding:28px 0 50px;
         }
 
-        header{
+        .page-topbar{
             display:flex;
             justify-content:space-between;
             align-items:center;
@@ -174,15 +128,6 @@ $totalUsers = $conn->query("SELECT COUNT(*) c FROM users")->fetch_assoc()['c'];
             display:flex;
             align-items:center;
             gap:16px;
-        }
-
-        #menuBtn{
-            display:none;
-            border:none;
-            background:none;
-            font-size:22px;
-            cursor:pointer;
-            color:var(--ink);
         }
 
         .header-left h1{
@@ -751,25 +696,7 @@ $totalUsers = $conn->query("SELECT COUNT(*) c FROM users")->fetch_assoc()['c'];
 
         @media(max-width:900px){
 
-            aside.sidebar{
-                left:-264px;
-                transition:.3s;
-            }
-
-            aside.sidebar.show{
-                left:0;
-            }
-
-            main{
-                width:100%;
-                margin-left:0;
-            }
-
-            #menuBtn{
-                display:block;
-            }
-
-            header{
+            .page-topbar{
                 flex-direction:column;
                 align-items:flex-start;
                 gap:16px;
@@ -808,52 +735,47 @@ $totalUsers = $conn->query("SELECT COUNT(*) c FROM users")->fetch_assoc()['c'];
 
 <body>
 
-<div class="container">
+<header>
 
-    <aside class="sidebar">
+    <div class="logo">
+        <h2>BloodConnect</h2>
+        <p>Welcome Back</p>
+    </div>
 
-        <div class="logo">
-            <h2><i class="fa-solid fa-droplet"></i> BloodConnect</h2>
-            <p>Save a Life</p>
+    <nav>
+        <a href="home.php">Home</a>
+        <a href="donors.php">Donors</a>
+        <a href="blood-requests.php">Blood Requests</a>
+        <a href="emergency-requests.php" class="active">Emergency</a>
+        <a href="Hospitals.php">Hospitals</a>
+        <a href="profile.php">Profile</a>
+    </nav>
+
+    <button id="logoutBtn">Logout</button>
+
+</header>
+
+<main>
+
+    <div class="page-topbar">
+
+        <div class="header-left">
+            <h1>Real-Time Emergency Requests</h1>
+            <span class="live">LIVE</span>
         </div>
 
-        <ul>
-            <li><a href="home.php"><i class="fa-solid fa-house"></i> Dashboard</a></li>
-                        <li><a href="donors.php"><i class="fa-solid fa-users"></i> Donor Network</a></li>
-
-            <li><a href="blood-requests.php"><i class="fa-solid fa-droplet"></i> Blood Requests</a></li>
-            <li class="active"><a href="emergency-requests.php"><i class="fa-solid fa-bell"></i> Emergency Requests</a></li>
-<li><a href="Hospitals.php"><i class="fa-solid fa-hospital"></i> Hospitals</a></li>
-
-            <li><a href="profile.php"><i class="fa-solid fa-user"></i> Profile</a></li>
-        </ul>
-
-        <button id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
-
-    </aside>
-
-    <main>
-
-        <header>
-
-            <div class="header-left">
-                <button id="menuBtn"><i class="fa-solid fa-bars"></i></button>
-                <h1>Real-Time Emergency Requests</h1>
-                <span class="live">LIVE</span>
-            </div>
-
-            <div class="header-right">
-                <i class="fa-regular fa-bell"></i>
-                <div class="profile" id="profileLink">
-                    <img id="profileImg" src="images/user.png" alt="Profile">
-                    <div>
-                        <h4 id="profileName">User Name</h4>
-                        <p>Donor</p>
-                    </div>
+        <div class="header-right">
+            <i class="fa-regular fa-bell"></i>
+            <div class="profile" id="profileLink">
+                <img id="profileImg" src="images/user.png" alt="Profile">
+                <div>
+                    <h4 id="profileName">User Name</h4>
+                    <p>Donor</p>
                 </div>
             </div>
+        </div>
 
-        </header>
+    </div>
 
         <div class="dashboard">
 
@@ -944,8 +866,6 @@ $totalUsers = $conn->query("SELECT COUNT(*) c FROM users")->fetch_assoc()['c'];
 
     </main>
 
-</div>
-
 <script type="application/json" id="pageData">
 <?php echo json_encode([
     "currentUser" => ["id" => $me['id'], "name" => $me['name'], "photo" => $me['photo']],
@@ -958,8 +878,6 @@ $totalUsers = $conn->query("SELECT COUNT(*) c FROM users")->fetch_assoc()['c'];
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    const menuBtn = document.getElementById("menuBtn");
-    const sidebar = document.querySelector(".sidebar");
     const logoutBtn = document.getElementById("logoutBtn");
     const locationBtn = document.getElementById("locationBtn");
     const latitude = document.getElementById("latitude");
@@ -997,12 +915,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (profileImg) profileImg.src = currentUser.photo || "images/user.png";
     if (profileName) profileName.textContent = currentUser.name || "User Name";
-
-    if (menuBtn) {
-        menuBtn.addEventListener("click", function () {
-            sidebar.classList.toggle("show");
-        });
-    }
 
     if (logoutBtn) {
         logoutBtn.addEventListener("click", function () {

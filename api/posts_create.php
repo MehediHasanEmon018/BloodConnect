@@ -25,16 +25,22 @@ $stmt->bind_param("isssssssssi", $userId, $postType, $bloodGroup, $hospital, $lo
 if ($stmt->execute()) {
     $postId = $stmt->insert_id;
 
-    if ($postType === "Blood Request" || $emergency) {
+    if ($postType === "Blood Request" || $postType === "Blood Available" || $emergency) {
         $me = getCurrentUser($conn);
         $patientName = $me['name'] ?: 'Not specified';
         $units = 1;
         $hospitalVal = $hospital ?: 'Not specified';
         $locationVal = $location ?: 'Not specified';
         $neededDate = $requiredDate ?: date('Y-m-d');
-        $req = $conn->prepare("INSERT INTO blood_requests (requester_id, patient_name, blood_group, units, hospital, location, phone, urgency, needed_date, notes, status) VALUES (?,?,?,?,?,?,?,?,?,?,'Pending')");
-        $req->bind_param("ississsss", $userId, $patientName, $bloodGroup, $units, $hospitalVal, $locationVal, $contact, $urgency, $neededDate, $description);
-        $req->execute();
+        // Keep the row's Type in sync with the post: "Blood Available" posts
+        // are donors offering blood, everything else (a request, or any
+        // post flagged Emergency) is treated as a "Blood Request".
+        $reqType = ($postType === "Blood Available") ? "Blood Available" : "Blood Request";
+        $req = $conn->prepare("INSERT INTO blood_requests (requester_id, type, patient_name, blood_group, units, hospital, location, phone, urgency, needed_date, notes, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,'Pending')");
+        $req->bind_param("isssissssss", $userId, $reqType, $patientName, $bloodGroup, $units, $hospitalVal, $locationVal, $contact, $urgency, $neededDate, $description);
+        if (!$req->execute()) {
+            error_log("posts_create.php: blood_requests insert failed for post $postId: " . $req->error);
+        }
     }
 
     echo json_encode(["success" => true, "id" => $postId]);

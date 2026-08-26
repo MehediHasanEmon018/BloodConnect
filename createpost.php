@@ -14,40 +14,69 @@ $me = getCurrentUser($conn);
 
     <title>BloodConnect | Create Post</title>
 
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
+
+        /* ============================
+           BloodConnect Design Tokens
+           ============================ */
+        :root {
+            --crimson: #c8102e;
+            --crimson-dark: #8f0b21;
+            --crimson-soft: #fdeceb;
+            --ink: #23222a;
+            --ink-soft: #6b6873;
+            --paper: #faf6f3;
+            --panel: #ffffff;
+            --sand: #f3ece7;
+            --mist: #e9e1db;
+            --teal: #0e7c74;
+            --teal-soft: #e6f3f1;
+
+            --font-display: "Fraunces", Georgia, serif;
+            --font-body: "Inter", Arial, Helvetica, sans-serif;
+
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 10px;
+
+            --shadow-panel: 0 10px 30px -12px rgba(35, 34, 42, .12), 0 2px 8px rgba(35, 34, 42, .05);
+            --shadow-soft: 0 4px 14px rgba(35, 34, 42, .06);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Cambria, "Times New Roman", serif;
+            font-family: var(--font-body);
         }
 
-
-        body{
-    color:#333;
-    background:
-        radial-gradient(circle at 15% 10%, rgba(99,102,241,.09) 0%, transparent 40%),
-        radial-gradient(circle at 85% 25%, rgba(20,184,166,.08) 0%, transparent 45%),
-        radial-gradient(circle at 30% 90%, rgba(236,72,153,.06) 0%, transparent 50%),
-        radial-gradient(circle at 90% 85%, rgba(251,191,36,.07) 0%, transparent 45%),
-        linear-gradient(135deg, #f7f8fc 0%, #f2f4fa 50%, #eef1f8 100%);
-    background-attachment: fixed;
-}
-
+        body {
+            color: var(--ink);
+            background:
+                radial-gradient(circle at 12% 8%, rgba(200, 16, 46, .05) 0%, transparent 40%),
+                radial-gradient(circle at 88% 18%, rgba(14, 124, 116, .06) 0%, transparent 45%),
+                radial-gradient(circle at 25% 92%, rgba(200, 16, 46, .04) 0%, transparent 50%),
+                var(--paper);
+            background-attachment: fixed;
+        }
 
         .container {
             display: flex;
             min-height: 100vh;
         }
 
-
-
-       .sidebar {
+        /* ============================
+           Sidebar
+           ============================ */
+        .sidebar {
             width: 270px;
-            background: #ffffff;
-            border-right: 1px solid #e5e5e5;
+            background: var(--panel);
+            border-right: 1px solid var(--mist);
             position: fixed;
             top: 0;
             left: 0;
@@ -55,23 +84,60 @@ $me = getCurrentUser($conn);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 25px;
+            padding: 26px 22px;
             overflow-y: auto;
         }
 
         .logo {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 22px;
         }
 
         .logo h2 {
-            color: #d62828;
-            margin-bottom: 8px;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 24px;
+            letter-spacing: .2px;
+            color: var(--crimson);
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 4px;
+        }
+
+        .logo h2 i {
+            font-size: 19px;
         }
 
         .logo p {
-            color: #777;
-            font-size: 14px;
+            color: var(--ink-soft);
+            font-size: 12.5px;
+            letter-spacing: .4px;
+            text-transform: uppercase;
+        }
+
+        /* signature element: a quiet pulse line beneath the wordmark,
+           standing in for BloodConnect's vitals / life-signal theme */
+        .pulse-divider {
+            width: 100%;
+            height: 22px;
+            margin-top: 16px;
+            opacity: .55;
+        }
+
+        .pulse-divider path {
+            fill: none;
+            stroke: var(--crimson);
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 220;
+            stroke-dashoffset: 220;
+            animation: draw-pulse 1.6s ease-out forwards .2s;
+        }
+
+        @keyframes draw-pulse {
+            to { stroke-dashoffset: 0; }
         }
 
         .sidebar ul {
@@ -79,7 +145,7 @@ $me = getCurrentUser($conn);
         }
 
         .sidebar ul li {
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .sidebar ul li a {
@@ -87,771 +153,568 @@ $me = getCurrentUser($conn);
             align-items: center;
             gap: 14px;
             text-decoration: none;
-            color: #444;
-            padding: 14px;
-            border-radius: 8px;
-            transition: .3s;
+            color: var(--ink-soft);
+            font-size: 14.5px;
+            font-weight: 500;
+            padding: 13px 14px;
+            border-radius: var(--radius-sm);
+            transition: background .2s ease, color .2s ease;
+        }
+
+        .sidebar ul li a i {
+            width: 18px;
+            text-align: center;
+            color: #c9c5c0;
+            transition: color .2s ease;
         }
 
         .sidebar ul li a:hover {
-            background: #ffe5e5;
-            color: #d62828;
+            background: var(--crimson-soft);
+            color: var(--crimson-dark);
+        }
+
+        .sidebar ul li a:hover i {
+            color: var(--crimson);
         }
 
         .sidebar ul li.active a {
-            background: #d62828;
+            background: var(--crimson);
+            color: #fff;
+            box-shadow: 0 6px 14px -6px rgba(200, 16, 46, .55);
+        }
+
+        .sidebar ul li.active a i {
             color: #fff;
         }
 
         #logoutBtn {
-            margin-top: 25px;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            background: #d62828;
-            color: #fff;
+            margin-top: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 13px;
+            border: 1px solid var(--mist);
+            border-radius: var(--radius-sm);
+            background: var(--panel);
+            color: var(--ink);
+            font-weight: 600;
+            font-size: 14px;
             cursor: pointer;
-            font-size: 15px;
-            transition: .3s;
+            transition: all .2s ease;
         }
 
         #logoutBtn:hover {
-            background: #b91d1d;
+            background: var(--crimson);
+            border-color: var(--crimson);
+            color: #fff;
         }
 
-
-
-
-
-
+        /* ============================
+           Main content
+           ============================ */
         .main-content {
-
-            margin-left: 250px;
-            width: calc(100% - 250px);
-            padding: 20px 35px;
-
+            margin-left: 270px;
+            width: calc(100% - 270px);
+            padding: 34px 38px;
         }
-
-
-
-
-
-
 
         header {
-
-            height: 70px;
-            background: white;
-            border-radius: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, .08);
-
+            margin-bottom: 6px;
         }
-
-
 
         .header-left {
-
             display: flex;
             align-items: center;
-            gap: 20px;
-
+            gap: 18px;
         }
-
-
-
-        .header-left h1 {
-
-            font-size: 28px;
-
-        }
-
-
 
         #menuBtn {
-
+            display: none;
             border: none;
-            background: none;
-            font-size: 22px;
+            background: var(--panel);
+            border: 1px solid var(--mist);
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            font-size: 17px;
+            color: var(--ink);
             cursor: pointer;
-
         }
 
-
-
+        .header-left h1 {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 32px;
+            letter-spacing: .2px;
+        }
 
         .header-right {
-
             display: flex;
             align-items: center;
             gap: 22px;
-
         }
-
-
 
         .header-right i {
-
             font-size: 20px;
-            color: #555;
-
+            color: var(--ink-soft);
+            cursor: pointer;
         }
 
-
-
         .header-right img {
-
             width: 45px;
             height: 45px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #ff304f;
-
+            border: 2px solid var(--crimson);
         }
 
-
-
-
-
-
-
-        .page-title {
-
-            margin: 35px 0 25px;
-
+        .subtitle {
+            color: var(--ink-soft);
+            margin-bottom: 26px;
+            font-size: 14.5px;
         }
 
-
-
-        .page-title h2 {
-
-            font-size: 30px;
-            color: rgb(14, 3, 77);
-
-        }
-
-
-
-        .page-title p {
-
-            margin-top: 8px;
-            color: #666;
-            font-size: 16px;
-
-        }
-
-
-
+        /* ============================
+           Post form + preview
+           ============================ */
         .post-container {
-
-            background: white;
+            background: var(--panel);
             padding: 30px;
-            border-radius: 18px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, .08);
-
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-panel);
         }
-
-
-
-
-
 
         .profile-box {
-
             display: flex;
             align-items: center;
             gap: 18px;
             padding-bottom: 25px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--mist);
             margin-bottom: 25px;
-
         }
 
-
-
         .profile-box img {
-
             width: 65px;
             height: 65px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid #ff304f;
-
+            border: 3px solid var(--crimson);
         }
-
-
 
         .profile-box h3 {
-
+            font-family: var(--font-display);
+            font-weight: 600;
             font-size: 22px;
-            color: rgb(14, 3, 77);
-
+            color: var(--ink);
         }
-
-
 
         .profile-box p {
-
-            color: #777;
+            color: var(--ink-soft);
             margin-top: 5px;
-
         }
 
-
-
-
-
-
-
         .form-group {
-
             display: flex;
             flex-direction: column;
             gap: 8px;
             margin-bottom: 22px;
-
         }
-
-
 
         .form-group label {
-
-            font-weight: bold;
-            font-size: 16px;
-
+            font-weight: 600;
+            font-size: 15px;
         }
-
-
 
         .form-group input,
         .form-group select,
         .form-group textarea {
-
             padding: 13px 15px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
+            border: 1px solid var(--mist);
+            border-radius: var(--radius-sm);
             outline: none;
             font-size: 15px;
-            transition: .3s;
-
+            font-family: var(--font-body);
+            transition: .2s ease;
         }
-
-
 
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
-
-            border-color: #ff304f;
-            box-shadow: 0 0 5px rgba(255, 48, 79, .3);
-
+            border-color: var(--crimson);
+            box-shadow: 0 0 0 3px var(--crimson-soft);
         }
-
-
 
         .form-group textarea {
-
             resize: none;
-
         }
 
-
-
-
-
-
-
         .form-grid {
-
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 25px;
-
         }
-
-
-
-
-
-
 
         .image-upload {
-
-            border: 2px dashed #ff304f;
+            border: 2px dashed var(--crimson);
             padding: 25px;
-            border-radius: 12px;
+            border-radius: var(--radius-md);
             text-align: center;
-
         }
-
-
 
         .image-upload label {
-
             cursor: pointer;
-            color: #ff304f;
-            font-size: 18px;
-            font-weight: bold;
-
+            color: var(--crimson);
+            font-size: 17px;
+            font-weight: 700;
         }
-
-
 
         .image-upload i {
-
             margin-right: 8px;
-
         }
-
-
 
         #postImage {
-
             display: none;
-
         }
 
-
-
         .preview-image {
-
             width: 250px;
             height: 180px;
             margin-top: 20px;
-            border-radius: 12px;
+            border-radius: var(--radius-md);
             object-fit: cover;
             display: none;
-
         }
-
-
 
         .checkbox-box {
-
-            background: #fff0f2;
+            background: var(--crimson-soft);
             padding: 15px;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             margin: 20px 0;
-
         }
-
-
 
         .checkbox-box input {
-
             margin-right: 10px;
-
         }
 
-
-
         .button-group {
-
             display: flex;
             gap: 15px;
             margin-top: 30px;
-
         }
 
-
-
         .button-group button {
-
             padding: 13px 25px;
             border: none;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: .3s;
-
+            transition: .2s ease;
         }
-
-
 
         #publishBtn {
-
-            background: #ff304f;
-            color: white;
-
+            background: var(--crimson);
+            color: #fff;
         }
-
-
 
         #publishBtn:hover {
-
-            background: #d90429;
-
+            background: var(--crimson-dark);
         }
-
-
 
         #clearBtn {
-
-            background: #eee;
-            color: #333;
-
+            background: var(--sand);
+            color: var(--ink);
         }
-
-
 
         #clearBtn:hover {
-
-            background: #ddd;
-
+            background: var(--mist);
         }
-
 
         .preview-section {
-
             margin-top: 35px;
-            background: white;
+            background: var(--panel);
             padding: 30px;
-            border-radius: 18px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, .08);
-
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-panel);
         }
-
-
 
         .preview-section h2 {
-
-            color: rgb(14, 3, 77);
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: var(--ink);
             margin-bottom: 25px;
-            font-size: 25px;
-
+            font-size: 24px;
         }
-
 
         .post-preview-card {
-
-            border: 1px solid #eee;
-            border-radius: 15px;
+            border: 1px solid var(--mist);
+            border-radius: var(--radius-md);
             padding: 25px;
-            background: #fafafa;
-
+            background: var(--paper);
         }
 
-
-
         .preview-header {
-
             display: flex;
             align-items: center;
             gap: 15px;
             margin-bottom: 20px;
-
         }
 
-
-
         .preview-header img {
-
             width: 55px;
             height: 55px;
             border-radius: 50%;
             object-fit: cover;
-
         }
-
-
 
         .preview-header h3 {
-
-            color: rgb(14, 3, 77);
-
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: var(--ink);
         }
-
-
 
         .preview-header p {
-
-            color: #777;
+            color: var(--ink-soft);
             font-size: 14px;
-
         }
-
-
-
-
 
         .preview-content h3 {
-
-            font-size: 22px;
+            font-size: 21px;
             margin-bottom: 12px;
-
         }
-
-
 
         .preview-content p {
-
-            color: #555;
+            color: var(--ink-soft);
             line-height: 1.6;
             margin-bottom: 20px;
-
         }
 
-
         .preview-info {
-
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
             margin-bottom: 20px;
-
         }
-
-
 
         .preview-info span {
-
-            background: #ffe5ea;
-            color: #d90429;
+            background: var(--crimson-soft);
+            color: var(--crimson-dark);
             padding: 8px 15px;
             border-radius: 20px;
-            font-weight: bold;
-            font-size: 14px;
-
+            font-weight: 700;
+            font-size: 13.5px;
         }
 
-
-
-
         .preview-post-image {
-
             width: 100%;
             max-height: 350px;
             object-fit: cover;
-            border-radius: 15px;
+            border-radius: var(--radius-md);
             display: none;
-
         }
-
 
         footer {
-
             margin-top: 40px;
-            background: rgb(14, 3, 77);
-            color: white;
+            background: var(--crimson);
+            color: #fff;
             text-align: center;
             padding: 25px;
-            border-radius: 18px 18px 0 0;
-
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
         }
-
-
 
         footer h3 {
-
-            font-size: 25px;
+            font-family: var(--font-display);
+            font-size: 24px;
             margin-bottom: 10px;
-
         }
 
-
-
         footer p {
-
-            color: #ddd;
+            color: rgba(255, 255, 255, .85);
             margin: 8px;
+        }
 
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--crimson);
+            border-radius: 20px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
         }
 
         @media(max-width:1100px) {
 
-
             .form-grid {
-
                 grid-template-columns: 1fr;
-
             }
-
 
         }
 
-
-
-
-
-        @media(max-width:850px) {
-
+        @media(max-width:900px) {
 
             .sidebar {
-
-                transform: translateX(-100%);
-                transition: .3s;
-                z-index: 1000;
-
+                left: -270px;
+                transition: left .3s ease;
+                z-index: 999;
+                box-shadow: var(--shadow-panel);
             }
 
-
-
-            .sidebar.active {
-
-                transform: translateX(0);
-
+            .sidebar.show {
+                left: 0;
             }
-
-
 
             .main-content {
-
-                margin-left: 0;
                 width: 100%;
-                padding: 15px;
-
+                margin-left: 0;
+                padding: 26px 20px;
             }
 
-
-
-            .post-container {
-
-                padding: 20px;
-
+            #menuBtn {
+                display: block;
             }
 
-
-
-            .header-right i {
-
-                display: none;
-
+            header {
+                flex-direction: column;
+                gap: 18px;
+                align-items: flex-start;
             }
-
 
         }
 
+        @media(max-width:768px) {
 
+            .post-container {
+                padding: 20px;
+            }
 
+            .header-right i {
+                display: none;
+            }
 
+        }
 
         @media(max-width:600px) {
 
-
-
             .header-left h1 {
-
-                font-size: 22px;
-
+                font-size: 24px;
             }
-
-
 
             .profile-box {
-
                 flex-direction: column;
                 text-align: center;
-
             }
-
-
 
             .button-group {
-
                 flex-direction: column;
-
             }
-
-
 
             .button-group button {
-
                 justify-content: center;
-
             }
-
-
 
             .preview-info {
-
                 flex-direction: column;
-
             }
 
-
-
         }
+
     </style>
 
 </head>
-
 
 <body>
 
     <div class="container">
 
-
         <aside class="sidebar">
 
-            <div class="logo">
+            <div>
 
-                <h2>
-                    <i class="fa-solid fa-droplet"></i>
-                    BloodConnect
-                </h2>
+                <div class="logo">
+                    <h2>
+                        <i class="fa-solid fa-droplet"></i>
+                        BloodConnect
+                    </h2>
+                    <p>Save Lives Together</p>
 
-                <p>Save Lives Together</p>
+                    <svg class="pulse-divider" viewBox="0 0 260 22" preserveAspectRatio="none" aria-hidden="true">
+                        <path d="M0 11 H90 L102 2 L114 20 L126 6 L136 11 H260" />
+                    </svg>
+
+                </div>
+
+                <ul>
+
+                    <li>
+                        <a href="home.php">
+                            <i class="fa-solid fa-house"></i>
+                            Home
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="profile.php">
+                            <i class="fa-solid fa-user"></i>
+                            Profile
+                        </a>
+                    </li>
+
+                    <li class="active">
+                        <a href="createpost.php">
+                            <i class="fa-solid fa-square-plus"></i>
+                            Create Post
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="donors.php">
+                            <i class="fa-solid fa-users"></i>
+                            Donors
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="blood-requests.php">
+                            <i class="fa-solid fa-tint"></i>
+                            Blood Requests
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="emergency-requests.php">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            Emergency
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="Chat.php">
+                            <i class="fa-solid fa-comments"></i>
+                            Messages
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="Settings.php">
+                            <i class="fa-solid fa-gear"></i>
+                            Settings
+                        </a>
+                    </li>
+
+                </ul>
 
             </div>
-
-            <ul>
-
-                <li>
-                    <a href="home.php">
-                        <i class="fa-solid fa-house"></i>
-                        Home
-                    </a>
-                </li>
-
-                <li>
-                    <a href="profile.php">
-                        <i class="fa-solid fa-user"></i>
-                        Profile
-                    </a>
-                </li>
-
-                <li class="active">
-                    <a href="createpost.php">
-                        <i class="fa-solid fa-square-plus"></i>
-                        Create Post
-                    </a>
-                </li>
-
-                <li>
-                    <a href="donors.php">
-                        <i class="fa-solid fa-users"></i>
-                        Donors
-                    </a>
-                </li>
-
-                <li>
-                    <a href="blood-requests.php">
-                        <i class="fa-solid fa-droplet"></i>
-                        Blood Requests
-                    </a>
-                </li>
-
-                <li>
-                    <a href="emergency-requests.php">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
-                        Emergency
-                    </a>
-                </li>
-
-                <li>
-                    <a href="Settings.php">
-                        <i class="fa-solid fa-gear"></i>
-                        Settings
-                    </a>
-                </li>
-
-            </ul>
 
             <button id="logoutBtn">
                 <i class="fa-solid fa-right-from-bracket"></i>
@@ -860,9 +723,7 @@ $me = getCurrentUser($conn);
 
         </aside>
 
-
         <main class="main-content">
-
 
             <header>
 
@@ -887,17 +748,9 @@ $me = getCurrentUser($conn);
 
             </header>
 
-
-            <section class="page-title">
-
-                <h2>Create Blood Post</h2>
-
-                <p>
-                    Share your blood availability, request or donation story with the community.
-                </p>
-
-            </section>
-
+            <p class="subtitle">
+                Share your blood availability, request or donation story with the community.
+            </p>
 
             <section class="post-container">
 
@@ -1236,6 +1089,36 @@ $me = getCurrentUser($conn);
 
         document.addEventListener("DOMContentLoaded", function () {
 
+            const menuBtn = document.getElementById("menuBtn");
+            const sidebar = document.querySelector(".sidebar");
+            const logoutBtn = document.getElementById("logoutBtn");
+
+            if (menuBtn) {
+                menuBtn.addEventListener("click", function () {
+                    sidebar.classList.toggle("show");
+                });
+            }
+
+            document.addEventListener("click", function (e) {
+                if (
+                    window.innerWidth < 900 &&
+                    !sidebar.contains(e.target) &&
+                    !menuBtn.contains(e.target)
+                ) {
+                    sidebar.classList.remove("show");
+                }
+            });
+
+            if (logoutBtn) {
+                logoutBtn.addEventListener("click", function () {
+                    if (confirm("Are you sure you want to logout?")) {
+                        fetch("api/logout.php", { credentials: "same-origin" }).then(function () {
+                            window.location.replace("index.php");
+                        });
+                    }
+                });
+            }
+
             const postForm = document.getElementById("postForm");
 
             const userName = document.getElementById("userName");
@@ -1256,7 +1139,6 @@ $me = getCurrentUser($conn);
             const imagePreview = document.getElementById("imagePreview");
 
             const clearBtn = document.getElementById("clearBtn");
-            const logoutBtn = document.getElementById("logoutBtn");
 
             const previewUserPhoto = document.getElementById("previewUserPhoto");
             const previewUserName = document.getElementById("previewUserName");
@@ -1530,18 +1412,6 @@ $me = getCurrentUser($conn);
                 }
 
                 savePost(currentImageData);
-
-            });
-
-            logoutBtn.addEventListener("click", function () {
-
-                if (confirm("Are you sure you want to logout?")) {
-
-                    fetch("api/logout.php", { credentials: "same-origin" }).then(function () {
-                        window.location.href = "index.php";
-                    });
-
-                }
 
             });
 

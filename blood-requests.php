@@ -277,6 +277,24 @@ tbody tr:hover{
     background:#27ae60;
 }
 
+.type-available,
+.type-request{
+    color:#fff;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:bold;
+    white-space:nowrap;
+}
+
+.type-available{
+    background:#27ae60;
+}
+
+.type-request{
+    background:#d62828;
+}
+
 .statistics{
     margin-bottom:50px;
 }
@@ -533,6 +551,7 @@ footer p{
                 <thead>
 
                     <tr>
+                        <th>Type</th>
                         <th>Patient</th>
                         <th>Blood Group</th>
                         <th>Units</th>
@@ -548,6 +567,7 @@ footer p{
                 <tbody id="requestTable">
 
                     <tr>
+                        <td><span class="type-request">Blood Request</span></td>
                         <td>Ahmed Rahman</td>
                         <td>O+</td>
                         <td>2</td>
@@ -558,6 +578,7 @@ footer p{
                     </tr>
 
                     <tr>
+                        <td><span class="type-request">Blood Request</span></td>
                         <td>Fatema Khan</td>
                         <td>A+</td>
                         <td>1</td>
@@ -568,6 +589,7 @@ footer p{
                     </tr>
 
                     <tr>
+                        <td><span class="type-available">Blood Available</span></td>
                         <td>Rakib Hasan</td>
                         <td>B-</td>
                         <td>3</td>
@@ -578,6 +600,7 @@ footer p{
                     </tr>
 
                     <tr>
+                        <td><span class="type-request">Blood Request</span></td>
                         <td>Nusrat Jahan</td>
                         <td>AB+</td>
                         <td>2</td>
@@ -588,6 +611,7 @@ footer p{
                     </tr>
 
                     <tr>
+                        <td><span class="type-available">Blood Available</span></td>
                         <td>Tanvir Islam</td>
                         <td>O-</td>
                         <td>4</td>
@@ -757,7 +781,7 @@ footer p{
                 if (requests.length === 0) {
                     tableBody.innerHTML = `
                         <tr>
-                            <td colspan="8" style="text-align:center; color:#888;">
+                            <td colspan="9" style="text-align:center; color:#888;">
                                 No blood requests yet.
                             </td>
                         </tr>
@@ -771,7 +795,10 @@ footer p{
                     const row = document.createElement("tr");
                     row.dataset.id = r.id;
 
+                    const typeClass = r.type === "Blood Available" ? "type-available" : "type-request";
+
                     row.innerHTML = `
+                        <td><span class="${typeClass}">${escapeHtml(r.type || "Blood Request")}</span></td>
                         <td>${escapeHtml(r.patient_name)}</td>
                         <td>${escapeHtml(r.blood_group)}</td>
                         <td>${escapeHtml(r.units)}</td>

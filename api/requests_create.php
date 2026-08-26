@@ -38,7 +38,7 @@ if (!$patientName || !$bloodGroup || !$units || !$hospitalName || !$location || 
 }
 
 $userId = $_SESSION['user_id'];
-$stmt = $conn->prepare("INSERT INTO blood_requests (requester_id, patient_name, blood_group, units, hospital, hospital_id, location, phone, urgency, needed_date, notes, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,'Pending')");
+$stmt = $conn->prepare("INSERT INTO blood_requests (requester_id, type, patient_name, blood_group, units, hospital, hospital_id, location, phone, urgency, needed_date, notes, status) VALUES (?,'Blood Request',?,?,?,?,?,?,?,?,?,?,'Pending')");
 $stmt->bind_param("issisisssss", $userId, $patientName, $bloodGroup, $units, $hospitalName, $hospitalIdVal, $location, $phone, $urgency, $date, $notes);
 
 if ($stmt->execute()) {

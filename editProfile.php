@@ -16,13 +16,44 @@ $me = getCurrentUser($conn);
 
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
         <style>
-            *{
+
+/* ============================
+   BloodConnect Design Tokens
+   ============================ */
+:root {
+    --crimson: #c8102e;
+    --crimson-dark: #8f0b21;
+    --crimson-soft: #fdeceb;
+    --ink: #23222a;
+    --ink-soft: #6b6873;
+    --paper: #faf6f3;
+    --panel: #ffffff;
+    --sand: #f3ece7;
+    --mist: #e9e1db;
+    --teal: #0e7c74;
+    --teal-soft: #e6f3f1;
+
+    --font-display: "Fraunces", Georgia, serif;
+    --font-body: "Inter", Arial, Helvetica, sans-serif;
+
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --radius-sm: 10px;
+
+    --shadow-panel: 0 10px 30px -12px rgba(35, 34, 42, .12), 0 2px 8px rgba(35, 34, 42, .05);
+    --shadow-soft: 0 4px 14px rgba(35, 34, 42, .06);
+}
+
+*{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Cambria, "Times New Roman", serif;
+    font-family: var(--font-body);
 }
 
 body{
@@ -41,95 +72,155 @@ body{
     min-height:100vh;
 }
 
-.sidebar{
-    width:250px;
-    background:rgb(158, 27, 1);
-    color:white;
-    padding:25px 15px;
-    position:fixed;
-    height:100vh;
-    left:0;
-    top:0;
+/* ============================
+   Sidebar
+   ============================ */
+.sidebar {
+    width: 270px;
+    background: var(--panel);
+    border-right: 1px solid var(--mist);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 26px 22px;
+    overflow-y: auto;
 }
 
-.logo{
-    text-align:center;
-    margin-bottom:35px;
+.logo {
+    text-align: center;
+    margin-bottom: 22px;
 }
 
-.logo h2{
-    font-size:24px;
+.logo h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 24px;
+    letter-spacing: .2px;
+    color: var(--crimson);
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 4px;
 }
 
-.logo h2 i{
-    color:#ff304f;
-    margin-right:8px;
+.logo h2 i {
+    font-size: 19px;
 }
 
-.logo p{
-    font-size:14px;
-    margin-top:8px;
-    color:#ddd;
+.logo p {
+    color: var(--ink-soft);
+    font-size: 12.5px;
+    letter-spacing: .4px;
+    text-transform: uppercase;
 }
 
+/* signature element: a quiet pulse line beneath the wordmark,
+   standing in for BloodConnect's vitals / life-signal theme */
+.pulse-divider {
+    width: 100%;
+    height: 22px;
+    margin-top: 16px;
+    opacity: .55;
+}
+
+.pulse-divider path {
+    fill: none;
+    stroke: var(--crimson);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 220;
+    stroke-dashoffset: 220;
+    animation: draw-pulse 1.6s ease-out forwards .2s;
+}
+
+@keyframes draw-pulse {
+    to { stroke-dashoffset: 0; }
+}
 
 .sidebar ul{
     list-style:none;
 }
 
 .sidebar ul li{
-    margin:12px 0;
+    margin-bottom: 6px;
 }
 
 
-.sidebar ul li a{
-    text-decoration:none;
-    color:white;
-    display:flex;
-    align-items:center;
-    gap:14px;
-    padding:13px 15px;
-    border-radius:10px;
-    transition:.3s;
-    font-size:17px;
+.sidebar ul li a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-size: 14.5px;
+    font-weight: 500;
+    padding: 13px 14px;
+    border-radius: var(--radius-sm);
+    transition: background .2s ease, color .2s ease;
+}
+
+.sidebar ul li a i {
+    width: 18px;
+    text-align: center;
+    color: #c9c5c0;
+    transition: color .2s ease;
+}
+
+.sidebar ul li a:hover {
+    background: var(--crimson-soft);
+    color: var(--crimson-dark);
+}
+
+.sidebar ul li a:hover i {
+    color: var(--crimson);
+}
+
+.sidebar ul li.active a {
+    background: var(--crimson);
+    color: #fff;
+    box-shadow: 0 6px 14px -6px rgba(200, 16, 46, .55);
+}
+
+.sidebar ul li.active a i {
+    color: #fff;
 }
 
 
-.sidebar ul li a:hover,
-.sidebar ul li.active a{
-    background:rgb(219, 217, 229);
-    color: #555;
+#logoutBtn {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 13px;
+    border: 1px solid var(--mist);
+    border-radius: var(--radius-sm);
+    background: var(--panel);
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all .2s ease;
 }
 
 
-.sidebar ul li i{
-    width:20px;
+#logoutBtn:hover {
+    background: var(--crimson);
+    border-color: var(--crimson);
+    color: #fff;
 }
 
-
-#logoutBtn{
-    position:absolute;
-    bottom:25px;
-    left:20px;
-    width:210px;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    background:#ff304f;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
-    transition:.3s;
-}
-
-
-#logoutBtn:hover{
-    background:#d90429;
-}
-
+/* ============================
+   Main content
+   ============================ */
 .main-content{
-    margin-left:250px;
-    width:calc(100% - 250px);
+    margin-left: 270px;
+    width: calc(100% - 270px);
     padding:20px 35px;
 }
 
@@ -152,16 +243,24 @@ header{
 }
 
 
-.header-left h1{
+.header-left h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
     font-size:28px;
+    letter-spacing: .2px;
 }
 
 
-#menuBtn{
-    border:none;
-    background:none;
-    font-size:22px;
-    cursor:pointer;
+#menuBtn {
+    display: none;
+    border: 1px solid var(--mist);
+    background: var(--panel);
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    font-size: 17px;
+    color: var(--ink);
+    cursor: pointer;
 }
 
 
@@ -677,21 +776,29 @@ footer p{
 
 
 
-@media(max-width:850px){
+@media(max-width:900px){
 
 
     .sidebar{
 
-        transform:translateX(-100%);
-        transition:.3s;
-        z-index:1000;
+        left: -270px;
+        transition: left .3s ease;
+        z-index: 999;
+        box-shadow: var(--shadow-panel);
 
     }
 
 
-    .sidebar.active{
+    .sidebar.show{
 
-        transform:translateX(0);
+        left: 0;
+
+    }
+
+
+    #menuBtn{
+
+        display: block;
 
     }
 
@@ -806,6 +913,10 @@ footer p{
 
             <p>Save Lives Together</p>
 
+            <svg class="pulse-divider" viewBox="0 0 260 22" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M0 11 H90 L102 2 L114 20 L126 6 L136 11 H260" />
+            </svg>
+
         </div>
 
         <ul>
@@ -822,25 +933,13 @@ footer p{
 
             </li>
 
-            <li>
+            <li class="active">
 
                 <a href="profile.php">
 
                     <i class="fa-solid fa-user"></i>
 
                     Profile
-
-                </a>
-
-            </li>
-
-            <li class="active">
-
-                <a href="editProfile.php">
-
-                    <i class="fa-solid fa-user-pen"></i>
-
-                    Edit Profile
 
                 </a>
 
@@ -874,7 +973,7 @@ footer p{
 
                 <a href="blood-requests.php">
 
-                    <i class="fa-solid fa-droplet"></i>
+                    <i class="fa-solid fa-tint"></i>
 
                     Blood Requests
 
@@ -889,6 +988,18 @@ footer p{
                     <i class="fa-solid fa-triangle-exclamation"></i>
 
                     Emergency
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="Chat.php">
+
+                    <i class="fa-solid fa-comments"></i>
+
+                    Messages
 
                 </a>
 
@@ -1984,17 +2095,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (menuBtn && sidebar) {
         menuBtn.addEventListener("click", () => {
-            sidebar.classList.toggle("active");
+            sidebar.classList.toggle("show");
         });
     }
 
-    if (sidebar) {
-        document.querySelectorAll(".sidebar a").forEach(link => {
-            link.addEventListener("click", () => {
-                sidebar.classList.remove("active");
-            });
-        });
-    }
+    document.addEventListener("click", function (e) {
+        if (
+            sidebar &&
+            menuBtn &&
+            window.innerWidth < 900 &&
+            !sidebar.contains(e.target) &&
+            !menuBtn.contains(e.target)
+        ) {
+            sidebar.classList.remove("show");
+        }
+    });
 
     const phoneEl = document.getElementById("phone");
     if (phoneEl) {

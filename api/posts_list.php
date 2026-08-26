@@ -8,10 +8,14 @@ $bloodGroup = trim($_GET['bloodGroup'] ?? '');
 $location   = trim($_GET['location'] ?? '');
 $emergencyOnly = !empty($_GET['emergencyOnly']);
 
-$sql = "SELECT p.*, u.name AS userName, u.photo AS userPhoto, u.email AS userEmail
+$myId = $_SESSION['user_id'];
+
+$sql = "SELECT p.*, u.name AS userName, u.photo AS userPhoto, u.email AS userEmail,
+        EXISTS(SELECT 1 FROM post_likes pl WHERE pl.post_id = p.id AND pl.user_id = ?) AS liked_by_me,
+        (SELECT COUNT(*) FROM post_comments pc WHERE pc.post_id = p.id) AS comment_count
         FROM posts p JOIN users u ON u.id = p.user_id WHERE 1=1";
-$params = [];
-$types = "";
+$params = [$myId];
+$types = "i";
 
 if ($postType !== '') { $sql .= " AND p.post_type = ?"; $params[] = $postType; $types .= "s"; }
 if ($bloodGroup !== '') { $sql .= " AND p.blood_group = ?"; $params[] = $bloodGroup; $types .= "s"; }
@@ -29,6 +33,8 @@ $result = $stmt->get_result();
 $posts = [];
 while ($row = $result->fetch_assoc()) {
     $row['emergency'] = (bool)$row['emergency'];
+    $row['liked_by_me'] = (bool)$row['liked_by_me'];
+    $row['comment_count'] = (int)$row['comment_count'];
     $posts[] = $row;
 }
 echo json_encode(["success" => true, "posts" => $posts]);
